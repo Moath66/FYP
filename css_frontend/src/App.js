@@ -7,6 +7,8 @@ import SecurityDashboard from "./pages/SecurityDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the new ProtectedRoute
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function App() {
   return (
