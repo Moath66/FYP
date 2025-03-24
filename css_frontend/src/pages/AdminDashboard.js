@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAdminDashboard } from "../api/adminApi"; // Import API function
-
+import "../styles/AdminDashboard.css"; // External stylesheet
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -26,7 +25,6 @@ const AdminDashboard = () => {
       } catch (err) {
         console.error("❌ Error loading admin data:", err);
         setError("Failed to load admin data. Please try again.");
-        // Handle expired token
         if (err.message.includes("Unauthorized")) {
           localStorage.removeItem("token");
           localStorage.removeItem("role");
@@ -38,7 +36,7 @@ const AdminDashboard = () => {
     };
 
     fetchData();
-  }, []); // ✅ Removed `navigate` from dependency array
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -47,62 +45,40 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Admin Dashboard</h2>
-      <p>Welcome, Admin! 🎉</p>
+    <div className="admin-dashboard-container">
+      {/* Admin Header */}
+      <header className="admin-header">
+        <h1>Admin Control Panel</h1>
+      </header>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p style={styles.error}>{error}</p>
-      ) : (
-        <pre style={styles.dataBox}>{JSON.stringify(adminData, null, 2)}</pre>
-      )}
+      {/* Navigation Bar */}
+      <nav className="nav-bar">
+        <button className="nav-link active">🏠 Dashboard</button>
+        <button className="nav-link" onClick={() => navigate("/admin/manage-users")}> 
+  👥 Manage User Accounts 
+</button>
 
-      <button onClick={handleLogout} style={styles.button}>
-        Logout
-      </button>
+      </nav>
+
+      {/* Dashboard Content */}
+      <div className="dashboard-content">
+        <h2>Admin Dashboard</h2>
+        <p>Welcome, Admin! 🎉</p>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="error">{error}</p>
+        ) : (
+          <pre className="data-box">{JSON.stringify(adminData, null, 2)}</pre>
+        )}
+
+        <button onClick={handleLogout} className="logout-button">
+          Logout
+        </button>
+      </div>
     </div>
   );
-};
-
-// ✅ Styles (Consider moving this to an external CSS file)
-const styles = {
-  container: {
-    maxWidth: "500px",
-    margin: "50px auto",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "15px",
-  },
-  error: {
-    color: "red",
-    fontSize: "14px",
-  },
-  dataBox: {
-    backgroundColor: "#f5f5f5",
-    padding: "10px",
-    borderRadius: "5px",
-    textAlign: "left",
-    whiteSpace: "pre-wrap",
-    maxHeight: "200px",
-    overflowY: "auto",
-  },
-  button: {
-    padding: "10px",
-    backgroundColor: "#d9534f",
-    color: "white",
-    fontSize: "16px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginTop: "10px",
-  },
 };
 
 export default AdminDashboard;

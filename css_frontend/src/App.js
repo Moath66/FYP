@@ -2,13 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminManageUsers from "./pages/AdminManageUsers"; 
 import ResidentDashboard from "./pages/ResidentDashboard";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import the new ProtectedRoute
+import ProtectedRoute from "./components/ProtectedRoute";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
 
-        {/* ✅ Correct Protected Routes for All Roles */}
+        {/* ✅ Protected Routes for Admin */}
         <Route
           path="/admin/dashboard"
           element={
@@ -26,6 +27,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/manage-users"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminManageUsers />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ Protected Routes for Other Roles */}
         <Route
           path="/resident/dashboard"
           element={
