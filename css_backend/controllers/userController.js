@@ -120,9 +120,14 @@ exports.updateUser = async (req, res) => {
 // 📌 Delete user
 exports.deleteUser = async (req, res) => {
   try {
+    const userId = Number(req.params.id);
+    const userName = req.params.userName;
+
     const deletedUser = await User.findOneAndDelete({
-      userId: Number(req.params.id),
+      userId,
+      userName,
     });
+
     if (!deletedUser)
       return res.status(404).json({ message: "User not found" });
 
@@ -130,11 +135,10 @@ exports.deleteUser = async (req, res) => {
       message: `User ${deletedUser.userName} with ID ${deletedUser.userId} deleted successfully`,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting user", error: error.message });
+    res.status(500).json({ message: "Error deleting user", error: error.message });
   }
 };
+
 
 // 📌 User Login
 exports.loginUser = async (req, res) => {

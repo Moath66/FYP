@@ -1,56 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { fetchUsers, deleteUser } from "../api/userApi";
 import UserForm from "../components/UserForm";
-import ConfirmDialog from "../components/ConfirmDialog";
 import "../styles/AdminManageUsers.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminManageUsers = () => {
   const [showForm, setShowForm] = useState(false);
+  const [editUser, setEditUser] = useState(null);
   const [users, setUsers] = useState([]);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [editMode, setEditMode] = useState(false);
-  const [error, setError] = useState("");
+  const currentAdmin = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     loadUsers();
   }, []);
 
   const loadUsers = async () => {
-    try {
-      const data = await fetchUsers();
-      setUsers(data);
-    } catch (err) {
-      setError("Failed to load users.");
+    const data = await fetchUsers();
+    const nonAdminUsers = data
+      .filter((user) => user.role !== "admin")
+      .sort((a, b) => a.userId - b.userId);
+    setUsers(nonAdminUsers);
+  };
+
+  const handleDelete = async (userId, userName) => {
+    if (
+      currentAdmin?.userName === userName &&
+      currentAdmin?.userId === userId
+    ) {
+      toast.error("❌ You cannot delete your own admin account.");
+      return;
     }
-  };
 
-  const handleDeleteClick = (user) => {
-    setSelectedUser(user);
-    setShowConfirm(true);
-  };
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete user "${userName}" with ID ${userId}?`
+    );
+    if (!confirmDelete) return;
 
-  const handleConfirmDelete = async () => {
     try {
-      await deleteUser(selectedUser.userId);
-      setShowConfirm(false);
-      setSelectedUser(null);
+      await deleteUser(userId, userName);
+      toast.success(`✅ Deleted user '${userName}' successfully.`);
       loadUsers();
-    } catch (err) {
-      setError("Failed to delete user.");
+    } catch (error) {
+      toast.error("❌ Failed to delete user.");
     }
   };
 
-  const handleEditClick = (user) => {
-    setSelectedUser(user);
-    setEditMode(true);
+  const handleEdit = (user) => {
+    setEditUser(user);
     setShowForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setShowForm(false);
-    setEditMode(false);
-    setSelectedUser(null);
   };
 
   return (
@@ -58,9 +56,13 @@ const AdminManageUsers = () => {
       <h1>User Accounts</h1>
       <p>Manage system users and permissions</p>
 
-      {error && <p className="error-msg">{error}</p>}
-
-      <button className="add-user-btn" onClick={() => setShowForm(true)}>
+      <button
+        className="add-user-btn"
+        onClick={() => {
+          setEditUser(null);
+          setShowForm(true);
+        }}
+      >
         ➕ Add New User
       </button>
 
@@ -68,6 +70,7 @@ const AdminManageUsers = () => {
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>UserName</th>
               <th>Email</th>
               <th>Role</th>
@@ -78,14 +81,21 @@ const AdminManageUsers = () => {
             {users.length > 0 ? (
               users.map((user) => (
                 <tr key={user._id || user.userId}>
+                  <td>{user.userId}</td>
                   <td>{user.userName}</td>
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>
-                    <button className="edit-btn" onClick={() => handleEditClick(user)}>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(user)}
+                    >
                       ✏ Edit
                     </button>
-                    <button className="delete-btn" onClick={() => handleDeleteClick(user)}>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(user.userId, user.userName)}
+                    >
                       🗑 Delete
                     </button>
                   </td>
@@ -93,7 +103,7 @@ const AdminManageUsers = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="no-users">
+                <td colSpan="5" className="no-users">
                   No users found. Add a user to get started.
                 </td>
               </tr>
@@ -110,21 +120,10 @@ const AdminManageUsers = () => {
 
       {showForm && (
         <UserForm
-          onClose={handleCloseForm}
+          onClose={() => setShowForm(false)}
           onUserAdded={loadUsers}
-          isEdit={editMode}
-          existingUser={editMode ? selectedUser : null}
-        />
-      )}
-
-      {showConfirm && selectedUser && (
-        <ConfirmDialog
-          message={`Are you sure you want to delete user "${selectedUser.userName}"?`}
-          onCancel={() => {
-            setShowConfirm(false);
-            setSelectedUser(null);
-          }}
-          onConfirm={handleConfirmDelete}
+          isEdit={!!editUser}
+          existingUser={editUser}
         />
       )}
     </div>

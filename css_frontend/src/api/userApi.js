@@ -32,18 +32,20 @@ export const createUser = async (userData) => {
   }
 };
 
-export const deleteUser = async (userId) => {
+// ✅ Delete user by userId and userName
+export const deleteUser = async (userId, userName) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.delete(`${API_URL}/${userId}`, {
+    const response = await axios.delete(`${API_URL}/${userId}/${userName}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
-    console.error("❌ Error deleting user:", error);
+    console.error("❌ Error deleting user:", error.response?.data || error.message);
     throw error;
   }
 };
+
 
 export const updateUser = async (userId, updatedData) => {
   try {

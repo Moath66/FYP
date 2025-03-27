@@ -94,6 +94,7 @@ const UserForm = ({ onClose, onUserAdded, isEdit = false, existingUser = null })
             onChange={handleChange}
             placeholder="Enter email"
             required
+            disabled={isEdit}
           />
 
           {!isEdit && (
