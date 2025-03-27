@@ -1,6 +1,7 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/Login.css"; // 👈 External stylesheet
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,23 +21,28 @@ const Login = () => {
         password,
       });
 
-      // Store token and role in localStorage
+      // ✅ Store token and role in localStorage
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
 
       alert("✅ Login successful!");
 
-      // Redirect user based on role
-      if (res.data.user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (res.data.user.role === "resident") {
-        navigate("/resident/dashboard");
-      } else if (res.data.user.role === "security") {
-        navigate("/security/dashboard");
-      } else if (res.data.user.role === "staff") {
-        navigate("/staff/dashboard");
-      } else {
-        navigate("/user/profile");
+      // ✅ Redirect based on user role
+      switch (res.data.user.role) {
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "resident":
+          navigate("/resident/dashboard");
+          break;
+        case "security":
+          navigate("/security/dashboard");
+          break;
+        case "staff":
+          navigate("/staff/dashboard");
+          break;
+        default:
+          navigate("/user/profile");
       }
     } catch (error) {
       setError(error.response?.data?.message || "Invalid credentials");
@@ -46,17 +52,17 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Login</h2>
-      {error && <p style={styles.error}>{error}</p>}
-      <form onSubmit={handleLogin} style={styles.form}>
+    <div className="login-container">
+      <h2 className="login-heading">Login</h2>
+      {error && <p className="login-error">{error}</p>}
+      <form onSubmit={handleLogin} className="login-form">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={styles.input}
+          className="login-input"
         />
         <input
           type="password"
@@ -64,52 +70,14 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={styles.input}
+          className="login-input"
         />
-        <button type="submit" disabled={loading} style={styles.button}>
+        <button type="submit" disabled={loading} className="login-button">
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>
   );
-};
-
-// Simple inline styling
-const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "50px auto",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "15px",
-  },
-  error: {
-    color: "red",
-    fontSize: "14px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  input: {
-    padding: "10px",
-    margin: "10px 0",
-    fontSize: "16px",
-  },
-  button: {
-    padding: "10px",
-    backgroundColor: "#007bff",
-    color: "white",
-    fontSize: "16px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
 };
 
 export default Login;

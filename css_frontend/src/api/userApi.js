@@ -1,13 +1,14 @@
 import axios from "axios";
 
-// ✅ Use `import.meta.env.VITE_API_BASE_URL` for Vite projects
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api"; 
-const API_URL = `${API_BASE_URL}/users`; 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
+const API_URL = `${API_BASE_URL}/users`;
 
-// Fetch all users
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const token = localStorage.getItem("token");
+    const response = await axios.get(API_URL, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -15,14 +16,15 @@ export const fetchUsers = async () => {
   }
 };
 
-// Add a new user
 export const createUser = async (userData) => {
   try {
-    console.log("📤 Sending request to:", `${API_URL}/register`, userData); // ✅ Check request
+    const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}/register`, userData, {
-      headers: { "Content-Type": "application/json" }, // ✅ Ensure JSON format
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
-    console.log("✅ User created successfully:", response.data);
     return response.data;
   } catch (error) {
     console.error("❌ Error adding user:", error.response?.data || error.message);
@@ -30,3 +32,31 @@ export const createUser = async (userData) => {
   }
 };
 
+export const deleteUser = async (userId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(`${API_URL}/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error deleting user:", error);
+    throw error;
+  }
+};
+
+export const updateUser = async (userId, updatedData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${API_URL}/${userId}`, updatedData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error updating user:", error);
+    throw error;
+  }
+};

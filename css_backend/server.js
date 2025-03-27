@@ -1,17 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db"); // Import database connection
+const connectDB = require("./config/db"); // MongoDB connection
 
-dotenv.config(); // Load environment variables
+dotenv.config(); // Load .env variables
 
 const app = express();
+
+// ✅ Middleware
 app.use(cors());
-app.use(express.json()); // ✅ Middleware to parse JSON requests
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Import Routes
-const authRoutes = require("./api_routes/authRoutes"); 
+// ✅ Connect to MongoDB
+connectDB();
+
+// ✅ Import Routes
+const authRoutes = require("./api_routes/authRoutes");
 const adminRoutes = require("./api_routes/adminRoutes");
 const residentRoutes = require("./api_routes/residentRoutes");
 const securityRoutes = require("./api_routes/securityRoutes");
@@ -32,9 +37,7 @@ app.use("/api/items", itemRoutes);
 app.use("/api/visitors", visitorRoutes);
 app.use("/api/maintenance", maintenanceRoutes);
 
-// ✅ Connect to MongoDB using `db.js`
-connectDB();
-
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
