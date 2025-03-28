@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchUsers, deleteUser } from "../api/userApi";
 import UserForm from "../components/UserForm";
+import ConfirmDialog from "../components/ConfirmDialog";
 import "../styles/AdminManageUsers.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,6 +10,12 @@ const AdminManageUsers = () => {
   const [showForm, setShowForm] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterRole, setFilterRole] = useState("all");
+  const [showFilterOptions, setShowFilterOptions] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
   const currentAdmin = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -23,26 +30,22 @@ const AdminManageUsers = () => {
     setUsers(nonAdminUsers);
   };
 
-  const handleDelete = async (userId, userName) => {
-    if (
-      currentAdmin?.userName === userName &&
-      currentAdmin?.userId === userId
-    ) {
-      toast.error("❌ You cannot delete your own admin account.");
-      return;
-    }
+  const confirmDeleteUser = (user) => {
+    setUserToDelete(user);
+    setShowConfirmDialog(true);
+  };
 
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete user "${userName}" with ID ${userId}?`
-    );
-    if (!confirmDelete) return;
+  const handleDelete = async () => {
+    if (!userToDelete) return;
 
     try {
-      await deleteUser(userId, userName);
-      toast.success(`✅ Deleted user '${userName}' successfully.`);
+      await deleteUser(userToDelete.userId, userToDelete.userName);
+      toast.success(`✅ User "${userToDelete.userName}" was successfully removed.`);
+      setUserToDelete(null);
+      setShowConfirmDialog(false);
       loadUsers();
     } catch (error) {
-      toast.error("❌ Failed to delete user.");
+      toast.error("❌ Failed to delete user. Please try again.");
     }
   };
 
@@ -66,6 +69,41 @@ const AdminManageUsers = () => {
         ➕ Add New User
       </button>
 
+      <div className="search-filter-wrapper">
+        <div className="search-container">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </div>
+
+        <div className="filter-container">
+          <button
+            className="filter-toggle"
+            onClick={() => setShowFilterOptions((prev) => !prev)}
+          >
+            <i className="bi bi-funnel-fill"></i> Filter
+          </button>
+
+          {showFilterOptions && (
+            <select
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+              className="filter-select"
+            >
+              <option value="all">All Roles</option>
+              <option value="resident">Resident</option>
+              <option value="staff">Staff</option>
+              <option value="security">Security</option>
+            </select>
+          )}
+        </div>
+      </div>
+
       <div className="users-table">
         <table>
           <thead>
@@ -79,28 +117,35 @@ const AdminManageUsers = () => {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user._id || user.userId}>
-                  <td>{user.userId}</td>
-                  <td>{user.userName}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <button
-                      className="edit-btn"
-                      onClick={() => handleEdit(user)}
-                    >
-                      ✏ Edit
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(user.userId, user.userName)}
-                    >
-                      🗑 Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+              users
+                .filter((user) =>
+                  user.email.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .filter((user) =>
+                  filterRole === "all" ? true : user.role === filterRole
+                )
+                .map((user) => (
+                  <tr key={user._id || user.userId}>
+                    <td>{user.userId}</td>
+                    <td>{user.userName}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    <td>
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEdit(user)}
+                      >
+                        ✏ Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => confirmDeleteUser(user)}
+                      >
+                        🗑 Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
             ) : (
               <tr>
                 <td colSpan="5" className="no-users">
@@ -121,10 +166,22 @@ const AdminManageUsers = () => {
       {showForm && (
         <UserForm
           onClose={() => setShowForm(false)}
-          onUserAdded={loadUsers}
+          onUserAdded={() => {
+            loadUsers();
+            toast.success(editUser ? "✅ User updated successfully." : "✅ User added successfully.");
+          }}
           isEdit={!!editUser}
           existingUser={editUser}
         />
+      )}
+
+      {showConfirmDialog && (
+       <ConfirmDialog
+       message={`Are you sure you want to delete "${userToDelete.userName}" with ID ${userToDelete.userId}?`}
+       onCancel={() => setShowConfirmDialog(false)}
+       onConfirm={handleDelete}
+     />
+     
       )}
     </div>
   );
