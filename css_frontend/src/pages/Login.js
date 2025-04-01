@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/Login.css"; // 👈 External stylesheet
+import "../styles/Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,18 +17,20 @@ const Login = () => {
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
+        identifier,
         password,
       });
 
-      // ✅ Store token and role in localStorage
+      const user = res.data.user;
+      console.log("✅ Login response user:", user);
+
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.user.role);
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("user", JSON.stringify(user));
 
       alert("✅ Login successful!");
 
-      // ✅ Redirect based on user role
-      switch (res.data.user.role) {
+      switch (user.role) {
         case "admin":
           navigate("/admin/dashboard");
           break;
@@ -57,10 +59,10 @@ const Login = () => {
       {error && <p className="login-error">{error}</p>}
       <form onSubmit={handleLogin} className="login-form">
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Enter email or username"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
           required
           className="login-input"
         />
@@ -76,6 +78,21 @@ const Login = () => {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
+      {/* ✅ Forgot Password Link */}
+      <p
+        className="forgot-password-link"
+        onClick={() => navigate("/forgot-password")}
+        style={{
+          marginTop: "10px",
+          color: "#007bff",
+          cursor: "pointer",
+          textAlign: "center",
+          textDecoration: "underline",
+        }}
+      >
+        Forgot Password?
+      </p>
     </div>
   );
 };

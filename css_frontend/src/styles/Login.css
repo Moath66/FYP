@@ -40,3 +40,16 @@
     cursor: pointer;
   }
   
+  .forgot-password-link {
+    color: #007bff;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .forgot-password-link:hover {
+    text-decoration: underline;
+  }
+
+  

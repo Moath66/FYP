@@ -3,14 +3,13 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// 📌 Utility function to generate unique incremental `userId`
+// 📌 Generate unique incremental userId
 const getNextUserId = async () => {
   const lastUser = await User.findOne().sort({ userId: -1 });
   return lastUser ? lastUser.userId + 1 : 1;
 };
 
 // 📌 Get all users
-// ✅ Correct: Only include selected fields
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}, "userId userName email role");
@@ -21,25 +20,19 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-
-
-// 📌 Get user by ID
+// 📌 Get user by ID (Include password)
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findOne({ userId: Number(req.params.id) }).select(
-      "-password"
-    );
+    const user = await User.findOne({ userId: Number(req.params.id) });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json(user);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching user", error: error.message });
+    res.status(500).json({ message: "Error fetching user", error: error.message });
   }
 };
 
-// 📌 Create a new user (Registration)
+// 📌 Register new user
 exports.createUser = async (req, res) => {
   try {
     const { userName, email, password, phoneNo, role } = req.body;
@@ -49,9 +42,7 @@ exports.createUser = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters long" });
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -59,7 +50,7 @@ exports.createUser = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const newUserId = await getNextUserId(); // 🆕 Generate unique `userId`
+    const newUserId = await getNextUserId();
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -78,19 +69,15 @@ exports.createUser = async (req, res) => {
       user: { userId: newUserId, userName, email, phoneNo, role },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating user", error: error.message });
+    res.status(500).json({ message: "Error creating user", error: error.message });
   }
 };
 
-// 📌 Update user
+// 📌 Update user (except password)
 exports.updateUser = async (req, res) => {
   try {
     if (req.body.password) {
-      return res
-        .status(400)
-        .json({ message: "Use password reset function to update password" });
+      return res.status(400).json({ message: "Use password reset to update password" });
     }
 
     if (req.body.email) {
@@ -106,14 +93,11 @@ exports.updateUser = async (req, res) => {
       { new: true }
     ).select("-password");
 
-    if (!updatedUser)
-      return res.status(404).json({ message: "User not found" });
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating user", error: error.message });
+    res.status(500).json({ message: "Error updating user", error: error.message });
   }
 };
 
@@ -123,13 +107,9 @@ exports.deleteUser = async (req, res) => {
     const userId = Number(req.params.id);
     const userName = req.params.userName;
 
-    const deletedUser = await User.findOneAndDelete({
-      userId,
-      userName,
-    });
+    const deletedUser = await User.findOneAndDelete({ userId, userName });
 
-    if (!deletedUser)
-      return res.status(404).json({ message: "User not found" });
+    if (!deletedUser) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({
       message: `User ${deletedUser.userName} with ID ${deletedUser.userId} deleted successfully`,
@@ -139,36 +119,21 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-
-// 📌 User Login
+// 📌 Login with email or userName (identifier)
 exports.loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body; // <-- was 'email'
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: identifier }) ||
+                 await User.findOne({ userName: identifier });
+
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    let dashboardUrl = "/user/profile";
-    switch (user.role) {
-      case "admin":
-        dashboardUrl = "/admin/dashboard";
-        break;
-      case "resident":
-        dashboardUrl = "/resident/dashboard";
-        break;
-      case "security":
-        dashboardUrl = "/security/dashboard";
-        break;
-      case "staff":
-        dashboardUrl = "/staff/dashboard";
-        break;
     }
 
     const token = jwt.sign(
@@ -181,13 +146,14 @@ exports.loginUser = async (req, res) => {
       message: "Login successful",
       token,
       user: {
-        id: user.userId,
+        userId: user.userId,
         userName: user.userName,
         email: user.email,
+        phoneNo: user.phoneNo,
         role: user.role,
-      },
-      dashboard: dashboardUrl,
+      }
     });
+
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }

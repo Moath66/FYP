@@ -12,6 +12,9 @@ import { ToastContainer } from "react-toastify"; // ✅ Add this line
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ManageProfilePage from "./pages/ManageProfilePage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 
 function App() {
@@ -66,6 +69,38 @@ function App() {
         />
 
         <Route path="*" element={<NotFound />} />
+
+        <Route
+  path="/resident/profile"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <ManageProfilePage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/staff/profile"
+  element={
+    <ProtectedRoute requiredRole="staff">
+      <ManageProfilePage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/security/profile"
+  element={
+    <ProtectedRoute requiredRole="security">
+      <ManageProfilePage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route path="/forgot-password" element={<ForgotPasswordPage />} />
+<Route path="/reset-password" element={<ResetPasswordPage />} />
+
+
       </Routes>
 
       <ToastContainer />
