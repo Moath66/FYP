@@ -10,8 +10,12 @@ const ProtectedRoute = ({ requiredRole, children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!role || role !== requiredRole) {
-    console.warn(`Unauthorized role: ${role}, expected: ${requiredRole}`);
+  const isAuthorized = Array.isArray(requiredRole)
+    ? requiredRole.includes(role)
+    : role === requiredRole;
+
+  if (!isAuthorized) {
+    console.warn(`Unauthorized role: ${role}`);
     return <Navigate to="/unauthorized" replace />;
   }
 

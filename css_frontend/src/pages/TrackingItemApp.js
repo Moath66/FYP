@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
-import "../styles/SecurityHandleItems.css";
+import "../styles/TrackingItemApp.css";
 import axios from "axios";
 
-const SecurityHandleItems = () => {
+const TrackingItemApp = () => {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
+
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.userId;
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await axios.get("/api/items/all"); // Adjust backend route
+        const res = await axios.get(`/api/items/by-user/${userId}`);
         setItems(res.data);
       } catch (err) {
-        console.error("Error fetching items", err);
+        console.error("Error fetching tracking items", err);
       }
     };
 
     fetchItems();
-  }, []);
+  }, [userId]);
 
-  const updateStatus = async (itemId, newStatus) => {
+  const handleClaim = async (itemId) => {
     try {
-      await axios.put(`/api/items/status/${itemId}`, { status: newStatus });
+      await axios.put(`/api/items/claim/${itemId}`);
       setItems((prev) =>
         prev.map((item) =>
-          item._id === itemId ? { ...item, status: newStatus } : item
+          item._id === itemId ? { ...item, status: "claimed" } : item
         )
       );
     } catch (err) {
-      alert("Failed to update item status");
+      alert("Error claiming item");
     }
   };
 
@@ -37,9 +40,9 @@ const SecurityHandleItems = () => {
   );
 
   return (
-    <div className="handle-items-container">
+    <div className="tracking-app-container">
       <div className="card">
-        <h2>📁 Handle Items</h2>
+        <h2>📖 Tracking Items Application</h2>
 
         <input
           type="text"
@@ -49,13 +52,12 @@ const SecurityHandleItems = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <table className="items-table">
+        <table className="tracking-table">
           <thead>
             <tr>
               <th>#</th>
               <th>Item Name</th>
               <th>Date</th>
-              <th>Location</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -66,37 +68,26 @@ const SecurityHandleItems = () => {
                 <td>{index + 1}</td>
                 <td>{item.itemName}</td>
                 <td>{new Date(item.date).toLocaleDateString()}</td>
-                <td>{item.location}</td>
                 <td>
                   <span className={`status ${item.status}`}>
                     {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                   </span>
                 </td>
                 <td>
-                  {["claimed", "unclaimed"].includes(item.status) ? (
-                    <div className="action-buttons">
-                      <button
-                        className="btn-return"
-                        onClick={() => updateStatus(item._id, "returned")}
-                      >
-                        Returned
-                      </button>
-                      <button
-                        className="btn-discard"
-                        onClick={() => updateStatus(item._id, "discarded")}
-                      >
-                        Discard
-                      </button>
-                    </div>
-                  ) : (
-                    <span className="no-action">Done</span>
+                  {item.status === "found" && (
+                    <button
+                      className="claim-btn"
+                      onClick={() => handleClaim(item._id)}
+                    >
+                      Claim Now
+                    </button>
                   )}
                 </td>
               </tr>
             ))}
             {filteredItems.length === 0 && (
               <tr>
-                <td colSpan="6" className="no-items">
+                <td colSpan="5" className="no-items">
                   No matching items.
                 </td>
               </tr>
@@ -108,4 +99,4 @@ const SecurityHandleItems = () => {
   );
 };
 
-export default SecurityHandleItems;
+export default TrackingItemApp;

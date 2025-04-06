@@ -15,6 +15,17 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import ManageProfilePage from "./pages/ManageProfilePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ReportLostItem from "./pages/ReportLostItem";
+import ReportFoundItem from "./pages/ReportFoundItem";
+import PreVisitorRegis from "./pages/PreVisitorRegis";
+import RequestMaintenance from "./pages/RequestMaintenance";
+import TrackingItemApp from "./pages/TrackingItemApp";
+import TrackingMaintenanceApp from "./pages/TrackingMaintenanceApp";
+import TrackingVisitorApp from "./pages/TrackingVisitorApp";
+import SecurityHandleItems from "./pages/SecurityHandleItems";
+import SecurityCheckVisitor from "./pages/SecurityCheckVisitor"; // you'll create this later
+import AnalyzeMaintenance from "./pages/AnalyzeMaintenance";
+
 
 
 function App() {
@@ -99,6 +110,104 @@ function App() {
 
 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+{/* Resident Quick Action Pages */}
+<Route
+  path="/report-lost-item"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <ReportLostItem />
+    </ProtectedRoute>
+  }
+/>
+
+
+
+<Route
+  path="/report-found-item"
+  element={
+    <ProtectedRoute requiredRole={["resident", "staff", "security"]}>
+      <ReportFoundItem />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/pre-register-visitor"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <PreVisitorRegis />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/request-maintenance"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <RequestMaintenance />
+    </ProtectedRoute>
+  }
+/>
+
+{/* Resident Tracking Pages */}
+<Route
+  path="/track-item"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <TrackingItemApp />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/track-maintenance"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <TrackingMaintenanceApp />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/track-visitor"
+  element={
+    <ProtectedRoute requiredRole="resident">
+      <TrackingVisitorApp />
+    </ProtectedRoute>
+  }
+/>
+
+
+
+<Route
+  path="/handle-items"
+  element={
+    <ProtectedRoute requiredRole="security">
+      <SecurityHandleItems />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/check-visitor"
+  element={
+    <ProtectedRoute requiredRole="security">
+      <SecurityCheckVisitor />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/analyze-maintenance"
+  element={
+    <ProtectedRoute requiredRole="staff">
+      <AnalyzeMaintenance />
+    </ProtectedRoute>
+  }
+/>
+
 
 
       </Routes>

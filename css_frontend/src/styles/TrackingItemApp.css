@@ -1,5 +1,5 @@
-.handle-items-container {
-    max-width: 1100px;
+.tracking-app-container {
+    max-width: 1000px;
     margin: 50px auto;
     padding: 20px;
   }
@@ -26,20 +26,20 @@
     font-size: 15px;
   }
   
-  .items-table {
+  .tracking-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
   }
   
-  .items-table th,
-  .items-table td {
+  .tracking-table th,
+  .tracking-table td {
     padding: 12px 15px;
     text-align: center;
     border-bottom: 1px solid #eee;
   }
   
-  .items-table th {
+  .tracking-table th {
     background-color: #f2f6fc;
     color: #333;
   }
@@ -53,12 +53,16 @@
     font-size: 13px;
   }
   
-  .status.unclaimed {
-    background-color: orange;
+  .status.lost {
+    background-color: #dc3545;
+  }
+  
+  .status.found {
+    background-color: #28a745;
   }
   
   .status.claimed {
-    background-color: green;
+    background-color: #ffc107;
   }
   
   .status.returned {
@@ -69,35 +73,19 @@
     background-color: gray;
   }
   
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .btn-return {
+  .claim-btn {
     padding: 6px 12px;
     background-color: #28a745;
-    color: white;
     border: none;
+    color: white;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
   }
   
-  .btn-discard {
-    padding: 6px 12px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .no-action {
-    color: #888;
-    font-style: italic;
+  .claim-btn:hover {
+    background-color: #1e7e34;
   }
   
   .no-items {
