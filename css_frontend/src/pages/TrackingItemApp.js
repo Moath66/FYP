@@ -1,37 +1,67 @@
 import React, { useEffect, useState } from "react";
 import "../styles/TrackingItemApp.css";
-import axios from "axios";
+import { fetchItemsByUser, claimItem } from "../api/itemApi";
+import QRCodePopup from "../components/QRCodePopup";
 
 const TrackingItemApp = () => {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
+  const [qrCode, setQrCode] = useState(null);
+  const [qrData, setQrData] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const userId = storedUser?.userId;
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const loadItems = async () => {
       try {
-        const res = await axios.get(`/api/items/by-user/${userId}`);
-        setItems(res.data);
+        const data = await fetchItemsByUser(userId);
+        setItems(data);
       } catch (err) {
-        console.error("Error fetching tracking items", err);
+        console.error("Error loading user items", err);
       }
     };
 
-    fetchItems();
+    if (userId) loadItems();
   }, [userId]);
+
+  useEffect(() => {
+    console.log("✅ Items loaded:", items);
+  }, [items]);
 
   const handleClaim = async (itemId) => {
     try {
-      await axios.put(`/api/items/claim/${itemId}`);
+      const res = await claimItem(itemId);
+      const { item, qrCode, qrData } = res;
+
       setItems((prev) =>
-        prev.map((item) =>
-          item._id === itemId ? { ...item, status: "claimed" } : item
+        prev.map((i) =>
+          i._id === item._id ? { ...i, status: item.status } : i
         )
       );
+
+      setQrCode(qrCode);
+      setQrData(qrData);
+      setPopupVisible(true);
     } catch (err) {
-      alert("Error claiming item");
+      alert("❌ Failed to claim item");
+    }
+  };
+
+  const getResidentDisplayStatus = (status) => {
+    switch (status) {
+      case "lost":
+        return "Lost";
+      case "unclaimed":
+      case "claimed":
+        return "Found";
+      case "returned":
+        return "Returned";
+      case "discarded":
+        return "Discarded";
+      default:
+        return "Pending";
     }
   };
 
@@ -56,6 +86,7 @@ const TrackingItemApp = () => {
           <thead>
             <tr>
               <th>#</th>
+              <th>Item ID</th>
               <th>Item Name</th>
               <th>Date</th>
               <th>Status</th>
@@ -66,15 +97,16 @@ const TrackingItemApp = () => {
             {filteredItems.map((item, index) => (
               <tr key={item._id || index}>
                 <td>{index + 1}</td>
+                <td>{item.itemId}</td>
                 <td>{item.itemName}</td>
                 <td>{new Date(item.date).toLocaleDateString()}</td>
                 <td>
                   <span className={`status ${item.status}`}>
-                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                    {getResidentDisplayStatus(item.status)}
                   </span>
                 </td>
                 <td>
-                  {item.status === "found" && (
+                  {item.status === "unclaimed" && (
                     <button
                       className="claim-btn"
                       onClick={() => handleClaim(item._id)}
@@ -87,7 +119,7 @@ const TrackingItemApp = () => {
             ))}
             {filteredItems.length === 0 && (
               <tr>
-                <td colSpan="5" className="no-items">
+                <td colSpan="6" className="no-items">
                   No matching items.
                 </td>
               </tr>
@@ -95,6 +127,13 @@ const TrackingItemApp = () => {
           </tbody>
         </table>
       </div>
+
+      <QRCodePopup
+        visible={popupVisible}
+        qrCodeData={qrCode}
+        qrData={qrData}
+        onClose={() => setPopupVisible(false)}
+      />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import SecurityDashboard from "./pages/SecurityDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { ToastContainer } from "react-toastify"; // ✅ Add this line
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -23,10 +23,8 @@ import TrackingItemApp from "./pages/TrackingItemApp";
 import TrackingMaintenanceApp from "./pages/TrackingMaintenanceApp";
 import TrackingVisitorApp from "./pages/TrackingVisitorApp";
 import SecurityHandleItems from "./pages/SecurityHandleItems";
-import SecurityCheckVisitor from "./pages/SecurityCheckVisitor"; // you'll create this later
+import SecurityCheckVisitor from "./pages/SecurityCheckVisitor";
 import AnalyzeMaintenance from "./pages/AnalyzeMaintenance";
-
-
 
 function App() {
   return (
@@ -35,7 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
 
-        {/* ✅ Protected Routes for Admin */}
+        {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
           element={
@@ -53,7 +51,7 @@ function App() {
           }
         />
 
-        {/* ✅ Protected Routes for Other Roles */}
+        {/* Role-Based Dashboards */}
         <Route
           path="/resident/dashboard"
           element={
@@ -79,137 +77,126 @@ function App() {
           }
         />
 
-        <Route path="*" element={<NotFound />} />
-
+        {/* Profiles */}
         <Route
-  path="/resident/profile"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <ManageProfilePage />
-    </ProtectedRoute>
-  }
-/>
+          path="/resident/profile"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <ManageProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/staff/profile"
+          element={
+            <ProtectedRoute requiredRole="staff">
+              <ManageProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/security/profile"
+          element={
+            <ProtectedRoute requiredRole="security">
+              <ManageProfilePage />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/staff/profile"
-  element={
-    <ProtectedRoute requiredRole="staff">
-      <ManageProfilePage />
-    </ProtectedRoute>
-  }
-/>
+        {/* Auth Pages */}
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-<Route
-  path="/security/profile"
-  element={
-    <ProtectedRoute requiredRole="security">
-      <ManageProfilePage />
-    </ProtectedRoute>
-  }
-/>
+        {/* Resident Quick Actions */}
+        <Route
+          path="/report-lost-item"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <ReportLostItem />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/report-found-item"
+          element={
+            <ProtectedRoute requiredRole={["resident", "staff", "security"]}>
+              <ReportFoundItem />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pre-register-visitor"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <PreVisitorRegis />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/request-maintenance"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <RequestMaintenance />
+            </ProtectedRoute>
+          }
+        />
 
-<Route path="/forgot-password" element={<ForgotPasswordPage />} />
-<Route path="/reset-password" element={<ResetPasswordPage />} />
+        {/* Tracking Pages */}
+        <Route
+          path="/track-item"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <TrackingItemApp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/track-maintenance"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <TrackingMaintenanceApp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/track-visitor"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <TrackingVisitorApp />
+            </ProtectedRoute>
+          }
+        />
 
-{/* Resident Quick Action Pages */}
-<Route
-  path="/report-lost-item"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <ReportLostItem />
-    </ProtectedRoute>
-  }
-/>
+        {/* Security Pages */}
+        <Route
+          path="/handle-items"
+          element={
+            <ProtectedRoute requiredRole="security">
+              <SecurityHandleItems />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/check-visitor"
+          element={
+            <ProtectedRoute requiredRole="security">
+              <SecurityCheckVisitor />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Staff Pages */}
+        <Route
+          path="/analyze-maintenance"
+          element={
+            <ProtectedRoute requiredRole="staff">
+              <AnalyzeMaintenance />
+            </ProtectedRoute>
+          }
+        />
 
-
-<Route
-  path="/report-found-item"
-  element={
-    <ProtectedRoute requiredRole={["resident", "staff", "security"]}>
-      <ReportFoundItem />
-    </ProtectedRoute>
-  }
-/>
-
-
-<Route
-  path="/pre-register-visitor"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <PreVisitorRegis />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/request-maintenance"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <RequestMaintenance />
-    </ProtectedRoute>
-  }
-/>
-
-{/* Resident Tracking Pages */}
-<Route
-  path="/track-item"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <TrackingItemApp />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/track-maintenance"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <TrackingMaintenanceApp />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/track-visitor"
-  element={
-    <ProtectedRoute requiredRole="resident">
-      <TrackingVisitorApp />
-    </ProtectedRoute>
-  }
-/>
-
-
-
-<Route
-  path="/handle-items"
-  element={
-    <ProtectedRoute requiredRole="security">
-      <SecurityHandleItems />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/check-visitor"
-  element={
-    <ProtectedRoute requiredRole="security">
-      <SecurityCheckVisitor />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/analyze-maintenance"
-  element={
-    <ProtectedRoute requiredRole="staff">
-      <AnalyzeMaintenance />
-    </ProtectedRoute>
-  }
-/>
-
-
-
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <ToastContainer />

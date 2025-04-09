@@ -16,7 +16,9 @@ exports.getAllUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     console.error("🔥 getAllUsers error:", error);
-    res.status(500).json({ message: "Error fetching users", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
   }
 };
 
@@ -28,7 +30,9 @@ exports.getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching user", error: error.message });
   }
 };
 
@@ -42,7 +46,9 @@ exports.createUser = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -69,7 +75,9 @@ exports.createUser = async (req, res) => {
       user: { userId: newUserId, userName, email, phoneNo, role },
     });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating user", error: error.message });
   }
 };
 
@@ -77,7 +85,9 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     if (req.body.password) {
-      return res.status(400).json({ message: "Use password reset to update password" });
+      return res
+        .status(400)
+        .json({ message: "Use password reset to update password" });
     }
 
     if (req.body.email) {
@@ -93,11 +103,14 @@ exports.updateUser = async (req, res) => {
       { new: true }
     ).select("-password");
 
-    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    if (!updatedUser)
+      return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
-    res.status(500).json({ message: "Error updating user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating user", error: error.message });
   }
 };
 
@@ -109,13 +122,16 @@ exports.deleteUser = async (req, res) => {
 
     const deletedUser = await User.findOneAndDelete({ userId, userName });
 
-    if (!deletedUser) return res.status(404).json({ message: "User not found" });
+    if (!deletedUser)
+      return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({
       message: `User ${deletedUser.userName} with ID ${deletedUser.userId} deleted successfully`,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting user", error: error.message });
   }
 };
 
@@ -124,8 +140,9 @@ exports.loginUser = async (req, res) => {
   try {
     const { identifier, password } = req.body; // <-- was 'email'
 
-    const user = await User.findOne({ email: identifier }) ||
-                 await User.findOne({ userName: identifier });
+    const user =
+      (await User.findOne({ email: identifier })) ||
+      (await User.findOne({ userName: identifier }));
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
@@ -137,7 +154,7 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.userId, role: user.role },
+      { userId: user._id, role: user.role }, // 👈 use _id here
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -151,9 +168,8 @@ exports.loginUser = async (req, res) => {
         email: user.email,
         phoneNo: user.phoneNo,
         role: user.role,
-      }
+      },
     });
-
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }

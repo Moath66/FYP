@@ -6,7 +6,7 @@ const ProtectedRoute = ({ requiredRole, children }) => {
   const role = localStorage.getItem("role");
 
   if (!token) {
-    console.warn("No token found, redirecting to login.");
+    console.warn("🔐 No token found, redirecting to login.");
     return <Navigate to="/login" replace />;
   }
 
@@ -15,7 +15,7 @@ const ProtectedRoute = ({ requiredRole, children }) => {
     : role === requiredRole;
 
   if (!isAuthorized) {
-    console.warn(`Unauthorized role: ${role}`);
+    console.warn(`⛔ Unauthorized role: ${role}, redirecting to /unauthorized`);
     return <Navigate to="/unauthorized" replace />;
   }
 

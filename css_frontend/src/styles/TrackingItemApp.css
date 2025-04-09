@@ -1,97 +1,161 @@
 .tracking-app-container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 20px;
-  }
-  
-  .card {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card h2 {
-    margin-bottom: 20px;
-    color: #007bff;
-    font-weight: 600;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 15px;
-  }
-  
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: #007bff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.tracking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.tracking-table th,
+.tracking-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.tracking-table th {
+  background-color: #f2f6fc;
+  color: #333;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: white;
+  text-transform: capitalize;
+  font-size: 13px;
+}
+
+.status.lost {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.4);
+  transition: all 0.3s ease-in-out;
+}
+
+.status.lost::before {
+  content: "❌";
+  font-size: 16px;
+  display: inline-block;
+}
+
+.status.found::before {
+  content: "📦 ";
+}
+.status.found {
+  background-color: #28a745;
+}
+
+.status.claimed::before {
+  content: "🔒 ";
+}
+.status.claimed {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.status.returned::before {
+  content: "✅ ";
+}
+.status.returned {
+  background-color: #007bff;
+}
+
+.status.discarded::before {
+  content: "🗑️ ";
+}
+.status.discarded {
+  background-color: gray;
+}
+
+.claim-btn {
+  padding: 6px 12px;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.claim-btn:hover {
+  background-color: #1e7e34;
+}
+
+.no-action {
+  color: #999;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.no-items {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  padding: 15px;
+}
+
+/* ✅ Responsive: Adjusts for small screens */
+@media (max-width: 768px) {
   .tracking-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
-  }
-  
-  .tracking-table th,
-  .tracking-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .tracking-table th {
-    background-color: #f2f6fc;
-    color: #333;
-  }
-  
-  .status {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    color: white;
-    text-transform: capitalize;
     font-size: 13px;
   }
-  
-  .status.lost {
-    background-color: #dc3545;
+
+  .card {
+    padding: 20px;
   }
-  
-  .status.found {
-    background-color: #28a745;
+
+  .tracking-table th,
+  .tracking-table td {
+    padding: 10px 8px;
   }
-  
-  .status.claimed {
-    background-color: #ffc107;
-  }
-  
-  .status.returned {
-    background-color: #007bff;
-  }
-  
-  .status.discarded {
-    background-color: gray;
-  }
-  
-  .claim-btn {
-    padding: 6px 12px;
-    background-color: #28a745;
-    border: none;
-    color: white;
-    border-radius: 6px;
+
+  .search-input {
     font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
+    padding: 10px;
   }
-  
-  .claim-btn:hover {
-    background-color: #1e7e34;
+
+  .claim-btn {
+    font-size: 13px;
+    padding: 5px 10px;
   }
-  
-  .no-items {
-    text-align: center;
-    font-style: italic;
-    color: #666;
-    padding: 15px;
-  }
-  
+}

@@ -1,56 +1,209 @@
 const Item = require("../models/Item");
+const User = require("../models/User");
+const QRCode = require("qrcode");
+const mongoose = require("mongoose");
 
-// Get all items
-exports.getAllItems = async (req, res) => {
-  try {
-    const items = await Item.find().populate("reportedBy", "userName email");
-    res.status(200).json(items);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving items" });
-  }
+// 🔢 Generate a unique ITEM ID
+const generateItemId = async () => {
+  const latestItem = await Item.findOne({ itemId: { $exists: true } })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  const latestId = latestItem?.itemId || "ITEM000";
+  const number = parseInt(latestId.replace("ITEM", "")) + 1;
+  return `ITEM${number.toString().padStart(3, "0")}`;
 };
 
-// Get a single item by ID
-exports.getItemById = async (req, res) => {
+// 🟥 Submit Lost Item
+const submitLostItem = async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id).populate("reportedBy", "userName email");
-    if (!item) return res.status(404).json({ error: "Item not found" });
-    res.status(200).json(item);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving item" });
-  }
-};
+    console.log("✅ Reported by userId:", req.user.userId);
 
-// Create a new item
-exports.createItem = async (req, res) => {
-  try {
-    const { item_id, itemName, location, description, reportedBy } = req.body;
-    const newItem = new Item({ item_id, itemName, location, description, reportedBy });
+    const itemId = await generateItemId();
+    const picturePath = req.file ? `/uploads/${req.file.filename}` : "";
+    const itemDate = new Date(req.body.date);
+
+    if (isNaN(itemDate.getTime())) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    const newItem = new Item({
+      itemId,
+      itemName: req.body.itemName,
+      location: req.body.location,
+      date: itemDate,
+      description: req.body.description,
+      picture: picturePath,
+      type: "lost",
+      status: "lost", // lost item initially has no status
+      reportedBy: req.user.userId,
+    });
+
     await newItem.save();
-    res.status(201).json(newItem);
-  } catch (error) {
-    res.status(500).json({ error: "Error adding item" });
+    res.status(201).json({ message: "Lost item submitted", item: newItem });
+  } catch (err) {
+    console.error("❌ submitLostItem error:", err.message);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-// Update an item
-exports.updateItem = async (req, res) => {
+// 🔍 Match Lost Items by Name
+const matchLostItems = async (req, res) => {
   try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedItem) return res.status(404).json({ error: "Item not found" });
-    res.status(200).json(updatedItem);
-  } catch (error) {
-    res.status(500).json({ error: "Error updating item" });
+    const { itemName } = req.body;
+    if (!itemName)
+      return res.status(400).json({ message: "Missing item name" });
+
+    const matches = await Item.find({
+      itemName: { $regex: new RegExp(itemName, "i") },
+      type: "lost",
+    }).select("itemId itemName date location picture");
+
+    res.json(matches);
+  } catch (err) {
+    res.status(500).json({ message: "Error matching lost items" });
   }
 };
 
-// Delete an item
-exports.deleteItem = async (req, res) => {
+// ✅ Confirm Found Item (update existing lost item)
+const confirmFoundItem = async (req, res) => {
   try {
-    const deletedItem = await Item.findByIdAndDelete(req.params.id);
-    if (!deletedItem) return res.status(404).json({ error: "Item not found" });
-    res.status(200).json({ message: "Item deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Error deleting item" });
+    const { matchedItemId } = req.body;
+    const picturePath = req.file ? `/uploads/${req.file.filename}` : "";
+
+    const item = await Item.findById(matchedItemId);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
+    item.status = "unclaimed"; // makes it claimable
+    item.type = "lost"; // keep as lost
+    if (picturePath) item.picture = picturePath;
+    item.foundDate = new Date();
+    item.foundBy = req.user.userId;
+
+    await item.save();
+
+    res.status(200).json({ message: "Item marked as found", item });
+  } catch (err) {
+    console.error("❌ confirmFoundItem error:", err);
+    res.status(500).json({ message: "Error confirming found item" });
   }
+};
+
+// 🔁 Security Updates Status
+const updateItemStatus = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
+    item.status = req.body.status;
+    await item.save();
+    res.json({ message: "Status updated", item });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update item status" });
+  }
+};
+
+// 📥 Get All Items (for Admin/Security)
+const getAllItems = async (req, res) => {
+  try {
+    const items = await Item.find()
+      .populate("reportedBy", "userName")
+      .sort({ createdAt: -1 });
+
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch items" });
+  }
+};
+
+// ✅ Claim Item (resident)
+const claimItem = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).populate(
+      "reportedBy",
+      "userName"
+    );
+
+    if (!item || item.status !== "unclaimed") {
+      return res
+        .status(400)
+        .json({ message: "Item is not available to claim" });
+    }
+
+    item.status = "claimed";
+    await item.save();
+
+    const claimer = await User.findById(req.user.userId).select("userName");
+
+    const qrData = {
+      itemId: item.itemId,
+      itemName: item.itemName,
+      location: item.location,
+      date: item.date,
+      description: item.description,
+      status: item.status,
+      claimedBy: {
+        userId: req.user.userId,
+        userName: claimer.userName,
+      },
+      reportedBy: {
+        userId: item.reportedBy._id,
+        userName: item.reportedBy.userName,
+      },
+    };
+
+    const qrCodeImage = await QRCode.toDataURL(JSON.stringify(qrData));
+
+    res.json({
+      message: "Item claimed successfully",
+      item,
+      qrCode: qrCodeImage,
+      qrData,
+    });
+  } catch (err) {
+    console.error("QR Code Error:", err);
+    res.status(500).json({ message: "Failed to claim item" });
+  }
+};
+
+// 📦 Get Items Reported by User
+const getItemsByUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ userId: Number(req.params.userId) });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const items = await Item.find({ reportedBy: user._id }).sort({
+      createdAt: -1,
+    });
+
+    res.json(items);
+  } catch (err) {
+    console.error("❌ getItemsByUser error:", err);
+    res.status(500).json({ message: "Error fetching user items" });
+  }
+};
+
+// 📄 Get Item by ID
+const getItemById = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).populate(
+      "reportedBy",
+      "userName"
+    );
+    if (!item) return res.status(404).json({ message: "Item not found" });
+    res.json(item);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching item" });
+  }
+};
+
+module.exports = {
+  submitLostItem,
+  matchLostItems,
+  confirmFoundItem,
+  updateItemStatus,
+  getAllItems,
+  claimItem,
+  getItemsByUser,
+  getItemById,
 };

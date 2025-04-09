@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/ReportFoundItem.css";
 import { FaCloudUploadAlt, FaSearch } from "react-icons/fa";
-import axios from "axios";
+import { searchLostItems, confirmFoundItem } from "../api/itemApi";
 
 const ReportFoundItem = () => {
   const [formData, setFormData] = useState({
@@ -33,33 +33,42 @@ const ReportFoundItem = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const data = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        data.append(key, value);
-      });
-
-      const res = await axios.post("/api/items/found/search", data);
-      setMatchedItems(res.data);
+      const matches = await searchLostItems({ itemName: formData.itemName });
+      setMatchedItems(matches);
       setShowResults(true);
     } catch (err) {
-      alert("Error searching for match");
+      alert("❌ Error searching for match");
     }
   };
 
   const handleConfirm = async (matchedItemId) => {
     try {
-      await axios.post("/api/items/found/confirm", {
-        matchedItemId,
-        ...formData,
-      });
+      const form = new FormData();
+      form.append("matchedItemId", matchedItemId); // ✅ Key field to target original lost item
+      form.append("itemName", formData.itemName);
+      form.append("location", formData.location);
+      form.append("date", formData.date);
+      form.append("description", formData.description);
+      if (formData.picture) {
+        form.append("picture", formData.picture);
+      }
 
-      alert("Found item reported successfully.");
-      setFormData({ itemName: "", location: "", date: "", description: "", picture: null });
+      await confirmFoundItem(form);
+      alert("✅ Found item reported successfully.");
+
+      // Reset form and state
+      setFormData({
+        itemName: "",
+        location: "",
+        date: "",
+        description: "",
+        picture: null,
+      });
       setPreview(null);
       setMatchedItems([]);
       setShowResults(false);
     } catch (err) {
-      alert("Error confirming item.");
+      alert("❌ Error confirming item.");
     }
   };
 
@@ -116,19 +125,20 @@ const ReportFoundItem = () => {
           <div className="form-group">
             <label>Upload Picture</label>
             <div className="upload-box">
-  <label style={{ width: "100%", height: "100%", cursor: "pointer" }}>
-    {preview ? (
-      <img src={preview} alt="preview" className="image-preview" />
-    ) : (
-      <>
-        <FaCloudUploadAlt size={32} />
-        <span>Click to upload image</span>
-      </>
-    )}
-    <input type="file" hidden onChange={handleFileChange} />
-  </label>
-</div>
-
+              <label
+                style={{ width: "100%", height: "100%", cursor: "pointer" }}
+              >
+                {preview ? (
+                  <img src={preview} alt="preview" className="image-preview" />
+                ) : (
+                  <>
+                    <FaCloudUploadAlt size={32} />
+                    <span>Click to upload image</span>
+                  </>
+                )}
+                <input type="file" hidden onChange={handleFileChange} />
+              </label>
+            </div>
           </div>
 
           <button type="submit" className="search-btn">
@@ -162,7 +172,7 @@ const ReportFoundItem = () => {
                     <td>{new Date(item.date).toLocaleDateString()}</td>
                     <td>{item.location}</td>
                     <td>
-                      <img src={item.pictureUrl} alt="pic" className="thumb" />
+                      <img src={item.picture} alt="match" className="thumb" />
                     </td>
                     <td>
                       <button

@@ -1,34 +1,48 @@
 import React, { useEffect, useState } from "react";
 import "../styles/SecurityHandleItems.css";
-import axios from "axios";
+import { fetchAllItems, updateItemStatus } from "../api/itemApi";
 
 const SecurityHandleItems = () => {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const loadItems = async () => {
       try {
-        const res = await axios.get("/api/items/all"); // Adjust backend route
-        setItems(res.data);
+        const data = await fetchAllItems();
+        setItems(data);
       } catch (err) {
-        console.error("Error fetching items", err);
+        console.error("Error loading items", err);
       }
     };
-
-    fetchItems();
+    loadItems();
   }, []);
 
-  const updateStatus = async (itemId, newStatus) => {
+  const handleStatusChange = async (itemId, newStatus) => {
     try {
-      await axios.put(`/api/items/status/${itemId}`, { status: newStatus });
+      await updateItemStatus(itemId, newStatus);
       setItems((prev) =>
         prev.map((item) =>
           item._id === itemId ? { ...item, status: newStatus } : item
         )
       );
     } catch (err) {
-      alert("Failed to update item status");
+      alert("❌ Failed to update status");
+    }
+  };
+
+  const getSecurityDisplayStatus = (status) => {
+    switch (status) {
+      case "unclaimed":
+        return "Unclaimed";
+      case "claimed":
+        return "Claimed";
+      case "returned":
+        return "Returned";
+      case "discarded":
+        return "Discarded";
+      default:
+        return "Pending";
     }
   };
 
@@ -53,6 +67,7 @@ const SecurityHandleItems = () => {
           <thead>
             <tr>
               <th>#</th>
+              <th>Item ID</th>
               <th>Item Name</th>
               <th>Date</th>
               <th>Location</th>
@@ -64,12 +79,13 @@ const SecurityHandleItems = () => {
             {filteredItems.map((item, index) => (
               <tr key={item._id || index}>
                 <td>{index + 1}</td>
+                <td>{item.itemId}</td>
                 <td>{item.itemName}</td>
                 <td>{new Date(item.date).toLocaleDateString()}</td>
                 <td>{item.location}</td>
                 <td>
                   <span className={`status ${item.status}`}>
-                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                    {getSecurityDisplayStatus(item.status)}
                   </span>
                 </td>
                 <td>
@@ -77,26 +93,28 @@ const SecurityHandleItems = () => {
                     <div className="action-buttons">
                       <button
                         className="btn-return"
-                        onClick={() => updateStatus(item._id, "returned")}
+                        onClick={() => handleStatusChange(item._id, "returned")}
                       >
                         Returned
                       </button>
                       <button
                         className="btn-discard"
-                        onClick={() => updateStatus(item._id, "discarded")}
+                        onClick={() =>
+                          handleStatusChange(item._id, "discarded")
+                        }
                       >
                         Discard
                       </button>
                     </div>
                   ) : (
-                    <span className="no-action">Done</span>
+                    <span className="no-action"></span>
                   )}
                 </td>
               </tr>
             ))}
             {filteredItems.length === 0 && (
               <tr>
-                <td colSpan="6" className="no-items">
+                <td colSpan="7" className="no-items">
                   No matching items.
                 </td>
               </tr>

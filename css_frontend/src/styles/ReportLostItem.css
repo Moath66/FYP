@@ -1,90 +1,96 @@
 .lost-container {
-    max-width: 700px;
-    margin: 60px auto;
-    padding: 20px;
-  }
-  
-  .lost-card {
-    background-color: #ffffff;
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .lost-card h2 {
-    margin-bottom: 25px;
-    color: #007bff;
-    text-align: center;
-  }
-  
-  .lost-form .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .lost-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-  }
-  
-  .lost-form input,
-  .lost-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
-  }
-  
-  .lost-form textarea {
-    resize: vertical;
-  }
-  
-  .upload-box {
-    width: 100%;
-    height: 160px;
-    border: 2px dashed #aaa;
-    border-radius: 10px;
-    color: #666;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #f9f9f9;
-    position: relative;
-    padding: 20px;
-  }
-  
-  .image-preview {
-    width: 100%;
-    max-height: 160px;
-    object-fit: contain;
-    border-radius: 10px;
-  }
-  
-  .submit-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .success-msg {
-    margin-top: 15px;
-    text-align: center;
-    color: green;
-    font-weight: 500;
-  }
-  
+  max-width: 720px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.lost-card {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+.lost-card h2 {
+  margin-bottom: 25px;
+  color: #007bff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.lost-form .form-group {
+  margin-bottom: 20px;
+}
+
+.lost-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.lost-form input,
+.lost-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #fefefe;
+}
+
+.lost-form textarea {
+  resize: vertical;
+}
+
+.upload-box {
+  width: 100%;
+  height: 160px;
+  border: 2px dashed #aaa;
+  border-radius: 12px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  padding: 16px;
+  transition: background-color 0.3s;
+}
+
+.upload-box:hover {
+  background-color: #f1f1f1;
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.success-msg {
+  margin-top: 15px;
+  text-align: center;
+  color: green;
+  font-weight: 500;
+}
