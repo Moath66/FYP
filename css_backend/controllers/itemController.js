@@ -155,7 +155,7 @@ const claimItem = async (req, res) => {
     };
 
     const encodedData = encodeURIComponent(JSON.stringify(qrData)); // ✅ Encode it
-    const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan/${encodedData}`; // ✅ Matches your route
+    const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan/${encodedData}`;
 
     const qrCodeImage = await QRCode.toDataURL(scanUrl);
 
