@@ -154,10 +154,8 @@ const claimItem = async (req, res) => {
       },
     };
 
-    // ✅ Encode data into URL-safe format and match QRCodeScanPage logic
-    const encodedData = encodeURIComponent(JSON.stringify(qrData));
-    // ✅ GOOD (Environment-based)
-    const scanUrl = `${process.env.FRONTEND_BASE_URL}/scan/${encodedData}`;
+    const encodedData = encodeURIComponent(JSON.stringify(qrData)); // ✅ Encode it
+    const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan/${encodedData}`; // ✅ Matches your route
 
     const qrCodeImage = await QRCode.toDataURL(scanUrl);
 

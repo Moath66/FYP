@@ -1,17 +1,12 @@
-// QRCodeScanPage.jsx
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import QRCode from "qrcode.react";
+import { useParams } from "react-router-dom";
 import "../styles/QRCodeScanPage.css";
 
 const QRCodeScanPage = () => {
-  const location = useLocation();
+  const { encodedData } = useParams(); // ✅ Get it from route param
   const [itemData, setItemData] = useState(null);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const encodedData = searchParams.get("data");
-
     if (encodedData) {
       try {
         const decodedData = JSON.parse(decodeURIComponent(encodedData));
@@ -20,7 +15,7 @@ const QRCodeScanPage = () => {
         console.error("Invalid QR code data", err);
       }
     }
-  }, [location]);
+  }, [encodedData]);
 
   if (!itemData) {
     return (
