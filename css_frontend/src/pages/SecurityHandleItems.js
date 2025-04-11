@@ -89,7 +89,7 @@ const SecurityHandleItems = () => {
                   </span>
                 </td>
                 <td>
-                  {["claimed", "unclaimed"].includes(item.status) ? (
+                  {item.status === "claimed" ? (
                     <div className="action-buttons">
                       <button
                         className="btn-return"

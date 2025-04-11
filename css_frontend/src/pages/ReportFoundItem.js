@@ -15,6 +15,8 @@ const ReportFoundItem = () => {
   const [preview, setPreview] = useState(null);
   const [matchedItems, setMatchedItems] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [showDesc, setShowDesc] = useState(null); // for description modal
+  const [showImage, setShowImage] = useState(null); // for image modal
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +46,7 @@ const ReportFoundItem = () => {
   const handleConfirm = async (matchedItemId) => {
     try {
       const form = new FormData();
-      form.append("matchedItemId", matchedItemId); // ✅ Key field to target original lost item
+      form.append("matchedItemId", matchedItemId);
       form.append("itemName", formData.itemName);
       form.append("location", formData.location);
       form.append("date", formData.date);
@@ -56,7 +58,6 @@ const ReportFoundItem = () => {
       await confirmFoundItem(form);
       alert("✅ Found item reported successfully.");
 
-      // Reset form and state
       setFormData({
         itemName: "",
         location: "",
@@ -75,7 +76,7 @@ const ReportFoundItem = () => {
   return (
     <div className="found-container">
       <div className="found-card">
-        <h2>📌 Report Found Item</h2>
+        <h2>📦 Report Found Item</h2>
 
         <form className="found-form" onSubmit={handleSearch}>
           <div className="form-group">
@@ -160,6 +161,7 @@ const ReportFoundItem = () => {
                   <th>Item Name</th>
                   <th>Date</th>
                   <th>Location</th>
+                  <th>Description</th>
                   <th>Picture</th>
                   <th>Action</th>
                 </tr>
@@ -172,21 +174,81 @@ const ReportFoundItem = () => {
                     <td>{new Date(item.date).toLocaleDateString()}</td>
                     <td>{item.location}</td>
                     <td>
-                      <img src={item.picture} alt="match" className="thumb" />
+                      {item.description ? (
+                        <button
+                          className="confirm-btn"
+                          style={{ backgroundColor: "#17a2b8" }}
+                          onClick={() => setShowDesc(item.description)}
+                        >
+                          Read More
+                        </button>
+                      ) : (
+                        "—"
+                      )}
                     </td>
                     <td>
-                      <button
-                        className="confirm-btn"
-                        onClick={() => handleConfirm(item._id)}
-                      >
-                        Confirm
-                      </button>
+                      <img
+                        src={item.picture}
+                        alt="match"
+                        className="thumb"
+                        onClick={() => setShowImage(item.picture)}
+                      />
+                    </td>
+                    <td>
+                      {item.status === "lost" && (
+                        <button
+                          className="confirm-btn"
+                          onClick={() => handleConfirm(item._id)}
+                        >
+                          Confirm
+                        </button>
+                      )}
+
+                      {item.status === "unclaimed" && (
+                        <button
+                          className="confirm-btn"
+                          disabled
+                          style={{
+                            backgroundColor: "#ffc107",
+                            cursor: "default",
+                          }}
+                        >
+                          Reported
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+        </div>
+      )}
+
+      {/* Modal: Description */}
+      {showDesc && (
+        <div className="modal-overlay" onClick={() => setShowDesc(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <h4>📋 Item Description</h4>
+            <p>{showDesc}</p>
+            <button
+              className="btn-close"
+              onClick={() => setShowDesc(null)}
+            ></button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Image */}
+      {showImage && (
+        <div className="modal-overlay" onClick={() => setShowImage(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <img src={showImage} alt="Detail" className="modal-image" />
+            <button
+              className="btn-close"
+              onClick={() => setShowImage(null)}
+            ></button>
+          </div>
         </div>
       )}
     </div>

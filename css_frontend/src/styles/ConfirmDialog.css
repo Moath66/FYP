@@ -1,12 +1,11 @@
-/* Full-screen overlay */
-.confirm-dialog-overlay {
+/* Fullscreen overlay */
+.popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dim background */
-  backdrop-filter: blur(4px); /* Smooth blur effect */
+  background: rgba(0, 0, 0, 0.6); /* dimmed background */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,64 +13,62 @@
   animation: fadeInOverlay 0.3s ease-in-out;
 }
 
-/* Dialog box */
-.confirm-dialog {
+/* Popup card */
+.popup-card {
   background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   text-align: center;
-  max-width: 400px;
-  width: 90%;
-  position: relative;
+  width: 380px;
+  max-width: 90%;
   animation: slideUpFade 0.3s ease-in-out;
 }
 
-/* Message text */
-.confirm-dialog p {
-  font-size: 18px;
+.popup-card h3 {
+  font-size: 22px;
+  color: #002b5c;
+  margin-bottom: 10px;
+}
+
+.popup-card p {
+  font-size: 15px;
+  color: #555;
   margin-bottom: 20px;
-  color: #333;
 }
 
-/* Button container */
-.confirm-dialog-buttons {
+/* QR image wrapper */
+.qr-wrapper {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-/* Cancel button */
-.cancel-btn {
-  background-color: #ccc;
-  color: black;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
+.qr-image {
+  width: 220px;
+  height: auto;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 10px;
 }
 
-.cancel-btn:hover {
-  background-color: #bbb;
-}
-
-/* Confirm button */
-.confirm-btn {
-  background-color: #d9534f;
+/* Close button */
+.btn-close {
+  background-color: #002b5c;
   color: white;
-  border: none;
   padding: 10px 18px;
-  border-radius: 5px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.confirm-btn:hover {
-  background-color: #c9302c;
+.btn-close:hover {
+  background-color: #003d80;
 }
 
-/* Animations */
+/* Fade & slide animations */
 @keyframes fadeInOverlay {
   from {
     opacity: 0;
@@ -89,5 +86,21 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ✅ Responsive adjustments */
+@media (max-width: 480px) {
+  .popup-card {
+    padding: 20px;
+  }
+
+  .qr-image {
+    width: 180px;
+  }
+
+  .btn-close {
+    font-size: 14px;
+    padding: 8px 14px;
   }
 }

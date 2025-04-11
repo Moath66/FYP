@@ -25,11 +25,13 @@ import TrackingVisitorApp from "./pages/TrackingVisitorApp";
 import SecurityHandleItems from "./pages/SecurityHandleItems";
 import SecurityCheckVisitor from "./pages/SecurityCheckVisitor";
 import AnalyzeMaintenance from "./pages/AnalyzeMaintenance";
+import QRCodeScanPage from "./components/QRCodeScanPage"; // ✅ New page import
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Pages */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
 
@@ -51,7 +53,7 @@ function App() {
           }
         />
 
-        {/* Role-Based Dashboards */}
+        {/* Dashboards */}
         <Route
           path="/resident/dashboard"
           element={
@@ -77,7 +79,7 @@ function App() {
           }
         />
 
-        {/* Profiles */}
+        {/* Manage Profile */}
         <Route
           path="/resident/profile"
           element={
@@ -103,11 +105,11 @@ function App() {
           }
         />
 
-        {/* Auth Pages */}
+        {/* Auth Routes */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-        {/* Resident Quick Actions */}
+        {/* Resident Actions */}
         <Route
           path="/report-lost-item"
           element={
@@ -167,7 +169,7 @@ function App() {
           }
         />
 
-        {/* Security Pages */}
+        {/* Security */}
         <Route
           path="/handle-items"
           element={
@@ -185,7 +187,7 @@ function App() {
           }
         />
 
-        {/* Staff Pages */}
+        {/* Staff */}
         <Route
           path="/analyze-maintenance"
           element={
@@ -195,7 +197,10 @@ function App() {
           }
         />
 
-        {/* 404 Not Found */}
+        {/* ✅ Public Scan QR Code Page */}
+        <Route path="/scan/:encodedData" element={<QRCodeScanPage />} />
+
+        {/* 404 Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 

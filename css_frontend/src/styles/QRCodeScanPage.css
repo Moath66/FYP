@@ -1,0 +1,45 @@
+/* QRCodeScanPage.css */
+
+.scan-page {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.scan-page h2 {
+  text-align: center;
+  color: #002b5c;
+  margin-bottom: 25px;
+}
+
+.scan-page p {
+  font-size: 16px;
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+.scan-page strong {
+  color: #000;
+}
+
+.scan-page hr {
+  margin: 25px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+@media (max-width: 600px) {
+  .scan-page {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .scan-page p {
+    font-size: 14px;
+  }
+}
