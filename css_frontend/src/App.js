@@ -169,7 +169,7 @@ function App() {
           }
         />
 
-        {/* Security */}
+        {/* Security. */}
         <Route
           path="/handle-items"
           element={
