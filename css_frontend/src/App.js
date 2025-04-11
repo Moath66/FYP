@@ -198,7 +198,7 @@ function App() {
         />
 
         {/* ✅ Public Scan QR Code Page */}
-        <Route path="/scan/:encodedData" element={<QRCodeScanPage />} />
+        <Route path="/scan/*" element={<QRCodeScanPage />} />
 
         {/* 404 Fallback */}
         <Route path="*" element={<NotFound />} />
