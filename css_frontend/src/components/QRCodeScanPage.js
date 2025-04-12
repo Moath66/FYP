@@ -10,12 +10,12 @@ const QRCodeScanPage = () => {
     const query = new URLSearchParams(search);
     const encodedData = query.get("data");
 
-    console.log("🔍 Encoded query string:", encodedData); // Add this
+    console.log("🔍 Encoded Query Param:", encodedData);
 
     if (encodedData) {
       try {
         const decoded = JSON.parse(decodeURIComponent(encodedData));
-        console.log("✅ Decoded Data:", decoded); // Add this
+        console.log("✅ Decoded QR Data:", decoded);
         setItemData(decoded);
       } catch (err) {
         console.error("❌ Failed to parse QR data", err);
