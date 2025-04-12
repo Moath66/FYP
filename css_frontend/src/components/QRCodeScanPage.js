@@ -12,8 +12,15 @@ const QRCodeScanPage = () => {
 
     if (encodedData) {
       try {
-        const decoded = JSON.parse(decodeURIComponent(encodedData));
-        setItemData(decoded);
+        // 🔍 Debug the raw encoded string
+        const test = decodeURIComponent(encodedData);
+        console.log("📦 Decoded data string:", test);
+
+        // 🔍 Attempt to parse it
+        const parsed = JSON.parse(test);
+        console.log("✅ Parsed JSON object:", parsed);
+
+        setItemData(parsed);
       } catch (err) {
         console.error("❌ Failed to parse QR data", err);
       }
