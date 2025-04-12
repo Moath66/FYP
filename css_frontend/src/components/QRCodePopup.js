@@ -1,8 +1,7 @@
-// ✅ Updated QRCodePopup.js
 import React from "react";
 import "../styles/QRCodePopup.css";
 
-const QRCodePopup = ({ visible, qrCodeData, onClose }) => {
+const QRCodePopup = ({ visible, qrCodeData, qrScanUrl, onClose }) => {
   if (!visible) return null;
 
   return (
@@ -15,7 +14,20 @@ const QRCodePopup = ({ visible, qrCodeData, onClose }) => {
           <img src={qrCodeData} alt="QR Code" className="qr-image" />
         </div>
 
+        <div className="debug-url">
+          <p>
+            <strong>🔗 Debug URL:</strong>
+          </p>
+          <textarea
+            readOnly
+            value={qrScanUrl}
+            rows={4}
+            style={{ width: "100%", fontSize: "0.8rem" }}
+          />
+        </div>
+
         <button className="btn-close" onClick={onClose}>
+          Close
         </button>
       </div>
     </div>

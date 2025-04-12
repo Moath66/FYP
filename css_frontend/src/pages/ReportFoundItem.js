@@ -15,8 +15,8 @@ const ReportFoundItem = () => {
   const [preview, setPreview] = useState(null);
   const [matchedItems, setMatchedItems] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [showDesc, setShowDesc] = useState(null); // for description modal
-  const [showImage, setShowImage] = useState(null); // for image modal
+  const [showDesc, setShowDesc] = useState(null);
+  const [showImage, setShowImage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -187,12 +187,16 @@ const ReportFoundItem = () => {
                       )}
                     </td>
                     <td>
-                      <img
-                        src={item.picture}
-                        alt="match"
-                        className="thumb"
-                        onClick={() => setShowImage(item.picture)}
-                      />
+                      {item.picture ? (
+                        <img
+                          src={item.picture}
+                          alt="match"
+                          className="thumb"
+                          onClick={() => setShowImage(item.picture)}
+                        />
+                      ) : (
+                        <span>—</span>
+                      )}
                     </td>
                     <td>
                       {item.status === "lost" && (
@@ -203,7 +207,6 @@ const ReportFoundItem = () => {
                           Confirm
                         </button>
                       )}
-
                       {item.status === "unclaimed" && (
                         <button
                           className="confirm-btn"

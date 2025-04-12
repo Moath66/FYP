@@ -164,6 +164,7 @@ const claimItem = async (req, res) => {
       item: { ...item, status: "claimed" },
       qrCode: qrCodeImage,
       qrData,
+      scanUrl, // ✅ Add this line so frontend can debug/test
     });
   } catch (err) {
     console.error("QR Code Error:", err);

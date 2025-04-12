@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import "../styles/QRCodeScanPage.css";
 
 const QRCodeScanPage = () => {
-  const { encodedData } = useParams(); // ✅ pulled from /scan/:encodedData
+  const { encodedData } = useParams(); // ✅ Extract from /scan/:encodedData
   const [itemData, setItemData] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(""); // ✅ Track decoding error
 
   useEffect(() => {
     if (encodedData) {
@@ -12,8 +13,12 @@ const QRCodeScanPage = () => {
         const decoded = JSON.parse(decodeURIComponent(encodedData));
         setItemData(decoded);
       } catch (err) {
-        console.error("Invalid QR code data", err);
+        console.error("❌ Failed to decode QR data:", err);
+        setItemData(null);
+        setErrorMsg(err.message);
       }
+    } else {
+      setErrorMsg("No QR data found in the URL.");
     }
   }, [encodedData]);
 
@@ -22,6 +27,11 @@ const QRCodeScanPage = () => {
       <div className="qr-scan-container">
         <h2>🚫 Invalid or Missing QR Code</h2>
         <p>Please ensure you're scanning a valid code from the system.</p>
+        {errorMsg && (
+          <p style={{ color: "red", marginTop: "1rem" }}>
+            <strong>Debug:</strong> {errorMsg}
+          </p>
+        )}
       </div>
     );
   }
@@ -29,7 +39,7 @@ const QRCodeScanPage = () => {
   const {
     itemId,
     itemName,
-    location: itemLocation,
+    location,
     date,
     description,
     status,
@@ -41,7 +51,6 @@ const QRCodeScanPage = () => {
     <div className="qr-scan-container">
       <div className="scan-card">
         <h2>🔍 Item Claim Verification</h2>
-
         <div className="item-details">
           <p>
             <strong>🆔 Item ID:</strong> {itemId}
@@ -50,7 +59,7 @@ const QRCodeScanPage = () => {
             <strong>📦 Item Name:</strong> {itemName}
           </p>
           <p>
-            <strong>📍 Location:</strong> {itemLocation}
+            <strong>📍 Location:</strong> {location}
           </p>
           <p>
             <strong>📅 Date:</strong> {new Date(date).toLocaleDateString()}

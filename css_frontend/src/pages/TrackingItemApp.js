@@ -8,6 +8,7 @@ const TrackingItemApp = () => {
   const [search, setSearch] = useState("");
   const [qrCode, setQrCode] = useState(null);
   const [qrData, setQrData] = useState(null);
+  const [scanUrl, setScanUrl] = useState(null); // ✅ NEW
   const [popupVisible, setPopupVisible] = useState(false);
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -26,14 +27,10 @@ const TrackingItemApp = () => {
     if (userId) loadItems();
   }, [userId]);
 
-  useEffect(() => {
-    console.log("✅ Items loaded:", items);
-  }, [items]);
-
   const handleClaim = async (itemId) => {
     try {
       const res = await claimItem(itemId);
-      const { item, qrCode, qrData } = res;
+      const { item, qrCode, qrData, scanUrl } = res; // ✅ extract URL
 
       setItems((prev) =>
         prev.map((i) =>
@@ -43,6 +40,7 @@ const TrackingItemApp = () => {
 
       setQrCode(qrCode);
       setQrData(qrData);
+      setScanUrl(scanUrl); // ✅ set URL
       setPopupVisible(true);
     } catch (err) {
       alert("❌ Failed to claim item");
@@ -132,6 +130,7 @@ const TrackingItemApp = () => {
         visible={popupVisible}
         qrCodeData={qrCode}
         qrData={qrData}
+        qrScanUrl={scanUrl} // ✅ now passed here
         onClose={() => setPopupVisible(false)}
       />
     </div>
