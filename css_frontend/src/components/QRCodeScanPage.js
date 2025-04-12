@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../styles/QRCodeScanPage.css";
 
 const QRCodeScanPage = () => {
-  const { encodedData } = useParams(); // Get encoded data from URL
+  const { search } = useLocation();
   const [itemData, setItemData] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null); // Track JSON decoding error
 
   useEffect(() => {
+    const query = new URLSearchParams(search);
+    const encodedData = query.get("data");
+
     if (encodedData) {
       try {
-        const decoded = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse JSON
+        const decoded = JSON.parse(decodeURIComponent(encodedData));
         setItemData(decoded);
       } catch (err) {
-        console.error("❌ Failed to decode QR code:", err);
-        setErrorMsg(err.message); // Show error in UI
+        console.error("❌ Failed to parse QR data", err);
       }
-    } else {
-      setErrorMsg("No encoded data found in URL.");
     }
-  }, [encodedData]);
+  }, [search]);
 
   if (!itemData) {
     return (
       <div className="qr-scan-container">
         <h2>🚫 Invalid or Missing QR Code</h2>
         <p>Please ensure you're scanning a valid code from the system.</p>
-        {errorMsg && (
-          <div style={{ color: "red", marginTop: "1rem", fontSize: "0.9rem" }}>
-            <strong>Debug:</strong> {errorMsg}
-          </div>
-        )}
       </div>
     );
   }
@@ -73,25 +67,25 @@ const QRCodeScanPage = () => {
           <div className="user-info">
             <h4>🙋 Claimed By:</h4>
             <p>
-              <strong>Role:</strong> {claimedBy?.role}
+              <strong>Role:</strong> {claimedBy.role}
             </p>
             <p>
-              <strong>Name:</strong> {claimedBy?.userName}
+              <strong>Name:</strong> {claimedBy.userName}
             </p>
             <p>
-              <strong>User ID:</strong> {claimedBy?.userId}
+              <strong>User ID:</strong> {claimedBy.userId}
             </p>
           </div>
           <div className="user-info">
             <h4>🧾 Reported By:</h4>
             <p>
-              <strong>Role:</strong> {reportedBy?.role}
+              <strong>Role:</strong> {reportedBy.role}
             </p>
             <p>
-              <strong>Name:</strong> {reportedBy?.userName}
+              <strong>Name:</strong> {reportedBy.userName}
             </p>
             <p>
-              <strong>User ID:</strong> {reportedBy?.userId}
+              <strong>User ID:</strong> {reportedBy.userId}
             </p>
           </div>
         </div>
