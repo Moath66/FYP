@@ -33,45 +33,39 @@
   border-top: 1px solid #ddd;
 }
 
-/* ✅ Buttons */
-.scan-page button {
-  padding: 10px 20px;
-  margin: 10px 8px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.scan-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.scan-button {
+  padding: 8px 14px;
   font-size: 15px;
-  transition: background-color 0.2s ease;
-}
-
-.scan-page button:hover {
-  opacity: 0.9;
-}
-
-.scan-page .back-btn {
-  background-color: #ccc;
-  color: #000;
-}
-
-.scan-page .print-btn {
-  background-color: #007bff;
+  background: #004085;
   color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* ✅ Responsive for mobile */
+.scan-button:hover {
+  background-color: #002b5c;
+}
+
 @media (max-width: 600px) {
   .scan-page {
-    padding: 20px;
-    margin: 20px;
+    padding: 15px;
+    margin: 15px;
   }
 
   .scan-page p {
     font-size: 14px;
   }
 
-  .scan-page button {
-    width: 100%;
-    margin: 8px 0;
-    font-size: 16px;
+  .scan-button {
+    font-size: 13px;
+    padding: 6px 10px;
   }
 }
