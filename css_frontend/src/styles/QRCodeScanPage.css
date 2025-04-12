@@ -33,6 +33,32 @@
   border-top: 1px solid #ddd;
 }
 
+/* ✅ Buttons */
+.scan-page button {
+  padding: 10px 20px;
+  margin: 10px 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.scan-page button:hover {
+  opacity: 0.9;
+}
+
+.scan-page .back-btn {
+  background-color: #ccc;
+  color: #000;
+}
+
+.scan-page .print-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* ✅ Responsive for mobile */
 @media (max-width: 600px) {
   .scan-page {
     padding: 20px;
@@ -41,5 +67,11 @@
 
   .scan-page p {
     font-size: 14px;
+  }
+
+  .scan-page button {
+    width: 100%;
+    margin: 8px 0;
+    font-size: 16px;
   }
 }
