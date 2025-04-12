@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose"); // ✅ Needed for ObjectId conversion
+const mongoose = require("mongoose");
 
 const authMiddleware = (req, res, next) => {
-  const rawToken = req.header("Authorization");
+  const rawToken = req.headers["authorization"];
   const token =
     rawToken && rawToken.startsWith("Bearer ")
       ? rawToken.split(" ")[1]
@@ -17,13 +17,20 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ Safely convert userId to ObjectId if it's not already
+    if (!decoded || !decoded.userId || !decoded.role) {
+      return res.status(403).json({ message: "Invalid token structure." });
+    }
+
     req.user = {
       userId: mongoose.Types.ObjectId.isValid(decoded.userId)
         ? new mongoose.Types.ObjectId(decoded.userId)
         : decoded.userId,
       role: decoded.role,
     };
+
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ Authenticated user:", req.user);
+    }
 
     next();
   } catch (error) {
