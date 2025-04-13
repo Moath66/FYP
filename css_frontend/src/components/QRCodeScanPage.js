@@ -10,12 +10,9 @@ const QRCodeScanPage = () => {
     const query = new URLSearchParams(search);
     const encodedData = query.get("data");
 
-    console.log("🔍 Encoded Query Param:", encodedData);
-
     if (encodedData) {
       try {
         const decoded = JSON.parse(decodeURIComponent(encodedData));
-        console.log("✅ Decoded QR Data:", decoded);
         setItemData(decoded);
       } catch (err) {
         console.error("❌ Failed to parse QR data", err);
@@ -27,7 +24,7 @@ const QRCodeScanPage = () => {
     return (
       <div className="scan-page">
         <h2>🚫 Invalid or Missing QR Code</h2>
-        <p>Please ensure you're scanning a valid code from the system.</p>
+        <p>Please scan a valid QR code.</p>
       </div>
     );
   }
@@ -92,15 +89,14 @@ const QRCodeScanPage = () => {
         </div>
       </div>
 
-      {/* Buttons */}
       <div style={{ marginTop: "30px", textAlign: "center" }}>
         <button
           onClick={() => window.history.back()}
           style={{
             padding: "10px 20px",
             marginRight: "10px",
+            backgroundColor: "#d3d3d3",
             border: "none",
-            backgroundColor: "#ccc",
             borderRadius: "6px",
             cursor: "pointer",
           }}
@@ -111,9 +107,9 @@ const QRCodeScanPage = () => {
           onClick={() => window.print()}
           style={{
             padding: "10px 20px",
-            border: "none",
             backgroundColor: "#007bff",
             color: "#fff",
+            border: "none",
             borderRadius: "6px",
             cursor: "pointer",
           }}

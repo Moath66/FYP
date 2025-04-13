@@ -57,7 +57,7 @@ const matchLostItems = async (req, res) => {
     const matches = await Item.find({
       itemName: { $regex: new RegExp(itemName, "i") },
       type: "lost",
-    }).select("itemId itemName date location picture description status"); // ✅ description added
+    }).select("itemId itemName date location picture description status");
 
     res.json(matches);
   } catch (err) {
@@ -107,7 +107,7 @@ const updateItemStatus = async (req, res) => {
 const getAllItems = async (req, res) => {
   try {
     const items = await Item.find()
-      .populate("reportedBy", "userName role")
+      .populate("reportedBy", "userId userName role")
       .sort({ createdAt: -1 });
 
     res.json(items);
@@ -120,7 +120,7 @@ const getAllItems = async (req, res) => {
 const claimItem = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id)
-      .populate("reportedBy", "userName role")
+      .populate("reportedBy", "userId userName role")
       .lean();
 
     if (!item || item.status !== "unclaimed") {
@@ -130,7 +130,7 @@ const claimItem = async (req, res) => {
     }
 
     const claimer = await User.findById(req.user.userId).select(
-      "userName role"
+      "userId userName role"
     );
 
     await Item.findByIdAndUpdate(req.params.id, { status: "claimed" });
@@ -143,18 +143,18 @@ const claimItem = async (req, res) => {
       description: item.description,
       status: "claimed",
       claimedBy: {
-        userId: item.reportedBy._id,
-        userName: item.reportedBy.userName,
-        role: item.reportedBy.role,
-      },
-      reportedBy: {
-        userId: req.user.userId,
+        userId: claimer.userId,
         userName: claimer.userName,
         role: claimer.role,
       },
+      reportedBy: {
+        userId: item.reportedBy.userId,
+        userName: item.reportedBy.userName,
+        role: item.reportedBy.role,
+      },
     };
 
-    const encodedData = encodeURIComponent(JSON.stringify(qrData)); // ✅ Encode it
+    const encodedData = encodeURIComponent(JSON.stringify(qrData));
     const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan?data=${encodedData}`;
 
     const qrCodeImage = await QRCode.toDataURL(scanUrl);
@@ -164,7 +164,7 @@ const claimItem = async (req, res) => {
       item: { ...item, status: "claimed" },
       qrCode: qrCodeImage,
       qrData,
-      scanUrl, // ✅ Add this line so frontend can debug/test
+      scanUrl,
     });
   } catch (err) {
     console.error("QR Code Error:", err);
@@ -194,7 +194,7 @@ const getItemById = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id).populate(
       "reportedBy",
-      "userName"
+      "userId userName"
     );
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json(item);
