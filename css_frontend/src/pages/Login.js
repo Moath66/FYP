@@ -16,10 +16,13 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        identifier,
-        password,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
+        {
+          identifier,
+          password,
+        }
+      );
 
       const user = res.data.user;
       console.log("✅ Login response user:", user);

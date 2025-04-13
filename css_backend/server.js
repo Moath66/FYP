@@ -8,12 +8,20 @@ dotenv.config(); // Load .env variables
 const app = express();
 
 // ✅ Middleware
-app.use(cors());
+const allowedOrigins = [
+  "https://fyp-bay-theta.vercel.app", // ✅ your deployed frontend domain
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true, // use only if needed
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static("uploads"));
-
 
 // ✅ Connect to MongoDB
 connectDB();

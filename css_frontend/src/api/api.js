@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:5000/api"; // Define base URL
+const BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api"; // ✅ Use deployed URL if available
 
 export const fetchData = async (endpoint) => {
   try {
@@ -9,13 +10,15 @@ export const fetchData = async (endpoint) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Attach token
+        Authorization: `Bearer ${token}`, // Attach token
       },
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`Error ${response.status}: ${errorData.message || "Failed to fetch"}`);
+      throw new Error(
+        `Error ${response.status}: ${errorData.message || "Failed to fetch"}`
+      );
     }
 
     const data = await response.json();
