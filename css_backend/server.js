@@ -7,6 +7,8 @@ const connectDB = require("./config/db");
 
 dotenv.config(); // Load .env variables
 
+const app = express();
+
 // ✅ Ensure 'uploads' folder exists
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
@@ -14,28 +16,34 @@ if (!fs.existsSync(uploadDir)) {
   console.log("📁 'uploads' folder created.");
 }
 
-const app = express();
-
-// ✅ CORS Configuration
+// ✅ CORS Configuration with dynamic origin
 const allowedOrigins = [
-  "https://fyp-ek6ojrov0-moaths-projects-b83013fe.vercel.app", // your Vercel frontend
-  "http://localhost:3000", // for local development
+  "https://fyp-2c62b8tcd-moaths-projects-b83013fe.vercel.app", // your deployed frontend
+  "http://localhost:3000", // local frontend dev
 ];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman) or from allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // ✅ Handle preflight requests
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve uploaded images
+// ✅ Serve uploaded images from backend/uploads
 app.use("/uploads", express.static("uploads"));
 
-// ✅ Connect MongoDB
+// ✅ Connect to MongoDB
 connectDB();
 
 // ✅ API Routes
@@ -49,8 +57,8 @@ app.use("/api/items", require("./api_routes/itemRoutes"));
 app.use("/api/visitors", require("./api_routes/visitorRoutes"));
 app.use("/api/maintenance", require("./api_routes/maintenanceRoutes"));
 
-// ❌ DO NOT SERVE frontend build when using Vercel
-// ❌ This avoids 401 errors for manifest.json or index.html
+// ❌ DO NOT serve frontend build (because Vercel handles it)
+// If you serve frontend from Express (Render), it can cause manifest.json 401 errors
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
