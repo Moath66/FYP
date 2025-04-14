@@ -18,7 +18,8 @@ const app = express();
 
 // ✅ CORS Configuration
 const allowedOrigins = [
-  "https://fyp-bay-theta.vercel.app", // ✅ your deployed frontend domain
+  "https://fyp-dar66ejvb-moaths-projects-b83013fe.vercel.app",
+  "http://localhost:3000",
 ];
 
 app.use(
