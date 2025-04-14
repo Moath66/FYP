@@ -27,7 +27,7 @@ const QRCodePopup = ({ visible, qrCodeData, qrScanUrl, onClose }) => {
         </div>
 
         <button className="btn-close" onClick={onClose}>
-          Close
+          
         </button>
       </div>
     </div>
