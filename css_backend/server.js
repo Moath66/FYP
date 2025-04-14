@@ -18,8 +18,8 @@ const app = express();
 
 // ✅ CORS Configuration
 const allowedOrigins = [
-  "https://fyp-dar66ejvb-moaths-projects-b83013fe.vercel.app",
-  "http://localhost:3000",
+  "https://fyp-izh2pm3sc-moaths-projects-b83013fe.vercel.app", // your Vercel frontend
+  "http://localhost:3000", // for local development
 ];
 
 app.use(
@@ -28,13 +28,14 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve uploaded images from backend/uploads folder
+// ✅ Serve uploaded images
 app.use("/uploads", express.static("uploads"));
 
-// ✅ MongoDB Connection
+// ✅ Connect MongoDB
 connectDB();
 
 // ✅ API Routes
@@ -48,17 +49,11 @@ app.use("/api/items", require("./api_routes/itemRoutes"));
 app.use("/api/visitors", require("./api_routes/visitorRoutes"));
 app.use("/api/maintenance", require("./api_routes/maintenanceRoutes"));
 
-// ✅ Serve React Frontend Build (for Production)
-const frontendPath = path.join(__dirname, "../css_frontend/build");
-app.use(express.static(frontendPath));
-
-// ✅ Catch-all route to handle SPA routing and serve index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
+// ❌ DO NOT SERVE frontend build when using Vercel
+// ❌ This avoids 401 errors for manifest.json or index.html
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Backend running on port ${PORT}`);
 });
