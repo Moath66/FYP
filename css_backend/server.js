@@ -9,20 +9,38 @@ dotenv.config(); // Load .env variables
 
 const app = express();
 
-// ✅ CORS configuration
-const allowedOrigins = [
-  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app", // ← update this to your actual frontend URL
-];
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+// ✅ Ensure 'uploads' folder exists
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("📁 'uploads' folder created.");
+}
 
-// ✅ Middleware
+// ✅ CORS Configuration with dynamic origin check
+const allowedOrigins = [
+  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app", // ✅ Vercel domain
+  "http://localhost:3000", // ✅ Local dev
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
+// ✅ Body Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ✅ Serve Uploaded Files
 app.use("/uploads", express.static("uploads"));
 
 // ✅ Connect to MongoDB
@@ -54,4 +72,5 @@ app.use("/api/maintenance", maintenanceRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`✅ Allowed Origins: ${allowedOrigins.join(", ")}`);
 });

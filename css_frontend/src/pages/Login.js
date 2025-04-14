@@ -21,7 +21,8 @@ const Login = () => {
         {
           identifier,
           password,
-        }
+        },
+        { withCredentials: true }
       );
 
       const user = res.data.user;
