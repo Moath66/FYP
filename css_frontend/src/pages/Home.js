@@ -32,7 +32,7 @@ const Home = () => {
             style={{
               width: "60px",
               height: "60px",
-              borderRadius: "12px",
+              borderRadius: "13px",
               objectFit: "cover",
             }}
           />
