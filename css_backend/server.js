@@ -11,7 +11,7 @@ const app = express();
 
 // ✅ CORS configuration
 const allowedOrigins = [
-  "https://fyp-2c62b8tcd-moaths-projects-b83013fe.vercel.app", // ← update this to your actual frontend URL
+  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app", // ← update this to your actual frontend URL
 ];
 app.use(
   cors({
