@@ -18,7 +18,7 @@ const app = express();
 
 // ✅ CORS Configuration
 const allowedOrigins = [
-  "https://fyp-izh2pm3sc-moaths-projects-b83013fe.vercel.app", // your Vercel frontend
+  "https://fyp-ek6ojrov0-moaths-projects-b83013fe.vercel.app", // your Vercel frontend
   "http://localhost:3000", // for local development
 ];
 
