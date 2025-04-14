@@ -17,7 +17,10 @@ const ReportFoundItem = () => {
   const [showResults, setShowResults] = useState(false);
   const [showDesc, setShowDesc] = useState(null);
   const [showImage, setShowImage] = useState(null);
-  const [reportedIds, setReportedIds] = useState([]); // ✅ Track reported items
+  const [reportedIds, setReportedIds] = useState([]);
+
+  const apiBaseURL =
+    process.env.REACT_APP_API_BASE_URL?.replace("/api", "") || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -189,10 +192,15 @@ const ReportFoundItem = () => {
                     <td>
                       {item.picture ? (
                         <img
-                          src={item.picture}
+                          src={`${apiBaseURL}${item.picture}`}
                           alt="match"
                           className="thumb"
-                          onClick={() => setShowImage(item.picture)}
+                          onClick={() =>
+                            setShowImage(`${apiBaseURL}${item.picture}`)
+                          }
+                          onError={(e) =>
+                            (e.target.src = "https://via.placeholder.com/60")
+                          }
                         />
                       ) : (
                         <span>—</span>
@@ -234,10 +242,7 @@ const ReportFoundItem = () => {
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h4>📋 Item Description</h4>
             <p>{showDesc}</p>
-            <button
-              className="btn-close"
-              onClick={() => setShowDesc(null)}
-            ></button>
+            <button className="btn-close" onClick={() => setShowDesc(null)} />
           </div>
         </div>
       )}
@@ -247,10 +252,7 @@ const ReportFoundItem = () => {
         <div className="modal-overlay" onClick={() => setShowImage(null)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <img src={showImage} alt="Detail" className="modal-image" />
-            <button
-              className="btn-close"
-              onClick={() => setShowImage(null)}
-            ></button>
+            <button className="btn-close" onClick={() => setShowImage(null)} />
           </div>
         </div>
       )}

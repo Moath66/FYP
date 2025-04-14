@@ -41,7 +41,8 @@ const QRCodeScanPage = () => {
     reportedBy,
   } = itemData;
 
-  const apiBaseURL = process.env.REACT_APP_API_BASE_URL?.replace("/api", "");
+  const apiBaseURL =
+    process.env.REACT_APP_API_BASE_URL?.replace("/api", "") || "";
 
   return (
     <div className="scan-page">
@@ -66,7 +67,7 @@ const QRCodeScanPage = () => {
           <strong>📌 Status:</strong> {status}
         </p>
 
-        {/* ✅ Show Item Picture if exists */}
+        {/* ✅ Show Item Picture */}
         {picture && (
           <div style={{ marginTop: "15px" }}>
             <strong>🖼️ Picture:</strong>
@@ -74,11 +75,16 @@ const QRCodeScanPage = () => {
               <img
                 src={`${apiBaseURL}${picture}`}
                 alt="Item"
+                onError={(e) =>
+                  (e.target.src =
+                    "https://via.placeholder.com/300?text=Image+Not+Available")
+                }
                 style={{
                   width: "100%",
                   maxWidth: "300px",
-                  borderRadius: "8px",
+                  borderRadius: "10px",
                   border: "1px solid #ccc",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                 }}
               />
             </div>
@@ -118,6 +124,7 @@ const QRCodeScanPage = () => {
         </div>
       </div>
 
+      {/* ✅ Action Buttons */}
       <div style={{ marginTop: "30px", textAlign: "center" }}>
         <button
           onClick={() => window.history.back()}
