@@ -116,8 +116,7 @@ const getAllItems = async (req, res) => {
 const claimItem = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id)
-      .populate("reportedBy", "userId userName role")
-      .populate("foundBy", "userId userName role")
+      .populate("reportedBy", "userId userName role") // 🟢 This ensures correct population
       .lean();
 
     if (!item || item.status !== "unclaimed") {
@@ -145,10 +144,11 @@ const claimItem = async (req, res) => {
         userName: claimer.userName,
         role: claimer.role,
       },
+      // 🟢 FIXED: This now uses the populated 'reportedBy' data correctly
       reportedBy: {
-        userId: item.foundBy?.userId || item.reportedBy?.userId,
-        userName: item.foundBy?.userName || item.reportedBy?.userName,
-        role: item.foundBy?.role || item.reportedBy?.role,
+        userId: item.reportedBy?.userId,
+        userName: item.reportedBy?.userName,
+        role: item.reportedBy?.role,
       },
     };
 
