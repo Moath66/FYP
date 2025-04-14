@@ -1,7 +1,6 @@
 const Item = require("../models/Item");
 const User = require("../models/User");
 const QRCode = require("qrcode");
-const mongoose = require("mongoose");
 
 // 🔢 Generate a unique ITEM ID
 const generateItemId = async () => {
@@ -105,6 +104,7 @@ const getAllItems = async (req, res) => {
   try {
     const items = await Item.find()
       .populate("reportedBy", "userId userName role")
+      .populate("foundBy", "userId userName role")
       .sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
@@ -117,7 +117,9 @@ const claimItem = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id)
       .populate("reportedBy", "userId userName role")
+      .populate("foundBy", "userId userName role")
       .lean();
+
     if (!item || item.status !== "unclaimed") {
       return res
         .status(400)
@@ -144,9 +146,9 @@ const claimItem = async (req, res) => {
         role: claimer.role,
       },
       reportedBy: {
-        userId: item.reportedBy.userId,
-        userName: item.reportedBy.userName,
-        role: item.reportedBy.role,
+        userId: item.foundBy?.userId || item.reportedBy?.userId,
+        userName: item.foundBy?.userName || item.reportedBy?.userName,
+        role: item.foundBy?.role || item.reportedBy?.role,
       },
     };
 
@@ -186,10 +188,9 @@ const getItemsByUser = async (req, res) => {
 // 📄 Get Item by ID
 const getItemById = async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id).populate(
-      "reportedBy",
-      "userId userName"
-    );
+    const item = await Item.findById(req.params.id)
+      .populate("reportedBy", "userId userName")
+      .populate("foundBy", "userId userName role");
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json(item);
   } catch (err) {

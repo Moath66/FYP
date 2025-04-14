@@ -31,13 +31,13 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve uploaded images
+// ✅ Serve uploaded images from backend/uploads folder
 app.use("/uploads", express.static("uploads"));
 
 // ✅ MongoDB Connection
 connectDB();
 
-// ✅ Routes
+// ✅ API Routes
 app.use("/api/admin", require("./api_routes/adminRoutes"));
 app.use("/api/resident", require("./api_routes/residentRoutes"));
 app.use("/api/security", require("./api_routes/securityRoutes"));
@@ -47,6 +47,15 @@ app.use("/api/users", require("./api_routes/userRoutes"));
 app.use("/api/items", require("./api_routes/itemRoutes"));
 app.use("/api/visitors", require("./api_routes/visitorRoutes"));
 app.use("/api/maintenance", require("./api_routes/maintenanceRoutes"));
+
+// ✅ Serve React Frontend Build (for Production)
+const frontendPath = path.join(__dirname, "../css_frontend/build");
+app.use(express.static(frontendPath));
+
+// ✅ Catch-all route to handle SPA routing and serve index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;

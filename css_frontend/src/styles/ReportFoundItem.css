@@ -199,13 +199,15 @@
 }
 
 .btn-close {
+  margin-top: 15px;
   background-color: #dc3545;
   color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  font-size: 14px;
   transition: background 0.3s ease;
 }
 

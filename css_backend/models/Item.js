@@ -40,22 +40,35 @@ const itemSchema = new mongoose.Schema(
         "returned",
         "discarded",
         "",
-      ], // add "" to enum!
+      ],
       default: "",
     },
-
     type: {
       type: String,
       enum: ["lost", "found"],
       required: true,
     },
+
+    // ✅ The person who reported the item as lost
     reportedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
+    // ✅ The person who confirmed the item as found
+    foundBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    // ✅ Optional: Track the date the item was found
+    foundDate: {
+      type: Date,
+    },
   },
-  { timestamps: true }
-); // ✅ Adds createdAt and updatedAt
+  { timestamps: true } // Adds createdAt and updatedAt
+);
 
 module.exports = mongoose.model("Item", itemSchema);
