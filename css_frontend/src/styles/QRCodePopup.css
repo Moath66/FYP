@@ -1,3 +1,4 @@
+/* 📦 QR Code Popup Overlay */
 .qr-popup-overlay {
   position: fixed;
   top: 0;
@@ -11,6 +12,7 @@
   z-index: 1000;
 }
 
+/* 📋 Card */
 .qr-popup-card {
   background: #fff;
   padding: 30px;
@@ -23,17 +25,20 @@
   position: relative;
 }
 
+/* 📝 Title */
 .qr-popup-card h2 {
   color: #002b5c;
   margin-bottom: 10px;
 }
 
+/* 🧾 Description */
 .qr-popup-card p {
   font-size: 15px;
   margin-bottom: 15px;
   color: #555;
 }
 
+/* 🖼️ QR Image */
 .qr-image {
   width: 220px;
   height: auto;
@@ -43,6 +48,7 @@
   border-radius: 8px;
 }
 
+/* 🔗 Details */
 .qr-details {
   text-align: left;
   font-size: 14px;
@@ -60,6 +66,7 @@
   border-top: 1px solid #ccc;
 }
 
+/* 🏷️ Status Badge (if needed) */
 .status-badge {
   padding: 3px 8px;
   border-radius: 10px;
@@ -90,6 +97,7 @@
   background-color: gray;
 }
 
+/* ❌ Close Button */
 .close-btn {
   background-color: #002b5c;
   color: #fff;
@@ -106,6 +114,7 @@
   background-color: #004080;
 }
 
+/* 🎬 Animation */
 @keyframes fadeIn {
   from {
     transform: scale(0.95);
@@ -117,7 +126,7 @@
   }
 }
 
-/* ✅ Responsive adjustments */
+/* 📱 Mobile Adjustments */
 @media (max-width: 480px) {
   .qr-popup-card {
     padding: 20px;

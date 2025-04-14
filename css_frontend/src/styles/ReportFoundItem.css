@@ -58,9 +58,10 @@
   flex-direction: column;
 }
 
-.image-preview {
-  width: 100%;
-  max-height: 150px;
+/* ✅ Preview Image Styling */
+.upload-box img.image-preview {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -125,6 +126,13 @@
   font-weight: 500;
 }
 
+/* ✅ "Reported" Button Style */
+.confirm-btn.reported {
+  background-color: #ffc107;
+  color: #333;
+  cursor: default;
+}
+
 .confirm-btn:hover {
   background-color: #1e7e34;
 }
@@ -160,7 +168,6 @@
   position: relative;
   animation: fadeIn 0.3s ease;
 }
-
 
 .modal-card h4 {
   color: #007bff;
@@ -246,5 +253,10 @@
   .thumb {
     width: 100%;
     max-width: 120px;
+  }
+
+  .upload-box {
+    height: auto;
+    padding: 15px;
   }
 }

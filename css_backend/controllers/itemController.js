@@ -8,7 +8,6 @@ const generateItemId = async () => {
   const latestItem = await Item.findOne({ itemId: { $exists: true } })
     .sort({ createdAt: -1 })
     .lean();
-
   const latestId = latestItem?.itemId || "ITEM000";
   const number = parseInt(latestId.replace("ITEM", "")) + 1;
   return `ITEM${number.toString().padStart(3, "0")}`;
@@ -17,8 +16,6 @@ const generateItemId = async () => {
 // 🟥 Submit Lost Item
 const submitLostItem = async (req, res) => {
   try {
-    console.log("✅ Reported by userId:", req.user.userId);
-
     const itemId = await generateItemId();
     const picturePath = req.file ? `/uploads/${req.file.filename}` : "";
     const itemDate = new Date(req.body.date);
@@ -65,7 +62,7 @@ const matchLostItems = async (req, res) => {
   }
 };
 
-// ✅ Confirm Found Item (update existing lost item)
+// ✅ Confirm Found Item
 const confirmFoundItem = async (req, res) => {
   try {
     const { matchedItemId } = req.body;
@@ -89,7 +86,7 @@ const confirmFoundItem = async (req, res) => {
   }
 };
 
-// 🔁 Security Updates Status
+// 🔁 Update Status
 const updateItemStatus = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
@@ -103,26 +100,24 @@ const updateItemStatus = async (req, res) => {
   }
 };
 
-// 📅 Get All Items (for Admin/Security)
+// 📅 All Items (Admin/Security)
 const getAllItems = async (req, res) => {
   try {
     const items = await Item.find()
       .populate("reportedBy", "userId userName role")
       .sort({ createdAt: -1 });
-
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch items" });
   }
 };
 
-// ✅ Claim Item (resident)
+// ✅ Claim Item (Resident)
 const claimItem = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id)
       .populate("reportedBy", "userId userName role")
       .lean();
-
     if (!item || item.status !== "unclaimed") {
       return res
         .status(400)
@@ -142,6 +137,7 @@ const claimItem = async (req, res) => {
       date: item.date,
       description: item.description,
       status: "claimed",
+      picture: item.picture,
       claimedBy: {
         userId: claimer.userId,
         userName: claimer.userName,
@@ -156,7 +152,6 @@ const claimItem = async (req, res) => {
 
     const encodedData = encodeURIComponent(JSON.stringify(qrData));
     const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan?data=${encodedData}`;
-
     const qrCodeImage = await QRCode.toDataURL(scanUrl);
 
     res.json({
@@ -172,7 +167,7 @@ const claimItem = async (req, res) => {
   }
 };
 
-// 📦 Get Items Reported by User
+// 📦 Items Reported by User
 const getItemsByUser = async (req, res) => {
   try {
     const user = await User.findOne({ userId: Number(req.params.userId) });
@@ -181,7 +176,6 @@ const getItemsByUser = async (req, res) => {
     const items = await Item.find({ reportedBy: user._id }).sort({
       createdAt: -1,
     });
-
     res.json(items);
   } catch (err) {
     console.error("❌ getItemsByUser error:", err);

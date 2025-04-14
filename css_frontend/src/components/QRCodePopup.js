@@ -1,33 +1,43 @@
 import React from "react";
-import "../styles/QRCodePopup.css";
+import "../styles/QRCodePopup.css"; // Make sure this matches your provided CSS
 
 const QRCodePopup = ({ visible, qrCodeData, qrScanUrl, onClose }) => {
   if (!visible) return null;
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-card">
-        <h3>🎉 Claim Successful</h3>
-        <p>Scan the QR code below to show item details to security:</p>
+    <div className="qr-popup-overlay">
+      <div className="qr-popup-card">
+        <h2>🎉 Claim Successful</h2>
+        <p>Scan or present this QR code to security for verification.</p>
 
-        <div className="qr-wrapper">
-          <img src={qrCodeData} alt="QR Code" className="qr-image" />
-        </div>
+        <img src={qrCodeData} alt="QR Code" className="qr-image" />
 
-        <div className="debug-url">
+        <div className="qr-details">
           <p>
-            <strong>🔗 Debug URL:</strong>
+            <strong>🔗 Scan Link:</strong>
           </p>
-          <textarea
-            readOnly
+          <input
+            type="text"
             value={qrScanUrl}
-            rows={4}
-            style={{ width: "100%", fontSize: "0.8rem" }}
+            readOnly
+            style={{
+              width: "100%",
+              padding: "10px",
+              fontSize: "13px",
+              border: "1px solid #ccc",
+              borderRadius: "6px",
+              marginTop: "8px",
+              fontFamily: "monospace",
+            }}
+            onClick={(e) => e.target.select()}
           />
+          <p style={{ fontSize: "12px", color: "#666", marginTop: "6px" }}>
+            This link will open the verification form instantly.
+          </p>
         </div>
 
-        <button className="btn-close" onClick={onClose}>
-          
+        <button className="close-btn" onClick={onClose}>
+          ✖ Close
         </button>
       </div>
     </div>

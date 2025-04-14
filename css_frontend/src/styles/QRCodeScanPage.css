@@ -17,6 +17,14 @@
   margin-bottom: 25px;
 }
 
+.scan-page h3 {
+  color: #004085;
+  font-size: 20px;
+  margin: 30px 0 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
 .scan-page p {
   font-size: 16px;
   margin: 12px 0;
@@ -31,6 +39,22 @@
   margin: 25px 0;
   border: none;
   border-top: 1px solid #ddd;
+}
+
+.item-details img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.user-info {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .scan-actions {
@@ -62,6 +86,10 @@
 
   .scan-page p {
     font-size: 14px;
+  }
+
+  .scan-page h3 {
+    font-size: 18px;
   }
 
   .scan-button {

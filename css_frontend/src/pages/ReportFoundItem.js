@@ -17,6 +17,7 @@ const ReportFoundItem = () => {
   const [showResults, setShowResults] = useState(false);
   const [showDesc, setShowDesc] = useState(null);
   const [showImage, setShowImage] = useState(null);
+  const [reportedIds, setReportedIds] = useState([]); // ✅ Track reported items
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +58,7 @@ const ReportFoundItem = () => {
 
       await confirmFoundItem(form);
       alert("✅ Found item reported successfully.");
+      setReportedIds((prev) => [...prev, matchedItemId]);
 
       setFormData({
         itemName: "",
@@ -66,8 +68,6 @@ const ReportFoundItem = () => {
         picture: null,
       });
       setPreview(null);
-      setMatchedItems([]);
-      setShowResults(false);
     } catch (err) {
       alert("❌ Error confirming item.");
     }
@@ -199,17 +199,17 @@ const ReportFoundItem = () => {
                       )}
                     </td>
                     <td>
-                      {item.status === "lost" && (
+                      {item.status === "lost" &&
+                      !reportedIds.includes(item._id) ? (
                         <button
                           className="confirm-btn"
                           onClick={() => handleConfirm(item._id)}
                         >
                           Confirm
                         </button>
-                      )}
-                      {item.status === "unclaimed" && (
+                      ) : (
                         <button
-                          className="confirm-btn"
+                          className="confirm-btn reported"
                           disabled
                           style={{
                             backgroundColor: "#ffc107",

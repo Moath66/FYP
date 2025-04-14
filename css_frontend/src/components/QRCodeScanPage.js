@@ -36,9 +36,12 @@ const QRCodeScanPage = () => {
     date,
     description,
     status,
+    picture,
     claimedBy,
     reportedBy,
   } = itemData;
+
+  const apiBaseURL = process.env.REACT_APP_API_BASE_URL?.replace("/api", "");
 
   return (
     <div className="scan-page">
@@ -62,7 +65,30 @@ const QRCodeScanPage = () => {
         <p>
           <strong>📌 Status:</strong> {status}
         </p>
+
+        {/* ✅ Show Item Picture if exists */}
+        {picture && (
+          <div style={{ marginTop: "15px" }}>
+            <strong>🖼️ Picture:</strong>
+            <div style={{ marginTop: "8px" }}>
+              <img
+                src={`${apiBaseURL}${picture}`}
+                alt="Item"
+                style={{
+                  width: "100%",
+                  maxWidth: "300px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         <hr />
+
+        {/* ✅ Claimed By Section */}
+        <h3 style={{ marginTop: "25px" }}>📌 Report Lost Item Info</h3>
         <div className="user-info">
           <h4>🙋 Claimed By:</h4>
           <p>
@@ -75,6 +101,9 @@ const QRCodeScanPage = () => {
             <strong>User ID:</strong> {claimedBy.userId}
           </p>
         </div>
+
+        {/* ✅ Reported By Section */}
+        <h3 style={{ marginTop: "25px" }}>📦 Report Found Item Info</h3>
         <div className="user-info">
           <h4>🧾 Reported By:</h4>
           <p>
