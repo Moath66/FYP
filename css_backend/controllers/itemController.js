@@ -116,11 +116,10 @@ const getAllItems = async (req, res) => {
 // ✅ Claim Item (Resident)
 const claimItem = async (req, res) => {
   try {
-    // 🟢 Populate both reportedBy and foundBy
     const item = await Item.findById(req.params.id)
       .populate("reportedBy", "userId userName role")
-      .populate("foundBy", "userId userName role"); // ✅ include foundBy
-    // ⛔ removed .lean()
+      .populate("foundBy", "userId userName role")
+      .lean();
 
     if (!item || item.status !== "unclaimed") {
       return res
@@ -132,10 +131,8 @@ const claimItem = async (req, res) => {
       "userId userName role"
     );
 
-    // 🔄 Update item status to claimed
     await Item.findByIdAndUpdate(req.params.id, { status: "claimed" });
 
-    // 🧠 Construct QR data with all info
     const qrData = {
       itemId: item.itemId,
       itemName: item.itemName,
@@ -144,7 +141,6 @@ const claimItem = async (req, res) => {
       description: item.description,
       status: "claimed",
       picture: item.picture,
-
       claimedBy: {
         userId: claimer.userId,
         userName: claimer.userName,
@@ -155,13 +151,11 @@ const claimItem = async (req, res) => {
         userName: item.reportedBy?.userName,
         role: item.reportedBy?.role,
       },
-      foundBy: item.foundBy
-        ? {
-            userId: item.foundBy.userId,
-            userName: item.foundBy.userName,
-            role: item.foundBy.role,
-          }
-        : null,
+      foundBy: {
+        userId: item.foundBy?.userId,
+        userName: item.foundBy?.userName,
+        role: item.foundBy?.role,
+      },
     };
 
     const encodedData = encodeURIComponent(JSON.stringify(qrData));
@@ -170,7 +164,7 @@ const claimItem = async (req, res) => {
 
     res.json({
       message: "Item claimed successfully",
-      item: { ...item.toObject(), status: "claimed" },
+      item: { ...item, status: "claimed" },
       qrCode: qrCodeImage,
       qrData,
       scanUrl,

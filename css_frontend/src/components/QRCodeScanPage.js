@@ -110,17 +110,18 @@ const QRCodeScanPage = () => {
         </div>
 
         {/* ✅ Reported By Section (now using foundBy) */}
+        {/* ✅ Found By Section */}
         <h3 style={{ marginTop: "25px" }}>📦 Report Found Item Info</h3>
         <div className="user-info">
-          <h4>🧾 Reported By:</h4>
+          <h4>🧾 Found By:</h4>
           <p>
-            <strong>Role:</strong> {foundBy?.role || "N/A"}
+            <strong>Role:</strong> {itemData.foundBy?.role}
           </p>
           <p>
-            <strong>Name:</strong> {foundBy?.userName || "N/A"}
+            <strong>Name:</strong> {itemData.foundBy?.userName}
           </p>
           <p>
-            <strong>User ID:</strong> {foundBy?.userId || "N/A"}
+            <strong>User ID:</strong> {itemData.foundBy?.userId}
           </p>
         </div>
       </div>
