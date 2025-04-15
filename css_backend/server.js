@@ -18,7 +18,7 @@ if (!fs.existsSync(uploadDir)) {
 
 // ✅ Dynamic CORS Configuration
 const allowedOrigins = [
-  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app",
+  "https://fyp-hdihehq7q-moaths-projects-b83013fe.vercel.app",
   "https://fyp-kappa-flame.vercel.app",
   "http://localhost:3000",
 ];
