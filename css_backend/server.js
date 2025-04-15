@@ -16,7 +16,7 @@ if (!fs.existsSync(uploadDir)) {
   console.log("📁 'uploads' folder created.");
 }
 
-// ✅ CORS Configuration (for credentials + origin check)
+// ✅ Dynamic CORS Configuration
 const allowedOrigins = [
   "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app",
   "https://fyp-kappa-flame.vercel.app",
@@ -25,15 +25,23 @@ const allowedOrigins = [
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+
+  const isAllowed =
+    origin &&
+    (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app"));
+
+  if (isAllowed) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
+
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
   if (req.method === "OPTIONS") {
     return res.sendStatus(204);
   }
+
   next();
 });
 
