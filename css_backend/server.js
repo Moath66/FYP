@@ -18,8 +18,9 @@ if (!fs.existsSync(uploadDir)) {
 
 // ✅ CORS Configuration with dynamic origin check
 const allowedOrigins = [
-  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app", // ✅ Vercel domain
-  "http://localhost:3000", // ✅ Local dev
+  "https://fyp-945m6blim-moaths-projects-b83013fe.vercel.app",
+  "https://fyp-kappa-flame.vercel.app", // <- this is what triggered the CORS error in your screenshot
+  "http://localhost:3000",
 ];
 
 app.use((req, res, next) => {
@@ -74,3 +75,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`✅ Allowed Origins: ${allowedOrigins.join(", ")}`);
 });
+
+console.log("✅ Allowed Origins:", allowedOrigins);
