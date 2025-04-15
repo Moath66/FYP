@@ -157,6 +157,7 @@ const claimItem = async (req, res) => {
         role: item.foundBy?.role,
       },
     };
+    console.log("🧾 Populated FoundBy:", item.foundBy);
 
     const encodedData = encodeURIComponent(JSON.stringify(qrData));
     const frontendBaseURL =
