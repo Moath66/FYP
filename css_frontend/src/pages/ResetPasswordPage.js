@@ -13,11 +13,15 @@ const ResetPasswordPage = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
-        email,
-        code,
-        newPassword,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/auth/reset-password`,
+        {
+          email,
+          code,
+          newPassword,
+        },
+        { withCredentials: true }
+      );
 
       toast.success(res.data.message || "✅ Password reset successfully!");
 

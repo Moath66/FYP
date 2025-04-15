@@ -11,15 +11,16 @@ const ForgotPasswordPage = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/forgot-password", {
-        email,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/auth/forgot-password`,
+        { email },
+        { withCredentials: true }
+      );
 
-      // ✅ Show success toast and redirect
-      toast.success("Reset code sent to your email!");
-      navigate("/reset-password"); // 👈 go to the reset form page
+      toast.success(res.data.message || "✅ Reset code sent to your email!");
+      navigate("/reset-password");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Error sending reset link");
+      toast.error(err.response?.data?.message || "❌ Error sending reset code");
     }
   };
 
@@ -36,7 +37,7 @@ const ForgotPasswordPage = () => {
           className="login-input"
         />
         <button type="submit" className="login-button">
-          Send Reset Link
+          Send Reset Code
         </button>
       </form>
     </div>
