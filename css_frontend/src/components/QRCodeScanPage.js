@@ -39,6 +39,7 @@ const QRCodeScanPage = () => {
     picture,
     claimedBy,
     reportedBy,
+    foundBy, // ✅ now supported
   } = itemData;
 
   const apiBaseURL =
@@ -98,28 +99,28 @@ const QRCodeScanPage = () => {
         <div className="user-info">
           <h4>🙋 Claimed By:</h4>
           <p>
-            <strong>Role:</strong> {claimedBy.role}
+            <strong>Role:</strong> {claimedBy?.role}
           </p>
           <p>
-            <strong>Name:</strong> {claimedBy.userName}
+            <strong>Name:</strong> {claimedBy?.userName}
           </p>
           <p>
-            <strong>User ID:</strong> {claimedBy.userId}
+            <strong>User ID:</strong> {claimedBy?.userId}
           </p>
         </div>
 
-        {/* ✅ Reported By Section */}
+        {/* ✅ Reported By Section (now using foundBy) */}
         <h3 style={{ marginTop: "25px" }}>📦 Report Found Item Info</h3>
         <div className="user-info">
           <h4>🧾 Reported By:</h4>
           <p>
-            <strong>Role:</strong> {reportedBy.role}
+            <strong>Role:</strong> {foundBy?.role || "N/A"}
           </p>
           <p>
-            <strong>Name:</strong> {reportedBy.userName}
+            <strong>Name:</strong> {foundBy?.userName || "N/A"}
           </p>
           <p>
-            <strong>User ID:</strong> {reportedBy.userId}
+            <strong>User ID:</strong> {foundBy?.userId || "N/A"}
           </p>
         </div>
       </div>
