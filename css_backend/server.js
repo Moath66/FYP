@@ -18,9 +18,8 @@ if (!fs.existsSync(uploadDir)) {
 
 // ✅ Dynamic CORS Configuration
 const allowedOrigins = [
-  "https://fyp-hdihehq7q-moaths-projects-b83013fe.vercel.app",
-  "https://fyp-kappa-flame.vercel.app",
-  "http://localhost:3000",
+  "http://localhost:3000", // Local development
+  // Add any custom domains here if needed
 ];
 
 app.use((req, res, next) => {
@@ -28,10 +27,13 @@ app.use((req, res, next) => {
 
   const isAllowed =
     origin &&
-    (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app"));
+    (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin));
 
   if (isAllowed) {
     res.setHeader("Access-Control-Allow-Origin", origin);
+    console.log("✅ Allowed CORS Origin:", origin);
+  } else {
+    console.warn("⛔ Blocked CORS Origin:", origin || "Unknown");
   }
 
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -81,5 +83,5 @@ app.use("/api/maintenance", maintenanceRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`✅ Allowed Origins: ${allowedOrigins.join(", ")}`);
+  console.log(`✅ Allowed Origins: localhost + all *.vercel.app`);
 });

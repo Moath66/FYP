@@ -159,7 +159,9 @@ const claimItem = async (req, res) => {
     };
 
     const encodedData = encodeURIComponent(JSON.stringify(qrData));
-    const scanUrl = `${process.env.REACT_APP_PUBLIC_URL}/scan?data=${encodedData}`;
+    const frontendBaseURL =
+      req.headers.origin || process.env.REACT_APP_PUBLIC_URL;
+    const scanUrl = `${frontendBaseURL}/scan?data=${encodedData}`;
     const qrCodeImage = await QRCode.toDataURL(scanUrl);
 
     res.json({
