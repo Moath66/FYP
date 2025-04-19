@@ -179,7 +179,6 @@ const ReportFoundItem = () => {
                     <td>
                       {item.description ? (
                         <>
-                          <div className="desc-cell">—</div>
                           <button
                             className="read-more-btn"
                             onClick={() => setShowDesc(item.description)}
@@ -256,9 +255,10 @@ const ReportFoundItem = () => {
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <img src={showImage} alt="Detail" className="modal-image" />
             <div className="btn-close-wrapper">
-              <button className="btn-close" onClick={() => setShowImage(null)}>
-                Close
-              </button>
+              <button
+                className="btn-close"
+                onClick={() => setShowImage(null)}
+              ></button>
             </div>
           </div>
         </div>
