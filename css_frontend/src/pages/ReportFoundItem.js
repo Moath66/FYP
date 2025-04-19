@@ -80,7 +80,7 @@ const ReportFoundItem = () => {
   return (
     <div className="found-container">
       <div className="found-card">
-        <h2>\ud83d\udce6 Report Found Item</h2>
+        <h2> Report Found Item</h2>
 
         <form className="found-form" onSubmit={handleSearch}>
           <div className="form-group">
