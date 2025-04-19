@@ -210,14 +210,14 @@ const ReportFoundItem = () => {
                       {item.status === "lost" &&
                       !reportedIds.includes(item._id) ? (
                         <button
-                          className="confirm-btn"
+                          className="found-btn"
                           onClick={() => handleConfirm(item._id)}
                         >
                           Confirm
                         </button>
                       ) : (
                         <button
-                          className="confirm-btn reported"
+                          className="found-btn reported"
                           disabled
                           style={{
                             backgroundColor: "#ffc107",
