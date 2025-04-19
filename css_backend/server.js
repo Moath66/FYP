@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -16,10 +17,10 @@ if (!fs.existsSync(uploadDir)) {
   console.log("📁 'uploads' folder created.");
 }
 
-// ✅ Dynamic CORS Configuration
+// ✅ Setup allowed origins (localhost + static domain + dynamic fallback)
 const allowedOrigins = [
-  "http://localhost:3000", // Local development
-  // Add any custom domains here if needed
+  "http://localhost:3000",
+  process.env.REACT_APP_PUBLIC_URL,
 ];
 
 app.use((req, res, next) => {
@@ -83,5 +84,7 @@ app.use("/api/maintenance", maintenanceRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`✅ Allowed Origins: localhost + all *.vercel.app`);
+  console.log(
+    `✅ Allowed Origins: localhost, ${process.env.REACT_APP_PUBLIC_URL}, and *.vercel.app`
+  );
 });
