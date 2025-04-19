@@ -178,17 +178,20 @@ const ReportFoundItem = () => {
                     <td>{item.location}</td>
                     <td>
                       {item.description ? (
-                        <button
-                          className="confirm-btn"
-                          style={{ backgroundColor: "#17a2b8" }}
-                          onClick={() => setShowDesc(item.description)}
-                        >
-                          Read More
-                        </button>
+                        <>
+                          <div className="desc-cell">—</div>
+                          <button
+                            className="read-more-btn"
+                            onClick={() => setShowDesc(item.description)}
+                          >
+                            Read More
+                          </button>
+                        </>
                       ) : (
                         "—"
                       )}
                     </td>
+
                     <td>
                       {item.picture ? (
                         <img
@@ -252,7 +255,11 @@ const ReportFoundItem = () => {
         <div className="modal-overlay" onClick={() => setShowImage(null)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <img src={showImage} alt="Detail" className="modal-image" />
-            <button className="btn-close" onClick={() => setShowImage(null)} />
+            <div className="btn-close-wrapper">
+              <button className="btn-close" onClick={() => setShowImage(null)}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
