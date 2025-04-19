@@ -58,7 +58,7 @@ const AdminManageUsers = () => {
 
   return (
     <div className="manage-users-container">
-      <h1>User5 Accounts</h1>
+      <h1>User55 Accounts</h1>
       <p>Manage system users and permissions</p>
 
       <button
