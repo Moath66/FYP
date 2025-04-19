@@ -40,7 +40,9 @@ const AdminManageUsers = () => {
 
     try {
       await deleteUser(userToDelete.userId, userToDelete.userName);
-      toast.success(`✅ User "${userToDelete.userName}" was successfully removed.`);
+      toast.success(
+        `✅ User "${userToDelete.userName}" was successfully removed.`
+      );
       setUserToDelete(null);
       setShowConfirmDialog(false);
       loadUsers();
@@ -56,7 +58,7 @@ const AdminManageUsers = () => {
 
   return (
     <div className="manage-users-container">
-      <h1>User Accounts</h1>
+      <h1>User5 Accounts</h1>
       <p>Manage system users and permissions</p>
 
       <button
@@ -168,7 +170,11 @@ const AdminManageUsers = () => {
           onClose={() => setShowForm(false)}
           onUserAdded={() => {
             loadUsers();
-            toast.success(editUser ? "✅ User updated successfully." : "✅ User added successfully.");
+            toast.success(
+              editUser
+                ? "✅ User updated successfully."
+                : "✅ User added successfully."
+            );
           }}
           isEdit={!!editUser}
           existingUser={editUser}
@@ -176,12 +182,11 @@ const AdminManageUsers = () => {
       )}
 
       {showConfirmDialog && (
-       <ConfirmDialog
-       message={`Are you sure you want to delete "${userToDelete.userName}" with ID ${userToDelete.userId}?`}
-       onCancel={() => setShowConfirmDialog(false)}
-       onConfirm={handleDelete}
-     />
-     
+        <ConfirmDialog
+          message={`Are you sure you want to delete "${userToDelete.userName}" with ID ${userToDelete.userId}?`}
+          onCancel={() => setShowConfirmDialog(false)}
+          onConfirm={handleDelete}
+        />
       )}
     </div>
   );

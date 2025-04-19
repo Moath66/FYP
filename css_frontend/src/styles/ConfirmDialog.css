@@ -1,3 +1,5 @@
+/* ConfirmDialog.css */
+
 /* Fullscreen overlay */
 .popup-overlay {
   position: fixed;
@@ -25,39 +27,34 @@
   animation: slideUpFade 0.3s ease-in-out;
 }
 
-.popup-card h3 {
-  font-size: 22px;
-  color: #002b5c;
-  margin-bottom: 10px;
-}
-
 .popup-card p {
   font-size: 15px;
-  color: #555;
+  color: #333;
   margin-bottom: 20px;
 }
 
-/* QR image wrapper */
-.qr-wrapper {
+/* Button wrapper */
+.confirm-dialog-buttons {
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  gap: 15px;
 }
 
-.qr-image {
-  width: 220px;
-  height: auto;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 10px;
+/* Cancel button */
+.cancel-btn {
+  background-color: #ccc;
+  color: black;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* Close button */
+/* Confirm button */
 .btn-close {
-  background-color: #002b5c;
+  background-color: #28a745;
   color: white;
   padding: 10px 18px;
-  font-size: 15px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -65,10 +62,10 @@
 }
 
 .btn-close:hover {
-  background-color: #003d80;
+  background-color: #218838;
 }
 
-/* Fade & slide animations */
+/* Animations */
 @keyframes fadeInOverlay {
   from {
     opacity: 0;
@@ -89,17 +86,14 @@
   }
 }
 
-/* ✅ Responsive adjustments */
+/* Responsive */
 @media (max-width: 480px) {
   .popup-card {
     padding: 20px;
   }
 
-  .qr-image {
-    width: 180px;
-  }
-
-  .btn-close {
+  .btn-close,
+  .cancel-btn {
     font-size: 14px;
     padding: 8px 14px;
   }
