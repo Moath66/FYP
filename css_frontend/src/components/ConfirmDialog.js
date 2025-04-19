@@ -11,7 +11,7 @@ const ConfirmDialog = ({ message, onCancel, onConfirm }) => {
           <button className="cancel-btn" onClick={onCancel}>
             Cancel
           </button>
-          <button className="btn-close" onClick={onConfirm}>
+          <button className="confirm-btn" onClick={onConfirm}>
             Confirm
           </button>
         </div>
