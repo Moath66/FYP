@@ -1,4 +1,3 @@
-// src/components/ReportFoundItem.js
 import React, { useState } from "react";
 import "../styles/ReportFoundItem.css";
 import { FaCloudUploadAlt, FaSearch } from "react-icons/fa";
@@ -44,7 +43,7 @@ const ReportFoundItem = () => {
       setMatchedItems(matches);
       setShowResults(true);
     } catch (err) {
-      alert("\u274C Error searching for match");
+      alert("❌ Error searching for match");
     }
   };
 
@@ -61,7 +60,7 @@ const ReportFoundItem = () => {
       }
 
       await confirmFoundItem(form);
-      alert("\u2705 Found item reported successfully.");
+      alert("✅ Found item reported successfully.");
       setReportedIds((prev) => [...prev, matchedItemId]);
 
       setFormData({
@@ -73,14 +72,14 @@ const ReportFoundItem = () => {
       });
       setPreview(null);
     } catch (err) {
-      alert("\u274C Error confirming item.");
+      alert("❌ Error confirming item.");
     }
   };
 
   return (
     <div className="found-container">
       <div className="found-card">
-        <h2> Report Found Item</h2>
+        <h2>📦 Report Found Item</h2>
 
         <form className="found-form" onSubmit={handleSearch}>
           <div className="form-group">
@@ -179,17 +178,15 @@ const ReportFoundItem = () => {
                     <td>{item.location}</td>
                     <td>
                       {item.description ? (
-                        <>
-                          <div className="desc-cell">\u2014</div>
-                          <button
-                            className="read-more-btn"
-                            onClick={() => setShowDesc(item.description)}
-                          >
-                            Read More
-                          </button>
-                        </>
+                        <button
+                          className="confirm-btn"
+                          style={{ backgroundColor: "#17a2b8" }}
+                          onClick={() => setShowDesc(item.description)}
+                        >
+                          Read More
+                        </button>
                       ) : (
-                        "\u2014"
+                        "—"
                       )}
                     </td>
                     <td>
@@ -206,7 +203,7 @@ const ReportFoundItem = () => {
                           }
                         />
                       ) : (
-                        <span>\u2014</span>
+                        <span>—</span>
                       )}
                     </td>
                     <td>
@@ -239,27 +236,23 @@ const ReportFoundItem = () => {
         </div>
       )}
 
+      {/* Modal: Description */}
       {showDesc && (
         <div className="modal-overlay" onClick={() => setShowDesc(null)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h4>\ud83d\udccb Item Description</h4>
+            <h4>📋 Item Description</h4>
             <p>{showDesc}</p>
-            <button className="btn-close" onClick={() => setShowDesc(null)}>
-              Close
-            </button>
+            <button className="btn-close" onClick={() => setShowDesc(null)} />
           </div>
         </div>
       )}
 
+      {/* Modal: Image */}
       {showImage && (
         <div className="modal-overlay" onClick={() => setShowImage(null)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <img src={showImage} alt="Detail" className="modal-image" />
-            <div className="btn-close-wrapper">
-              <button className="btn-close" onClick={() => setShowImage(null)}>
-                Close
-              </button>
-            </div>
+            <button className="btn-close" onClick={() => setShowImage(null)} />
           </div>
         </div>
       )}
