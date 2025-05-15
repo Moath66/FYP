@@ -1,0 +1,67 @@
+.tracking-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.tracking-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.search-box {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.tracking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tracking-table th,
+.tracking-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.qr-image {
+  width: 60px;
+  height: 60px;
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status.approved {
+  background-color: #007bff;
+  color: white;
+}
+
+.status.pending {
+  background-color: orange;
+  color: white;
+}
+
+.status.denied {
+  background-color: red;
+  color: white;
+}
+
+.not-available {
+  font-style: italic;
+  color: gray;
+}
