@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/TrackingVisitorApp.css";
+import "../styles/TrackingVisitorApp.css";
 import axios from "axios";
 
 const TrackingVisitorApp = () => {
