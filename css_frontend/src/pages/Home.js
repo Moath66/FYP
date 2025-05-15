@@ -66,8 +66,7 @@ const Home = () => {
         <h2>Key Features</h2>
         <div className="divider"></div>
         <p className="section-description">
-          Our system offers three 3 main services to enhance community
-          management
+          Our system offers three main services to enhance community management
         </p>
 
         <div className="features-container">
