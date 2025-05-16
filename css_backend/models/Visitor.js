@@ -1,20 +1,30 @@
 const mongoose = require("mongoose");
 
-const VisitorSchema = new mongoose.Schema({
-  visitorId: String,
-  visitor_name: String,
-  phone_number: String,
-  purpose: String,
-  date: Date,
-  email: String,
-  status: {
-    type: String,
-    enum: ["pending", "approved", "denied"],
-    default: "pending",
+const visitorSchema = new mongoose.Schema(
+  {
+    visitorId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    visitor_name: String,
+    phone_number: String,
+    purpose: String,
+    date: Date,
+    email: String,
+    status: {
+      type: String,
+      enum: ["pending", "approved", "denied"],
+      default: "pending",
+    },
+    submittedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    qrCode: String,
+    denialReason: String,
   },
-  qrCode: String,
-  denialReason: String,
-  submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Visitor", VisitorSchema);
+module.exports = mongoose.model("Visitor", visitorSchema);
