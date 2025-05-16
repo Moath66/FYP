@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/SecurityCheckVisitor.css";
+import "../styles/SecurityCheckVisitor.css";
 import axios from "axios";
 
 const SecurityCheckVisitor = () => {
