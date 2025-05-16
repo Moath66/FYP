@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const visitorController = require("../controllers/visitorController");
+const auth = require("../middlewares/authMiddleware");
 
-// Routes for visitors
-router.get("/", visitorController.getAllVisitors); // Get all visitors
-router.get("/:id", visitorController.getVisitorById); // Get a single visitor by ID
-router.post("/", visitorController.createVisitor); // Register a new visitor
-router.put("/:id", visitorController.updateVisitor); // Update visitor details
-router.delete("/:id", visitorController.deleteVisitor); // Delete a visitor record
+router.post("/register", auth, visitorController.registerVisitor);
+router.get("/byResident/:id", auth, visitorController.getByResident);
+router.get("/pending", auth, visitorController.getPending);
 
 module.exports = router;

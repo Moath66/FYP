@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { registerVisitor } from "../api/userApis/visitorApis";
 import "../styles/PreVisitorRegis.css";
-import axios from "axios";
 
 const PreVisitorRegis = () => {
   const [formData, setFormData] = useState({
@@ -23,11 +23,7 @@ const PreVisitorRegis = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/visitors/register", formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await registerVisitor(formData, localStorage.getItem("token"));
       setSuccessMsg("Form submitted successfully");
       setFormData({
         visitor_name: "",

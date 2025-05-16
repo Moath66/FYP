@@ -1,56 +1,49 @@
 const Visitor = require("../models/Visitor");
 
-// Get all visitors
-exports.getAllVisitors = async (req, res) => {
+const generateVisitorId = async () => {
+  const last = await Visitor.findOne().sort({ createdAt: -1 });
+  const lastId = last?.visitorId || "VIS000";
+  const number = parseInt(lastId.replace("VIS", "")) + 1;
+  return `VIS${number.toString().padStart(3, "0")}`;
+};
+
+exports.registerVisitor = async (req, res) => {
   try {
-    const visitors = await Visitor.find().populate("registeredBy", "userName email");
-    res.status(200).json(visitors);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving visitors" });
+    const visitorId = await generateVisitorId();
+    const { visitor_name, phone_number, purpose, date, email } = req.body;
+
+    const visitor = new Visitor({
+      visitorId,
+      visitor_name,
+      phone_number,
+      purpose,
+      date,
+      email,
+      submittedBy: req.user.userId,
+    });
+
+    await visitor.save();
+    res.status(201).json(visitor);
+  } catch (err) {
+    console.error("❌ registerVisitor error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// Get a single visitor by ID
-exports.getVisitorById = async (req, res) => {
+exports.getByResident = async (req, res) => {
   try {
-    const visitor = await Visitor.findById(req.params.id).populate("registeredBy", "userName email");
-    if (!visitor) return res.status(404).json({ error: "Visitor not found" });
-    res.status(200).json(visitor);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving visitor" });
+    const visitors = await Visitor.find({ submittedBy: req.params.id });
+    res.json(visitors);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to get visitors" });
   }
 };
 
-// Create a new visitor record
-exports.createVisitor = async (req, res) => {
+exports.getPending = async (req, res) => {
   try {
-    const { visitor_id, visitor_name, phoneNumber, purposeOfVisit, email, registeredBy } = req.body;
-    const newVisitor = new Visitor({ visitor_id, visitor_name, phoneNumber, purposeOfVisit, email, registeredBy });
-    await newVisitor.save();
-    res.status(201).json(newVisitor);
-  } catch (error) {
-    res.status(500).json({ error: "Error adding visitor" });
-  }
-};
-
-// Update visitor details
-exports.updateVisitor = async (req, res) => {
-  try {
-    const updatedVisitor = await Visitor.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedVisitor) return res.status(404).json({ error: "Visitor not found" });
-    res.status(200).json(updatedVisitor);
-  } catch (error) {
-    res.status(500).json({ error: "Error updating visitor" });
-  }
-};
-
-// Delete a visitor record
-exports.deleteVisitor = async (req, res) => {
-  try {
-    const deletedVisitor = await Visitor.findByIdAndDelete(req.params.id);
-    if (!deletedVisitor) return res.status(404).json({ error: "Visitor not found" });
-    res.status(200).json({ message: "Visitor deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Error deleting visitor" });
+    const pending = await Visitor.find({ status: "pending" });
+    res.json(pending);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to load pending visitors" });
   }
 };
