@@ -3,7 +3,10 @@ const Visitor = require("../models/Visitor");
 // 🔹 Helper: Generate Unique Visitor ID
 const generateVisitorId = async () => {
   try {
-    const last = await Visitor.findOne().sort({ createdAt: -1 });
+    // Filter out documents with null visitorId to avoid duplicate key errors
+    const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({
+      createdAt: -1,
+    });
     const lastId = last?.visitorId || "VIS000";
     const number = parseInt(lastId.replace("VIS", "")) + 1;
     return `VIS${number.toString().padStart(3, "0")}`;
@@ -31,7 +34,7 @@ exports.registerVisitor = async (req, res) => {
       date,
       email,
       status: "pending",
-      submittedBy: req.user.userId || req.user._id, // ✅ supports both
+      submittedBy: req.user.userId || req.user._id, // Compatible with both token styles
     });
 
     await visitor.save();
@@ -56,7 +59,7 @@ exports.getByResident = async (req, res) => {
   }
 };
 
-// 🔹 GET: All Pending Visitors (for security)
+// 🔹 GET: All Pending Visitors (for security dashboard)
 exports.getPending = async (req, res) => {
   try {
     const pending = await Visitor.find({ status: "pending" }).sort({
