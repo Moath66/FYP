@@ -31,7 +31,7 @@ exports.registerVisitor = async (req, res) => {
       date,
       email,
       status: "pending",
-      submittedBy: req.user.userId,
+      submittedBy: req.user.userId || req.user._id, // ✅ supports both
     });
 
     await visitor.save();

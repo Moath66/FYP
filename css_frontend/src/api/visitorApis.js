@@ -68,13 +68,10 @@ export const denyVisitor = async (visitorId, reason) => {
   }
 };
 
-// 🔹 Get Visitor By Resident
-export const getVisitorsByResident = async (userId) => {
+// 🔹 Get Visitors for Logged-in Resident (no userId passed)
+export const getVisitorsByResident = async () => {
   try {
-    const res = await axios.get(
-      `${API_URL}/byResident/${userId}`,
-      authHeader()
-    );
+    const res = await axios.get(`${API_URL}/byResident`, authHeader());
     return res.data;
   } catch (err) {
     console.error("❌ Error fetching visitor list:", err);

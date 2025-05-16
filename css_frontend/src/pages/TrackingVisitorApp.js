@@ -11,7 +11,7 @@ const TrackingVisitorApp = () => {
   const fetchVisitors = async () => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      const userId = storedUser?._id;
+      const userId = storedUser?._id || storedUser?.id;
       const token = localStorage.getItem("token");
 
       console.log("📦 userId:", userId);
