@@ -2,16 +2,25 @@ const Visitor = require("../models/Visitor");
 
 // 🔹 Helper: Generate Unique Visitor ID
 const generateVisitorId = async () => {
-  const last = await Visitor.findOne().sort({ createdAt: -1 });
-  const lastId = last?.visitorId || "VIS000";
-  const number = parseInt(lastId.replace("VIS", "")) + 1;
-  return `VIS${number.toString().padStart(3, "0")}`;
+  try {
+    const last = await Visitor.findOne().sort({ createdAt: -1 });
+    const lastId = last?.visitorId || "VIS000";
+    const number = parseInt(lastId.replace("VIS", "")) + 1;
+    return `VIS${number.toString().padStart(3, "0")}`;
+  } catch (err) {
+    console.error("❌ Error generating visitorId:", err);
+    return null;
+  }
 };
 
 // 🔹 POST: Register Visitor
 exports.registerVisitor = async (req, res) => {
   try {
     const visitorId = await generateVisitorId();
+    if (!visitorId) {
+      return res.status(500).json({ message: "Failed to generate visitor ID" });
+    }
+
     const { visitor_name, phone_number, purpose, date, email } = req.body;
 
     const visitor = new Visitor({
@@ -26,10 +35,11 @@ exports.registerVisitor = async (req, res) => {
     });
 
     await visitor.save();
+    console.log("✅ Visitor registered:", visitor);
     res.status(201).json(visitor);
   } catch (err) {
     console.error("❌ registerVisitor error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
