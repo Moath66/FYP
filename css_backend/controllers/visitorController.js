@@ -74,3 +74,47 @@ exports.getPending = async (req, res) => {
     res.status(500).json({ message: "Failed to load pending visitors" });
   }
 };
+
+
+// Approve Visitor
+exports.approveVisitor = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const visitor = await Visitor.findById(id);
+    if (!visitor) return res.status(404).json({ message: "Visitor not found" });
+
+    const qrContent = `Visitor: ${visitor.visitor_name}\nPhone: ${visitor.phone_number}\nPurpose: ${visitor.purpose}\nDate: ${visitor.date}`;
+    const QRCode = require("qrcode");
+    const qrCodeData = await QRCode.toDataURL(qrContent);
+
+    visitor.status = "approved";
+    visitor.qrCode = qrCodeData;
+    await visitor.save();
+
+    res.json({ message: "Visitor approved", visitor });
+  } catch (err) {
+    console.error("❌ approveVisitor error:", err);
+    res.status(500).json({ message: "Failed to approve visitor" });
+  }
+};
+
+// Deny Visitor
+exports.denyVisitor = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { reason } = req.body;
+
+    const visitor = await Visitor.findById(id);
+    if (!visitor) return res.status(404).json({ message: "Visitor not found" });
+
+    visitor.status = "denied";
+    visitor.qrCode = null;
+    visitor.denialReason = reason;
+    await visitor.save();
+
+    res.json({ message: "Visitor denied", visitor });
+  } catch (err) {
+    console.error("❌ denyVisitor error:", err);
+    res.status(500).json({ message: "Failed to deny visitor" });
+  }
+};

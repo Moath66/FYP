@@ -12,4 +12,9 @@ router.get("/byResident", auth, visitorController.getByResident);
 // 🔹 GET - Pending visitors (for security)
 router.get("/pending", auth, visitorController.getPending);
 
+
+// ADD these:
+router.patch("/approve/:id", auth, visitorController.approveVisitor);
+router.patch("/deny/:id", auth, visitorController.denyVisitor);
+
 module.exports = router;

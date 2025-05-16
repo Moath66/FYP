@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import "../styles/SecurityCheckVisitor.css";
+import React, { useState, useEffect } from "react";
 import {
   fetchPendingVisitors,
   approveVisitor,
   denyVisitor,
 } from "../api/visitorApis";
+import ConfirmDialog from "../components/ConfirmDialog";
+import "../styles/SecurityCheckVisitor.css";
 
 const SecurityCheckVisitor = () => {
   const [visitors, setVisitors] = useState([]);
@@ -13,52 +14,55 @@ const SecurityCheckVisitor = () => {
   const [showPurposeBox, setShowPurposeBox] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [confirmData, setConfirmData] = useState(null);
+  const [denyReason, setDenyReason] = useState("");
+  const [showReasonBox, setShowReasonBox] = useState(false);
 
-  const loadVisitors = async () => {
+  useEffect(() => {
+    fetchPending();
+  }, []);
+
+  const fetchPending = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Unauthorized. Please login.");
-        setVisitors([]);
-        return;
-      }
-
       const data = await fetchPendingVisitors();
-      setVisitors(Array.isArray(data) ? data : []);
+      setVisitors(data);
     } catch (err) {
-      console.error("❌ Error fetching visitors:", err);
-      setError("Failed to fetch visitors.");
-      setVisitors([]);
+      console.error("Fetch error:", err);
+      setError("Failed to fetch visitors");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    loadVisitors();
-  }, []);
-
-  const handleApprove = async (visitorId) => {
-    const confirm = window.confirm("✅ Approve this visitor?");
-    if (!confirm) return;
-
-    try {
-      await approveVisitor(visitorId);
-      loadVisitors();
-    } catch {
-      alert("Failed to approve visitor.");
-    }
+  const handleApprove = (visitor) => {
+    setConfirmData({
+      message: `✅ Are you sure you want to approve ${visitor.visitor_name} (ID: ${visitor.visitorId}) to enter D'summit Residence?`,
+      onConfirm: async () => {
+        try {
+          await approveVisitor(visitor._id);
+          setConfirmData(null);
+          fetchPending();
+        } catch (err) {
+          console.error("❌ Approval failed:", err);
+        }
+      },
+      onCancel: () => setConfirmData(null),
+    });
   };
 
-  const handleDeny = async (visitorId) => {
-    const reason = prompt("❌ Enter reason for denial:");
-    if (!reason) return;
+  const handleDeny = (visitor) => {
+    setShowReasonBox(visitor);
+  };
 
+  const confirmDeny = async () => {
+    if (!denyReason.trim()) return alert("Please enter a reason.");
     try {
-      await denyVisitor(visitorId, reason);
-      loadVisitors();
-    } catch {
-      alert("Failed to deny visitor.");
+      await denyVisitor(showReasonBox._id, denyReason);
+      setShowReasonBox(false);
+      setDenyReason("");
+      fetchPending();
+    } catch (err) {
+      console.error("❌ Deny failed:", err);
     }
   };
 
@@ -97,49 +101,38 @@ const SecurityCheckVisitor = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.length > 0 ? (
-              filtered.map((v, i) => (
-                <tr key={v._id}>
-                  <td>{i + 1}</td>
-                  <td>{v.visitorId}</td>
-                  <td>{v.visitor_name}</td>
-                  <td>
-                    <button
-                      className="btn-details"
-                      onClick={() => {
-                        setSelectedPurpose(v.purpose || "No details provided.");
-                        setShowPurposeBox(true);
-                      }}
-                    >
-                      Details
-                    </button>
-                  </td>
-                  <td>{v.phone_number}</td>
-                  <td>{v.email}</td>
-                  <td>{new Date(v.date).toLocaleDateString()}</td>
-                  <td>
-                    <button
-                      className="btn-approve"
-                      onClick={() => handleApprove(v._id)}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      className="btn-deny"
-                      onClick={() => handleDeny(v._id)}
-                    >
-                      Deny
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8" style={{ textAlign: "center", color: "gray" }}>
-                  No pending visitors found.
+            {filtered.map((v, i) => (
+              <tr key={v._id}>
+                <td>{i + 1}</td>
+                <td>{v.visitorId}</td>
+                <td>{v.visitor_name}</td>
+                <td>
+                  <button
+                    className="btn-details"
+                    onClick={() => {
+                      setSelectedPurpose(v.purpose || "No details provided.");
+                      setShowPurposeBox(true);
+                    }}
+                  >
+                    Details
+                  </button>
+                </td>
+                <td>{v.phone_number}</td>
+                <td>{v.email}</td>
+                <td>{new Date(v.date).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="btn-approve"
+                    onClick={() => handleApprove(v)}
+                  >
+                    Approve
+                  </button>
+                  <button className="btn-deny" onClick={() => handleDeny(v)}>
+                    Deny
+                  </button>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       )}
@@ -155,6 +148,42 @@ const SecurityCheckVisitor = () => {
             >
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {confirmData && (
+        <ConfirmDialog
+          message={confirmData.message}
+          onCancel={confirmData.onCancel}
+          onConfirm={confirmData.onConfirm}
+        />
+      )}
+
+      {showReasonBox && (
+        <div className="popup-overlay">
+          <div className="popup-card">
+            <p>
+              ❌ Enter reason to deny {showReasonBox.visitor_name} (ID:{" "}
+              {showReasonBox.visitorId})
+            </p>
+            <textarea
+              rows="3"
+              placeholder="Please enter reason..."
+              value={denyReason}
+              onChange={(e) => setDenyReason(e.target.value)}
+            ></textarea>
+            <div className="confirm-dialog-buttons">
+              <button
+                className="cancel-btn"
+                onClick={() => setShowReasonBox(false)}
+              >
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={confirmDeny}>
+                Confirm
+              </button>
+            </div>
           </div>
         </div>
       )}
