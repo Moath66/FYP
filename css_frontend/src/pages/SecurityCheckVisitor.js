@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "../styles/SecurityCheckVisitor.css";
+import "../../styles/SecurityCheckVisitor.css";
 import axios from "axios";
 
 const SecurityCheckVisitor = () => {
   const [visitors, setVisitors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPurpose, setSelectedPurpose] = useState("");
+  const [showPurposeBox, setShowPurposeBox] = useState(false);
 
   const fetchPendingVisitors = async () => {
     try {
@@ -14,12 +16,11 @@ const SecurityCheckVisitor = () => {
         },
       });
 
-      // ✅ Check if response is array
       if (Array.isArray(res.data)) {
         setVisitors(res.data);
       } else {
-        console.warn("⚠️ Unexpected visitor response:", res.data);
         setVisitors([]);
+        console.warn("⚠️ Unexpected visitor response:", res.data);
       }
     } catch (error) {
       console.error("❌ Error fetching visitors:", error);
@@ -85,7 +86,7 @@ const SecurityCheckVisitor = () => {
 
       <input
         type="text"
-        placeholder="🔍 Search by name..."
+        placeholder="🔍 Search by visitor name..."
         className="search-box"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -96,7 +97,7 @@ const SecurityCheckVisitor = () => {
           <tr>
             <th>#</th>
             <th>Visitor ID</th>
-            <th>Full Name</th>
+            <th>Visitor Name</th>
             <th>Purpose</th>
             <th>Phone</th>
             <th>Email</th>
@@ -112,7 +113,15 @@ const SecurityCheckVisitor = () => {
                 <td>{v.visitorId}</td>
                 <td>{v.visitor_name}</td>
                 <td>
-                  <span className="tag purpose">{v.purpose}</span>
+                  <button
+                    className="btn-details"
+                    onClick={() => {
+                      setSelectedPurpose(v.purpose);
+                      setShowPurposeBox(true);
+                    }}
+                  >
+                    Details
+                  </button>
                 </td>
                 <td>{v.phone_number}</td>
                 <td>{v.email}</td>
@@ -142,6 +151,22 @@ const SecurityCheckVisitor = () => {
           )}
         </tbody>
       </table>
+
+      {/* Purpose Pop-up */}
+      {showPurposeBox && (
+        <div className="purpose-popup">
+          <div className="purpose-content">
+            <h4>Purpose of Visit</h4>
+            <p>{selectedPurpose}</p>
+            <button
+              className="close-popup"
+              onClick={() => setShowPurposeBox(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
