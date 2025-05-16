@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../styles/SecurityCheckVisitor.css";
-import axios from "axios";
+import {
+  fetchPendingVisitors,
+  approveVisitor,
+  denyVisitor,
+} from "../api/visitorApis";
 
 const SecurityCheckVisitor = () => {
   const [visitors, setVisitors] = useState([]);
@@ -10,7 +14,7 @@ const SecurityCheckVisitor = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchPendingVisitors = async () => {
+  const loadVisitors = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -19,20 +23,10 @@ const SecurityCheckVisitor = () => {
         return;
       }
 
-      const res = await axios.get("/api/visitors/pending", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (Array.isArray(res.data)) {
-        setVisitors(res.data);
-      } else {
-        setVisitors([]);
-        console.warn("⚠️ Unexpected visitor response:", res.data);
-      }
-    } catch (error) {
-      console.error("❌ Error fetching visitors:", error);
+      const data = await fetchPendingVisitors();
+      setVisitors(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("❌ Error fetching visitors:", err);
       setError("Failed to fetch visitors.");
       setVisitors([]);
     } finally {
@@ -41,7 +35,7 @@ const SecurityCheckVisitor = () => {
   };
 
   useEffect(() => {
-    fetchPendingVisitors();
+    loadVisitors();
   }, []);
 
   const handleApprove = async (visitorId) => {
@@ -49,18 +43,9 @@ const SecurityCheckVisitor = () => {
     if (!confirm) return;
 
     try {
-      await axios.patch(
-        `/api/visitors/approve/${visitorId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      fetchPendingVisitors();
-    } catch (error) {
-      console.error("❌ Approval failed:", error);
+      await approveVisitor(visitorId);
+      loadVisitors();
+    } catch {
       alert("Failed to approve visitor.");
     }
   };
@@ -70,27 +55,16 @@ const SecurityCheckVisitor = () => {
     if (!reason) return;
 
     try {
-      await axios.patch(
-        `/api/visitors/deny/${visitorId}`,
-        { reason },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      fetchPendingVisitors();
-    } catch (error) {
-      console.error("❌ Denial failed:", error);
+      await denyVisitor(visitorId, reason);
+      loadVisitors();
+    } catch {
       alert("Failed to deny visitor.");
     }
   };
 
-  const filtered = Array.isArray(visitors)
-    ? visitors.filter((v) =>
-        v.visitor_name?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+  const filtered = visitors.filter((v) =>
+    v.visitor_name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="security-container">
@@ -170,7 +144,6 @@ const SecurityCheckVisitor = () => {
         </table>
       )}
 
-      {/* Purpose Pop-up */}
       {showPurposeBox && (
         <div className="purpose-popup">
           <div className="purpose-content">

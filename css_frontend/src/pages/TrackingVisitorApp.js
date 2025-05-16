@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/TrackingVisitorApp.css";
-import axios from "axios";
+import { getVisitorsByResident } from "../api/visitorApis"; // ✅ Use API helper
 
 const TrackingVisitorApp = () => {
   const [visitorList, setVisitorList] = useState([]);
@@ -10,28 +10,19 @@ const TrackingVisitorApp = () => {
 
   const fetchVisitors = async () => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const userId = storedUser?._id || storedUser?.id;
       const token = localStorage.getItem("token");
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-      console.log("📦 userId:", userId);
-      console.log("🔐 token:", token);
-
-      if (!userId || !token) {
+      if (!storedUser || !token) {
         setError("Missing user session. Please log in again.");
         setLoading(false);
         return;
       }
 
-      const res = await axios.get(`/api/visitors/byResident/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setVisitorList(res.data || []);
-    } catch (error) {
-      console.error("❌ Error fetching visitor data:", error);
+      const data = await getVisitorsByResident(); // ✅ Centralized API call
+      setVisitorList(data || []);
+    } catch (err) {
+      console.error("❌ Error fetching visitor data:", err);
       setError("Failed to load visitors.");
     } finally {
       setLoading(false);
