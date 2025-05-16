@@ -176,7 +176,7 @@ const SecurityCheckVisitor = () => {
         <div className="popup-overlay">
           <div className="popup-card">
             <p>
-              ❌ Enter reason to deny <b>{denyData.visitor_name}</b> (ID:{" "}
+              ❌ Enter reason to deny <b>{denyData.visitor_name}</b> with (ID:{" "}
               <b>{denyData.visitorId}</b>)
             </p>
             <textarea
