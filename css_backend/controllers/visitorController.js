@@ -1,11 +1,16 @@
 const Visitor = require("../models/Visitor");
 
-// 🔹 Helper: Generate Unique Visitor ID
 const generateVisitorId = async () => {
   try {
-    // Exclude null or missing visitorId to avoid duplication
-    const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({ createdAt: -1 });
-    const lastId = last?.visitorId || "VIS000";
+    const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({
+      createdAt: -1,
+    });
+
+    let lastId = "VIS000";
+    if (last && last.visitorId) {
+      lastId = last.visitorId;
+    }
+
     const number = parseInt(lastId.replace("VIS", "")) + 1;
     return `VIS${number.toString().padStart(3, "0")}`;
   } catch (err) {
@@ -14,13 +19,12 @@ const generateVisitorId = async () => {
   }
 };
 
-
 // 🔹 POST: Register Visitor
 exports.registerVisitor = async (req, res) => {
   try {
     const visitorId = await generateVisitorId();
-    if (!visitorId) {
-      return res.status(500).json({ message: "Failed to generate visitor ID" });
+    if (!visitorId || visitorId.includes("NaN")) {
+      return res.status(500).json({ message: "Invalid visitor ID generated" });
     }
 
     const { visitor_name, phone_number, purpose, date, email } = req.body;
