@@ -3,10 +3,8 @@ const Visitor = require("../models/Visitor");
 // 🔹 Helper: Generate Unique Visitor ID
 const generateVisitorId = async () => {
   try {
-    // Filter out documents with null visitorId to avoid duplicate key errors
-    const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({
-      createdAt: -1,
-    });
+    // Exclude null or missing visitorId to avoid duplication
+    const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({ createdAt: -1 });
     const lastId = last?.visitorId || "VIS000";
     const number = parseInt(lastId.replace("VIS", "")) + 1;
     return `VIS${number.toString().padStart(3, "0")}`;
@@ -15,6 +13,7 @@ const generateVisitorId = async () => {
     return null;
   }
 };
+
 
 // 🔹 POST: Register Visitor
 exports.registerVisitor = async (req, res) => {
