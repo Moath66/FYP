@@ -2,6 +2,19 @@ import React, { useState } from "react";
 import { registerVisitor } from "../api/visitorApis";
 import "../styles/PreVisitorRegis.css";
 
+import axios from "axios";
+
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+// ✅ POST /api/visitors/register
+export const registerVisitor = async (formData, token) => {
+  return await axios.post(`${BASE_URL}/visitors/register`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 const PreVisitorRegis = () => {
   const [formData, setFormData] = useState({
     visitor_name: "",
