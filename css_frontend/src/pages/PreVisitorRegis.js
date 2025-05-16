@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { registerVisitor } from "../api/userApis/visitorApis";
+import { registerVisitor } from "../api/visitorApis";
 import "../styles/PreVisitorRegis.css";
 
 const PreVisitorRegis = () => {
