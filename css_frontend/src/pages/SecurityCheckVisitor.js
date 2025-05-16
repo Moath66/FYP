@@ -13,9 +13,17 @@ const SecurityCheckVisitor = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setVisitors(res.data);
+
+      // ✅ Check if response is array
+      if (Array.isArray(res.data)) {
+        setVisitors(res.data);
+      } else {
+        console.warn("⚠️ Unexpected visitor response:", res.data);
+        setVisitors([]);
+      }
     } catch (error) {
       console.error("❌ Error fetching visitors:", error);
+      setVisitors([]);
     }
   };
 
@@ -30,12 +38,16 @@ const SecurityCheckVisitor = () => {
     if (!confirm) return;
 
     try {
-      await axios.patch(`/api/visitors/approve/${visitorId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      fetchPendingVisitors(); // Refresh table
+      await axios.patch(
+        `/api/visitors/approve/${visitorId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      fetchPendingVisitors();
     } catch (error) {
       console.error("❌ Approval failed:", error);
     }
@@ -46,20 +58,26 @@ const SecurityCheckVisitor = () => {
     if (!reason) return;
 
     try {
-      await axios.patch(`/api/visitors/deny/${visitorId}`, { reason }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      fetchPendingVisitors(); // Refresh table
+      await axios.patch(
+        `/api/visitors/deny/${visitorId}`,
+        { reason },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      fetchPendingVisitors();
     } catch (error) {
       console.error("❌ Denial failed:", error);
     }
   };
 
-  const filtered = visitors.filter((v) =>
-    v.visitor_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = Array.isArray(visitors)
+    ? visitors.filter((v) =>
+        v.visitor_name?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="security-container">
@@ -87,21 +105,41 @@ const SecurityCheckVisitor = () => {
           </tr>
         </thead>
         <tbody>
-          {filtered.map((v, i) => (
-            <tr key={v._id}>
-              <td>{i + 1}</td>
-              <td>{v.visitorId}</td>
-              <td>{v.visitor_name}</td>
-              <td><span className="tag purpose">{v.purpose}</span></td>
-              <td>{v.phone_number}</td>
-              <td>{v.email}</td>
-              <td>{new Date(v.date).toLocaleDateString()}</td>
-              <td>
-                <button className="btn-approve" onClick={() => handleApprove(v._id)}>Approve</button>
-                <button className="btn-deny" onClick={() => handleDeny(v._id)}>Deny</button>
+          {filtered.length > 0 ? (
+            filtered.map((v, i) => (
+              <tr key={v._id}>
+                <td>{i + 1}</td>
+                <td>{v.visitorId}</td>
+                <td>{v.visitor_name}</td>
+                <td>
+                  <span className="tag purpose">{v.purpose}</span>
+                </td>
+                <td>{v.phone_number}</td>
+                <td>{v.email}</td>
+                <td>{new Date(v.date).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="btn-approve"
+                    onClick={() => handleApprove(v._id)}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="btn-deny"
+                    onClick={() => handleDeny(v._id)}
+                  >
+                    Deny
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="8" style={{ textAlign: "center", color: "gray" }}>
+                No pending visitors found.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
