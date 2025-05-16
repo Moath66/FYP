@@ -52,7 +52,8 @@ exports.registerVisitor = async (req, res) => {
 // 🔹 GET: Visitors by Resident
 exports.getByResident = async (req, res) => {
   try {
-    const visitors = await Visitor.find({ submittedBy: req.params.id }).sort({
+    const userId = req.user.userId || req.user._id; // Get from token
+    const visitors = await Visitor.find({ submittedBy: userId }).sort({
       createdAt: -1,
     });
     res.json(visitors);
@@ -61,7 +62,6 @@ exports.getByResident = async (req, res) => {
     res.status(500).json({ message: "Failed to get visitors" });
   }
 };
-
 // 🔹 GET: All Pending Visitors (for security dashboard)
 exports.getPending = async (req, res) => {
   try {
