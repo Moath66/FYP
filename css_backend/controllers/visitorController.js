@@ -21,6 +21,7 @@ const generateVisitorId = async () => {
       number++;
     }
 
+    console.log("✅ Generated visitorId:", newId); // ✅ log for debugging
     return newId;
   } catch (err) {
     console.error("❌ Error generating visitorId:", err);
@@ -33,7 +34,7 @@ exports.registerVisitor = async (req, res) => {
   try {
     const visitorId = await generateVisitorId();
 
-    if (!visitorId || visitorId.includes("NaN")) {
+    if (!visitorId || visitorId === "VISNaN") {
       console.error("❌ visitorId generation failed:", visitorId);
       return res.status(500).json({ message: "Invalid visitor ID generated" });
     }
