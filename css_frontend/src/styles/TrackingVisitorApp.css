@@ -78,6 +78,11 @@
   margin-inline: auto;
 }
 
+.reason-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .reason-btn {
   background-color: white;
   color: #d9534f;
@@ -88,10 +93,25 @@
   border-radius: 20px;
   margin-left: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: 0.2s ease;
 }
 
 .reason-btn:hover {
-  background-color: #030303;
-  color: white;
+  background-color: #d9534f;
+  color: rgb(6, 6, 6);
+}
+
+.reason-popup {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  background-color: #fff8f8;
+  border: 1px solid #d9534f;
+  color: #a94442;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  z-index: 10;
 }

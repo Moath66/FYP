@@ -95,12 +95,27 @@ const TrackingVisitorApp = () => {
                         <span className="status denied">
                           ✖ Denied
                           {visitor.denialReason && (
-                            <button
-                              className="reason-btn"
-                              title={visitor.denialReason}
-                            >
-                              View Reason
-                            </button>
+                            <div className="reason-wrapper">
+                              <button
+                                className="reason-btn"
+                                onClick={() =>
+                                  setVisitorList((prev) =>
+                                    prev.map((v) =>
+                                      v._id === visitor._id
+                                        ? { ...v, showReason: !v.showReason }
+                                        : v
+                                    )
+                                  )
+                                }
+                              >
+                                View Reason
+                              </button>
+                              {visitor.showReason && (
+                                <div className="reason-popup">
+                                  ❗ {visitor.denialReason}
+                                </div>
+                              )}
+                            </div>
                           )}
                         </span>
                       ) : (
