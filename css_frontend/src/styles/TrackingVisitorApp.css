@@ -77,3 +77,21 @@
   max-width: 300px;
   margin-inline: auto;
 }
+
+.reason-btn {
+  background-color: white;
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 20px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.reason-btn:hover {
+  background-color: #d9534f;
+  color: white;
+}

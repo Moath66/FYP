@@ -95,9 +95,12 @@ const TrackingVisitorApp = () => {
                         <span className="status denied">
                           ✖ Denied
                           {visitor.denialReason && (
-                            <div className="denial-reason-box">
-                              <strong>Reason:</strong> {visitor.denialReason}
-                            </div>
+                            <button
+                              className="reason-btn"
+                              title={visitor.denialReason}
+                            >
+                              View Reason
+                            </button>
                           )}
                         </span>
                       ) : (
