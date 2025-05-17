@@ -11,11 +11,10 @@ const generateVisitorId = async () => {
       lastId = last.visitorId;
     }
 
+    let number = parseInt(lastId.replace("VIS", "")) + 1;
     let newId;
     let exists = true;
-    let number = parseInt(lastId.replace("VIS", "")) + 1;
 
-    // Loop to ensure uniqueness
     while (exists) {
       newId = `VIS${number.toString().padStart(3, "0")}`;
       exists = await Visitor.exists({ visitorId: newId });
@@ -33,7 +32,9 @@ const generateVisitorId = async () => {
 exports.registerVisitor = async (req, res) => {
   try {
     const visitorId = await generateVisitorId();
+
     if (!visitorId || visitorId.includes("NaN")) {
+      console.error("❌ visitorId generation failed:", visitorId);
       return res.status(500).json({ message: "Invalid visitor ID generated" });
     }
 
@@ -47,7 +48,7 @@ exports.registerVisitor = async (req, res) => {
       date,
       email,
       status: "pending",
-      submittedBy: req.user.userId || req.user._id, // Compatible with both token styles
+      submittedBy: req.user.userId || req.user._id,
     });
 
     await visitor.save();
