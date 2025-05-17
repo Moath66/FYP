@@ -95,14 +95,8 @@ const TrackingVisitorApp = () => {
                         <span className="status denied">
                           ✖ Denied
                           {visitor.denialReason && (
-                            <div
-                              style={{
-                                fontSize: "12px",
-                                color: "#333",
-                                marginTop: "4px",
-                              }}
-                            >
-                              Reason: {visitor.denialReason}
+                            <div className="denial-reason-box">
+                              <strong>Reason:</strong> {visitor.denialReason}
                             </div>
                           )}
                         </span>

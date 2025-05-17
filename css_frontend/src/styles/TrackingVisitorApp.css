@@ -65,3 +65,15 @@
   font-style: italic;
   color: gray;
 }
+
+.denial-reason-box {
+  margin-top: 8px;
+  font-size: 13px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
+  max-width: 300px;
+  margin-inline: auto;
+}
