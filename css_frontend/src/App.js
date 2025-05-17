@@ -26,6 +26,7 @@ import SecurityHandleItems from "./pages/SecurityHandleItems";
 import SecurityCheckVisitor from "./pages/SecurityCheckVisitor";
 import AnalyzeMaintenance from "./pages/AnalyzeMaintenance";
 import QRCodeScanPage from "./components/QRCodeScanPage"; // ✅ New page import
+import QRCodeScanPageVisitor from "./components/QRCodeScanPageVisitor";
 
 function App() {
   return (
