@@ -103,14 +103,19 @@ exports.getPending = async (req, res) => {
 exports.approveVisitor = async (req, res) => {
   try {
     const id = req.params.id;
-    const visitor = await Visitor.findById(id).populate("submittedBy");
-
+    const visitor = await Visitor.findById(id);
     if (!visitor) return res.status(404).json({ message: "Visitor not found" });
 
-    const resident = visitor.submittedBy;
+    const resident = await User.findById(visitor.submittedBy);
     const security = await User.findById(req.user.userId);
 
-    // Build payload
+    if (!resident || !security) {
+      return res
+        .status(404)
+        .json({ message: "Approver or requester not found" });
+    }
+
+    // ✅ Prepare QR payload with `userId` (not _id)
     const qrPayload = {
       visitorId: visitor.visitorId,
       visitor_name: visitor.visitor_name,
@@ -120,12 +125,12 @@ exports.approveVisitor = async (req, res) => {
       date: visitor.date,
       status: "approved",
       submittedBy: {
-        userId: resident._id,
+        userId: resident.userId,
         userName: resident.userName,
         role: resident.role,
       },
       approvedBy: {
-        userId: security._id,
+        userId: security.userId,
         userName: security.userName,
         role: security.role,
       },
@@ -133,10 +138,9 @@ exports.approveVisitor = async (req, res) => {
 
     const baseUrl = req.headers.origin || process.env.REACT_APP_PUBLIC_URL;
     const encoded = encodeURIComponent(JSON.stringify(qrPayload));
-    const scanURL = `${baseUrl}/scan?data=${encoded}`;
+    const scanURL = `${baseUrl}/scan-visitor?data=${encoded}`;
 
     const qrCodeData = await QRCode.toDataURL(scanURL);
-
     visitor.status = "approved";
     visitor.qrCode = qrCodeData;
     await visitor.save();
