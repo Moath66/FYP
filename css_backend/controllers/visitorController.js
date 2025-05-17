@@ -8,7 +8,10 @@ const generateVisitorId = async () => {
     const last = await Visitor.findOne({ visitorId: { $ne: null } }).sort({
       createdAt: -1,
     });
-    let lastId = last?.visitorId || "VIS000";
+
+    let lastId = "VIS000";
+    if (last?.visitorId) lastId = last.visitorId;
+
     let number = parseInt(lastId.replace("VIS", "")) + 1;
     let newId;
     let exists = true;
@@ -31,7 +34,9 @@ const generateVisitorId = async () => {
 exports.registerVisitor = async (req, res) => {
   try {
     const visitorId = await generateVisitorId();
+
     if (!visitorId || visitorId === "VISNaN") {
+      console.error("❌ visitorId generation failed:", visitorId);
       return res.status(500).json({ message: "Invalid visitor ID generated" });
     }
 
@@ -98,19 +103,14 @@ exports.getPending = async (req, res) => {
 exports.approveVisitor = async (req, res) => {
   try {
     const id = req.params.id;
-
     const visitor = await Visitor.findById(id).populate("submittedBy");
+
     if (!visitor) return res.status(404).json({ message: "Visitor not found" });
 
-    const resident = await User.findOne({ _id: visitor.submittedBy._id });
-    const security = await User.findOne({ _id: req.user.userId });
+    const resident = visitor.submittedBy;
+    const security = await User.findById(req.user.userId);
 
-    if (!resident?.userId || !security?.userId) {
-      return res
-        .status(500)
-        .json({ message: "Missing userId for resident or security" });
-    }
-
+    // Build payload
     const qrPayload = {
       visitorId: visitor.visitorId,
       visitor_name: visitor.visitor_name,
@@ -120,12 +120,12 @@ exports.approveVisitor = async (req, res) => {
       date: visitor.date,
       status: "approved",
       submittedBy: {
-        userId: resident.userId, // ✅ numeric userId
+        userId: resident.userId,
         userName: resident.userName,
         role: resident.role,
       },
       approvedBy: {
-        userId: security.userId, // ✅ numeric userId
+        userId: security.userId,
         userName: security.userName,
         role: security.role,
       },
@@ -133,7 +133,7 @@ exports.approveVisitor = async (req, res) => {
 
     const baseUrl = req.headers.origin || process.env.REACT_APP_PUBLIC_URL;
     const encoded = encodeURIComponent(JSON.stringify(qrPayload));
-    const scanURL = `${baseUrl}/scan-visitor?data=${encoded}`; // ✅ Correct route
+    const scanURL = `${baseUrl}/scan?data=${encoded}`;
 
     const qrCodeData = await QRCode.toDataURL(scanURL);
 
