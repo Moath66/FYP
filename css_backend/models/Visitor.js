@@ -6,6 +6,7 @@ const visitorSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      sparse: true,
     },
     visitor_name: String,
     phone_number: String,

@@ -11,8 +11,18 @@ const generateVisitorId = async () => {
       lastId = last.visitorId;
     }
 
-    const number = parseInt(lastId.replace("VIS", "")) + 1;
-    return `VIS${number.toString().padStart(3, "0")}`;
+    let newId;
+    let exists = true;
+    let number = parseInt(lastId.replace("VIS", "")) + 1;
+
+    // Loop to ensure uniqueness
+    while (exists) {
+      newId = `VIS${number.toString().padStart(3, "0")}`;
+      exists = await Visitor.exists({ visitorId: newId });
+      number++;
+    }
+
+    return newId;
   } catch (err) {
     console.error("❌ Error generating visitorId:", err);
     return null;
