@@ -92,7 +92,20 @@ const TrackingVisitorApp = () => {
                       {visitor.status === "approved" ? (
                         <span className="status approved">✔ Approved</span>
                       ) : visitor.status === "denied" ? (
-                        <span className="status denied">✖ Denied</span>
+                        <span className="status denied">
+                          ✖ Denied
+                          {visitor.denialReason && (
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                color: "#333",
+                                marginTop: "4px",
+                              }}
+                            >
+                              Reason: {visitor.denialReason}
+                            </div>
+                          )}
+                        </span>
                       ) : (
                         <span className="status pending">⌛ Pending</span>
                       )}
