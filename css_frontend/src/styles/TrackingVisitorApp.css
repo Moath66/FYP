@@ -97,8 +97,8 @@
 }
 
 .reason-btn:hover {
-  background-color: #d9534f;
-  color: rgb(6, 6, 6);
+  background-color: #000000;
+  color: rgb(238, 232, 232);
 }
 
 .reason-popup {
