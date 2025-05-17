@@ -8,7 +8,6 @@ const API_URL = `${BASE_URL}/visitors`;
 // ✅ Auth header helper
 const authHeader = () => ({
   headers: {
-    
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
@@ -76,6 +75,16 @@ export const getVisitorsByResident = async () => {
     return res.data;
   } catch (err) {
     console.error("❌ Error fetching visitor list:", err);
+    throw err;
+  }
+};
+
+export const fetchAllVisitorsForSecurity = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/all`, authHeader());
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching all visitors:", err);
     throw err;
   }
 };

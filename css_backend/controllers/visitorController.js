@@ -49,6 +49,15 @@ exports.registerVisitor = async (req, res) => {
   }
 };
 
+exports.getAllVisitors = async (req, res) => {
+  try {
+    const all = await Visitor.find().sort({ createdAt: -1 });
+    res.json(all);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to load all visitors" });
+  }
+};
+
 // 🔹 GET: Visitors by Resident
 exports.getByResident = async (req, res) => {
   try {
@@ -74,7 +83,6 @@ exports.getPending = async (req, res) => {
     res.status(500).json({ message: "Failed to load pending visitors" });
   }
 };
-
 
 // Approve Visitor
 exports.approveVisitor = async (req, res) => {

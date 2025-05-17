@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/SecurityCheckVisitor.css";
 import {
-  fetchPendingVisitors,
+  fetchAllVisitorsForSecurity,
   approveVisitor,
   denyVisitor,
 } from "../api/visitorApis";
@@ -22,7 +22,7 @@ const SecurityCheckVisitor = () => {
   const loadVisitors = async () => {
     try {
       setLoading(true);
-      const data = await fetchPendingVisitors();
+      const data = await fetchAllVisitorsForSecurity();
       setVisitors(data);
     } catch (err) {
       setError("Failed to fetch visitors.");
@@ -123,22 +123,31 @@ const SecurityCheckVisitor = () => {
                   <td>{v.email}</td>
                   <td>{new Date(v.date).toLocaleDateString()}</td>
                   <td>
-                    <button
-                      className="btn-approve"
-                      onClick={() => handleApprove(v)}
-                    >
-                      Approve
-                    </button>
-                    <button className="btn-deny" onClick={() => handleDeny(v)}>
-                      Deny
-                    </button>
+                    {v.status === "pending" ? (
+                      <>
+                        <button
+                          className="btn-approve"
+                          onClick={() => handleApprove(v)}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="btn-deny"
+                          onClick={() => handleDeny(v)}
+                        >
+                          Deny
+                        </button>
+                      </>
+                    ) : (
+                      <span className="completed-status">✅ Completed</span>
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td colSpan="8" style={{ textAlign: "center", color: "gray" }}>
-                  No pending visitors found.
+                  No visitors found.
                 </td>
               </tr>
             )}
