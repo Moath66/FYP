@@ -197,6 +197,8 @@ function App() {
           }
         />
 
+        <Route path="/scan" element={<QRCodeScanPageVisitor />} />
+
         {/* ✅ Public Scan QR Code Page */}
         <Route path="/scan" element={<QRCodeScanPage />} />
 
