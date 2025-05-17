@@ -68,31 +68,37 @@ const TrackingVisitorApp = () => {
           </thead>
           <tbody>
             {filteredVisitors.length > 0 ? (
-              filteredVisitors.map((visitor, index) => (
-                <tr key={visitor._id}>
-                  <td>{index + 1}</td>
-                  <td>{visitor.visitorId}</td>
-                  <td>{visitor.visitor_name}</td>
-                  <td>
-                    {visitor.status === "approved" ? (
-                      <img src={visitor.qrCode} alt="QR" className="qr-image" />
-                    ) : visitor.status === "denied" ? (
-                      <span className="not-available">Not Available</span>
-                    ) : (
-                      ""
-                    )}
-                  </td>
-                  <td>
-                    {visitor.status === "approved" ? (
-                      <span className="status approved">✔ Approved</span>
-                    ) : visitor.status === "denied" ? (
-                      <span className="status denied">✖ Denied</span>
-                    ) : (
-                      <span className="status pending">⌛ Pending</span>
-                    )}
-                  </td>
-                </tr>
-              ))
+              filteredVisitors
+                .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
+                .map((visitor, index) => (
+                  <tr key={visitor._id}>
+                    <td>{index + 1}</td>
+                    <td>{visitor.visitorId}</td>
+                    <td>{visitor.visitor_name}</td>
+                    <td>
+                      {visitor.status === "approved" ? (
+                        <img
+                          src={visitor.qrCode}
+                          alt="QR"
+                          className="qr-image"
+                        />
+                      ) : visitor.status === "denied" ? (
+                        <span className="not-available">Not Available</span>
+                      ) : (
+                        ""
+                      )}
+                    </td>
+                    <td>
+                      {visitor.status === "approved" ? (
+                        <span className="status approved">✔ Approved</span>
+                      ) : visitor.status === "denied" ? (
+                        <span className="status denied">✖ Denied</span>
+                      ) : (
+                        <span className="status pending">⌛ Pending</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
             ) : (
               <tr>
                 <td colSpan="5" style={{ textAlign: "center", color: "gray" }}>
