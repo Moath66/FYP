@@ -41,3 +41,13 @@ export const updateMaintenanceStatus = async (id, action) => {
   );
   return response.data;
 };
+
+export const getMaintenanceByResident = async (residentId) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${API_URL}/resident/${residentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
