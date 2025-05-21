@@ -1,0 +1,54 @@
+.maintenance-form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.maintenance-form-container h2 {
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  text-align: center;
+  color: #333;
+}
+
+.maintenance-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+}
+
+.maintenance-form input,
+.maintenance-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.maintenance-form textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.maintenance-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.maintenance-form button:hover {
+  background-color: #0056b3;
+}
