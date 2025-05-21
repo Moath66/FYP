@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/RequestMaintenance.css";
-import { submitMaintenance } from "../api/maintenanceApis"; // You'll create this
+import { submitMaintenance } from "../api/maintenanceApis";
 
 const RequestMaintenance = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const RequestMaintenance = () => {
     <div className="maintenance-form-container">
       <h2>🛠️ Maintenance Request Form</h2>
       <form className="maintenance-form" onSubmit={handleSubmit}>
-        <label>Equipment Type</label>
+        <label>Equipment Name</label>
         <input
           name="eq_type"
           value={formData.eq_type}
@@ -48,28 +48,47 @@ const RequestMaintenance = () => {
         />
 
         <label>Equipment Age</label>
-        <input
+        <select
           name="eq_age"
           value={formData.eq_age}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Select Age</option>
+          <option value="2 months">2 months</option>
+          <option value="6 months">6 months</option>
+          <option value="1 year">1 year</option>
+          <option value="3 years">3 years</option>
+          <option value="4 years">4 years</option>
+        </select>
 
         <label>Usage Pattern</label>
-        <input
+        <select
           name="usage_pattern"
           value={formData.usage_pattern}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Select Pattern</option>
+          <option value="Economic">Economic</option>
+          <option value="Continuous">Continuous</option>
+        </select>
 
         <label>Environmental Condition</label>
-        <input
+        <select
           name="environment_condition"
           value={formData.environment_condition}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Select Condition</option>
+          <option value="Humidity">Humidity</option>
+          <option value="Temperature">Temperature</option>
+          <option value="Pressure">Pressure</option>
+          <option value="Vibration">Vibration</option>
+          <option value="Noise">Noise</option>
+          <option value="Echo">Echo</option>
+        </select>
 
         <label>Description</label>
         <textarea
