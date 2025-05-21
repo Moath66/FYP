@@ -1,0 +1,60 @@
+.analyze-container {
+  padding: 20px;
+  max-width: 95%;
+  margin: auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.analyze-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.analyze-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analyze-table th,
+.analyze-table td {
+  padding: 12px 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.analyze-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+}
+
+.badge.orange {
+  background-color: #ff9800;
+}
+
+.badge.green {
+  background-color: #4caf50;
+}
+
+.badge.yellow {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
