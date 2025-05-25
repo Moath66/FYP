@@ -77,14 +77,14 @@
   display: inline-block;
 }
 
-/* ✅ New: Centered Description Modal */
+/* ✅ Centered Modal for Description */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,6 +99,7 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   max-width: 400px;
   width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .modal-content h3 {
@@ -120,4 +121,16 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+}
+
+/* Optional animation for smooth appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

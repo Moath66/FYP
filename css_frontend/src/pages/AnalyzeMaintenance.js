@@ -105,15 +105,17 @@ const AnalyzeMaintenance = () => {
       </table>
 
       {selectedDescription && (
-        <div className="description-popup">
-          <h4>Description</h4>
-          <p>{selectedDescription}</p>
-          <button
-            className="close-btn"
-            onClick={() => setSelectedDescription("")}
-          >
-            Close
-          </button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>📝 Description</h3>
+            <p>{selectedDescription}</p>
+            <button
+              className="close-btn"
+              onClick={() => setSelectedDescription("")}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
