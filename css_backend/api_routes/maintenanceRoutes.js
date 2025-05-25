@@ -6,7 +6,7 @@ const {
   getAllMaintenance,
   updateMaintenanceStatus,
 } = require("../controllers/maintenanceController");
-const { verifyToken } = require("../middleware/authMiddleware"); // Make sure this exists
+const verifyToken = require("../middleware/authMiddleware");
 
 // 🔹 POST: Resident submits maintenance request
 router.post("/submit", verifyToken, submitMaintenance);
