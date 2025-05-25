@@ -1,12 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const maintenanceController = require("../controllers/maintenanceController");
+const {
+  submitMaintenance,
+  getByResident,
+  getAllMaintenance,
+  updateMaintenanceStatus,
+} = require("../controllers/maintenanceController");
+const { verifyToken } = require("../middleware/authMiddleware"); // Make sure this exists
 
-// Routes for maintenance requests
-router.get("/", maintenanceController.getAllMaintenanceRequests); // Get all maintenance requests
-router.get("/:id", maintenanceController.getMaintenanceById); // Get a single maintenance request by ID
-router.post("/", maintenanceController.createMaintenanceRequest); // Create a new maintenance request
-router.put("/:id", maintenanceController.updateMaintenanceRequest); // Update a maintenance request
-router.delete("/:id", maintenanceController.deleteMaintenanceRequest); // Delete a maintenance request
+// 🔹 POST: Resident submits maintenance request
+router.post("/submit", verifyToken, submitMaintenance);
+
+// 🔹 GET: Fetch maintenance requests by resident ID
+router.get("/resident/:id", verifyToken, getByResident);
+
+// 🔹 GET: Staff gets all maintenance requests
+router.get("/all", verifyToken, getAllMaintenance);
+
+// 🔹 PATCH: Staff updates status and action
+router.patch("/update/:id", verifyToken, updateMaintenanceStatus);
 
 module.exports = router;

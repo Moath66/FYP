@@ -1,56 +1,93 @@
 const Maintenance = require("../models/Maintenance");
+const User = require("../models/User");
 
-// Get all maintenance requests
-exports.getAllMaintenanceRequests = async (req, res) => {
+// 🔹 Submit New Maintenance Request (Resident)
+exports.submitMaintenance = async (req, res) => {
   try {
-    const maintenanceRequests = await Maintenance.find().populate("reportedBy", "userName email");
-    res.status(200).json(maintenanceRequests);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving maintenance requests" });
+    const {
+      eq_type,
+      eq_age,
+      usage_pattern,
+      environment_condition,
+      description,
+      last_maintenance_date,
+    } = req.body;
+
+    const residentId = req.user.userId || req.user._id;
+
+    const request = new Maintenance({
+      eq_type,
+      eq_age,
+      usage_pattern,
+      environment_condition,
+      description,
+      last_maintenance_date,
+      resident_id: residentId,
+      staffAction: null,
+      status: "Pending",
+    });
+
+    await request.save();
+    console.log("✅ Maintenance submitted:", request);
+    res.status(201).json(request);
+  } catch (err) {
+    console.error("❌ submitMaintenance error:", err);
+    res.status(500).json({ message: "Failed to submit maintenance request" });
   }
 };
 
-// Get a single maintenance request by ID
-exports.getMaintenanceById = async (req, res) => {
+// 🔹 Get Maintenance by Resident
+exports.getByResident = async (req, res) => {
   try {
-    const maintenance = await Maintenance.findById(req.params.id).populate("reportedBy", "userName email");
-    if (!maintenance) return res.status(404).json({ error: "Maintenance request not found" });
-    res.status(200).json(maintenance);
-  } catch (error) {
-    res.status(500).json({ error: "Error retrieving maintenance request" });
+    const userId = req.user.userId || req.user._id;
+    const data = await Maintenance.find({ resident_id: userId }).sort({
+      createdAt: -1,
+    });
+    res.json(data);
+  } catch (err) {
+    console.error("❌ getByResident error:", err);
+    res.status(500).json({ message: "Failed to fetch maintenance data" });
   }
 };
 
-// Create a new maintenance request
-exports.createMaintenanceRequest = async (req, res) => {
+// 🔹 Get All Maintenance Requests (Staff)
+exports.getAllMaintenance = async (req, res) => {
   try {
-    const { equipment_id, equipmentType, equipmentAge, usagePattern, environmentalCondition, description, reportedBy } = req.body;
-    const newMaintenance = new Maintenance({ equipment_id, equipmentType, equipmentAge, usagePattern, environmentalCondition, description, reportedBy });
-    await newMaintenance.save();
-    res.status(201).json(newMaintenance);
-  } catch (error) {
-    res.status(500).json({ error: "Error adding maintenance request" });
+    const all = await Maintenance.find()
+      .populate("resident_id", "userName role")
+      .sort({ createdAt: -1 });
+    res.json(all);
+  } catch (err) {
+    console.error("❌ getAllMaintenance error:", err);
+    res.status(500).json({ message: "Failed to load all maintenance records" });
   }
 };
 
-// Update a maintenance request
-exports.updateMaintenanceRequest = async (req, res) => {
+// 🔹 Update Maintenance Status (Staff Action)
+exports.updateMaintenanceStatus = async (req, res) => {
   try {
-    const updatedMaintenance = await Maintenance.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedMaintenance) return res.status(404).json({ error: "Maintenance request not found" });
-    res.status(200).json(updatedMaintenance);
-  } catch (error) {
-    res.status(500).json({ error: "Error updating maintenance request" });
-  }
-};
+    const { id } = req.params;
+    const { staffAction } = req.body;
 
-// Delete a maintenance request
-exports.deleteMaintenanceRequest = async (req, res) => {
-  try {
-    const deletedMaintenance = await Maintenance.findByIdAndDelete(req.params.id);
-    if (!deletedMaintenance) return res.status(404).json({ error: "Maintenance request not found" });
-    res.status(200).json({ message: "Maintenance request deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Error deleting maintenance request" });
+    const allowed = ["replace", "checking", "no_checking"];
+    if (!allowed.includes(staffAction)) {
+      return res.status(400).json({ message: "Invalid staff action" });
+    }
+
+    const maintenance = await Maintenance.findById(id);
+    if (!maintenance) {
+      return res.status(404).json({ message: "Maintenance request not found" });
+    }
+
+    maintenance.staffAction = staffAction;
+    maintenance.status = "Completed";
+
+    await maintenance.save();
+    console.log(`✅ Maintenance updated (action: ${staffAction})`);
+
+    res.json({ message: "Maintenance status updated", maintenance });
+  } catch (err) {
+    console.error("❌ updateMaintenanceStatus error:", err);
+    res.status(500).json({ message: "Failed to update maintenance status" });
   }
 };
