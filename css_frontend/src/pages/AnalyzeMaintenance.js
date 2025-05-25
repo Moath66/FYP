@@ -7,15 +7,16 @@ import {
 
 const AnalyzeMaintenance = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
-  const [showDesc, setShowDesc] = useState(null);
 
   const fetchData = async () => {
     try {
       const data = await getAllMaintenance();
-      // Sort by equipment_id ascending
+
+      // Sort ascending by equipment_id (e.g., EQ0001, EQ0002)
       const sorted = [...data].sort((a, b) =>
-        a.equipment_id.localeCompare(b.equipment_id)
+        (a.equipment_id || "").localeCompare(b.equipment_id || "")
       );
+
       setMaintenanceList(sorted);
     } catch (error) {
       console.error("Error fetching maintenance data:", error);
@@ -29,7 +30,7 @@ const AnalyzeMaintenance = () => {
   const handleAction = async (id, action) => {
     try {
       await updateMaintenanceStatus(id, action);
-      fetchData(); // Refresh data
+      fetchData(); // Refresh data after update
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -37,7 +38,7 @@ const AnalyzeMaintenance = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(); // e.g. 5/26/2025
+    return date.toLocaleDateString();
   };
 
   const renderActionButton = (item) => {
@@ -65,12 +66,6 @@ const AnalyzeMaintenance = () => {
         >
           No Checking
         </button>
-        <button
-          onClick={() => setShowDesc(item.description)}
-          className="details-btn"
-        >
-          Details
-        </button>
       </div>
     );
   };
@@ -87,6 +82,7 @@ const AnalyzeMaintenance = () => {
             <th>Environmental Condition</th>
             <th>Usage Pattern</th>
             <th>Last Check Date</th>
+            <th>Description</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -99,22 +95,16 @@ const AnalyzeMaintenance = () => {
               <td>{item.environment_condition}</td>
               <td>{item.usage_pattern}</td>
               <td>{formatDate(item.last_maintenance_date)}</td>
+              <td>
+                {item.description || "-"}
+                <br />
+                <button className="details-btn">Details</button>
+              </td>
               <td>{renderActionButton(item)}</td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {/* Floating Description Popup */}
-      {showDesc && (
-        <div className="description-popup">
-          <h4>📝 Description</h4>
-          <p>{showDesc}</p>
-          <button onClick={() => setShowDesc(null)} className="close-btn">
-            Close
-          </button>
-        </div>
-      )}
     </div>
   );
 };
