@@ -15,24 +15,33 @@ exports.submitMaintenance = async (req, res) => {
 
     const residentId = req.user.userId || req.user._id;
 
+    if (!residentId) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No user ID found" });
+    }
+
     const request = new Maintenance({
       eq_type,
       eq_age,
       usage_pattern,
       environment_condition,
       description,
-      last_maintenance_date,
+      last_maintenance_date: new Date(last_maintenance_date),
       resident_id: residentId,
       staffAction: null,
       status: "Pending",
     });
 
     await request.save();
-    console.log("✅ Maintenance submitted:", request);
+    console.log("✅ Maintenance submitted by:", residentId);
     res.status(201).json(request);
   } catch (err) {
-    console.error("❌ submitMaintenance error:", err);
-    res.status(500).json({ message: "Failed to submit maintenance request" });
+    console.error("❌ submitMaintenance error:", err.message);
+    res.status(500).json({
+      message: "Failed to submit maintenance request",
+      error: err.message,
+    });
   }
 };
 
@@ -45,8 +54,11 @@ exports.getByResident = async (req, res) => {
     });
     res.json(data);
   } catch (err) {
-    console.error("❌ getByResident error:", err);
-    res.status(500).json({ message: "Failed to fetch maintenance data" });
+    console.error("❌ getByResident error:", err.message);
+    res.status(500).json({
+      message: "Failed to fetch maintenance data",
+      error: err.message,
+    });
   }
 };
 
@@ -56,10 +68,14 @@ exports.getAllMaintenance = async (req, res) => {
     const all = await Maintenance.find()
       .populate("resident_id", "userName role")
       .sort({ createdAt: -1 });
+
     res.json(all);
   } catch (err) {
-    console.error("❌ getAllMaintenance error:", err);
-    res.status(500).json({ message: "Failed to load all maintenance records" });
+    console.error("❌ getAllMaintenance error:", err.message);
+    res.status(500).json({
+      message: "Failed to load all maintenance records",
+      error: err.message,
+    });
   }
 };
 
@@ -83,11 +99,14 @@ exports.updateMaintenanceStatus = async (req, res) => {
     maintenance.status = "Completed";
 
     await maintenance.save();
-    console.log(`✅ Maintenance updated (action: ${staffAction})`);
+    console.log(`✅ Maintenance ${id} updated → Action: ${staffAction}`);
 
     res.json({ message: "Maintenance status updated", maintenance });
   } catch (err) {
-    console.error("❌ updateMaintenanceStatus error:", err);
-    res.status(500).json({ message: "Failed to update maintenance status" });
+    console.error("❌ updateMaintenanceStatus error:", err.message);
+    res.status(500).json({
+      message: "Failed to update maintenance status",
+      error: err.message,
+    });
   }
 };

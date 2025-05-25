@@ -31,6 +31,7 @@ const RequestMaintenance = () => {
         last_maintenance_date: "",
       });
     } catch (err) {
+      console.error("❌ Submission error:", err.response?.data || err.message);
       alert("Failed to submit request.");
     }
   };
