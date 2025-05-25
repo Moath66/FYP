@@ -2,6 +2,7 @@ const Maintenance = require("../models/Maintenance");
 const User = require("../models/User");
 
 // 🔹 Submit New Maintenance Request (Resident)
+// 🔹 Submit New Maintenance Request (Resident)
 exports.submitMaintenance = async (req, res) => {
   try {
     const {
@@ -14,14 +15,20 @@ exports.submitMaintenance = async (req, res) => {
     } = req.body;
 
     const residentId = req.user.userId || req.user._id;
-
     if (!residentId) {
       return res
         .status(401)
         .json({ message: "Unauthorized: No user ID found" });
     }
 
+    // Generate unique equipment_id
+    const lastEntry = await Maintenance.findOne({}).sort({ createdAt: -1 });
+    let lastId = lastEntry?.equipment_id || "EQ0000";
+    let number = parseInt(lastId.replace("EQ", "")) + 1;
+    const equipment_id = `EQ${number.toString().padStart(4, "0")}`;
+
     const request = new Maintenance({
+      equipment_id,
       eq_type,
       eq_age,
       usage_pattern,
@@ -34,7 +41,7 @@ exports.submitMaintenance = async (req, res) => {
     });
 
     await request.save();
-    console.log("✅ Maintenance submitted by:", residentId);
+    console.log("✅ Maintenance submitted with:", equipment_id);
     res.status(201).json(request);
   } catch (err) {
     console.error("❌ submitMaintenance error:", err.message);

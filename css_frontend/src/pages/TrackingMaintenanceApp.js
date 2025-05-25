@@ -41,15 +41,15 @@ const TrackingMaintenanceApp = () => {
       <table className="tracking-table">
         <thead>
           <tr>
-            <th>Eq_ID</th>
+            <th>Equipment ID</th>
             <th>Equipment Name</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {maintenanceList.map((item, index) => (
+          {maintenanceList.map((item) => (
             <tr key={item._id}>
-              <td>{index + 1}</td>
+              <td>{item.equipment_id || "N/A"}</td>
               <td>{item.eq_type}</td>
               <td>{getStatusBadge(item.staffAction, item.status)}</td>
             </tr>

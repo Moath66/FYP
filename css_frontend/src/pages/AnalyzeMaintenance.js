@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../styles/AnalyzeMaintenance.css";
-import { getAllMaintenance, updateMaintenanceStatus } from "../api/maintenanceApis";
+import {
+  getAllMaintenance,
+  updateMaintenanceStatus,
+} from "../api/maintenanceApis";
 
 const AnalyzeMaintenance = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
@@ -27,6 +30,11 @@ const AnalyzeMaintenance = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // e.g. 5/26/2025
+  };
+
   const renderActionButton = (item) => {
     if (item.status === "Completed") {
       return <span className="badge green">Completed</span>;
@@ -34,9 +42,24 @@ const AnalyzeMaintenance = () => {
 
     return (
       <div className="action-buttons">
-        <button onClick={() => handleAction(item._id, "replace")} className="badge orange">Replace</button>
-        <button onClick={() => handleAction(item._id, "checking")} className="badge yellow">Checking</button>
-        <button onClick={() => handleAction(item._id, "no_checking")} className="badge green">No Checking</button>
+        <button
+          onClick={() => handleAction(item._id, "replace")}
+          className="badge orange"
+        >
+          Replace
+        </button>
+        <button
+          onClick={() => handleAction(item._id, "checking")}
+          className="badge yellow"
+        >
+          Checking
+        </button>
+        <button
+          onClick={() => handleAction(item._id, "no_checking")}
+          className="badge green"
+        >
+          No Checking
+        </button>
       </div>
     );
   };
@@ -47,7 +70,7 @@ const AnalyzeMaintenance = () => {
       <table className="analyze-table">
         <thead>
           <tr>
-            <th>Eq_ID</th>
+            <th>Equipment ID</th>
             <th>Equipment Name</th>
             <th>Eq_Age</th>
             <th>Environmental Condition</th>
@@ -57,14 +80,14 @@ const AnalyzeMaintenance = () => {
           </tr>
         </thead>
         <tbody>
-          {maintenanceList.map((item, index) => (
+          {maintenanceList.map((item) => (
             <tr key={item._id}>
-              <td>{index + 1}</td>
+              <td>{item.equipment_id || "N/A"}</td>
               <td>{item.eq_type}</td>
               <td>{item.eq_age}</td>
               <td>{item.environment_condition}</td>
               <td>{item.usage_pattern}</td>
-              <td>{item.last_maintenance_date}</td>
+              <td>{formatDate(item.last_maintenance_date)}</td>
               <td>{renderActionButton(item)}</td>
             </tr>
           ))}
