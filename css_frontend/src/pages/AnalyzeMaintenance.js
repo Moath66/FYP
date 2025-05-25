@@ -7,17 +7,12 @@ import {
 
 const AnalyzeMaintenance = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
+  const [selectedDescription, setSelectedDescription] = useState("");
 
   const fetchData = async () => {
     try {
       const data = await getAllMaintenance();
-
-      // Sort ascending by equipment_id (e.g., EQ0001, EQ0002)
-      const sorted = [...data].sort((a, b) =>
-        (a.equipment_id || "").localeCompare(b.equipment_id || "")
-      );
-
-      setMaintenanceList(sorted);
+      setMaintenanceList(data);
     } catch (error) {
       console.error("Error fetching maintenance data:", error);
     }
@@ -30,7 +25,7 @@ const AnalyzeMaintenance = () => {
   const handleAction = async (id, action) => {
     try {
       await updateMaintenanceStatus(id, action);
-      fetchData(); // Refresh data after update
+      fetchData();
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -96,15 +91,31 @@ const AnalyzeMaintenance = () => {
               <td>{item.usage_pattern}</td>
               <td>{formatDate(item.last_maintenance_date)}</td>
               <td>
-                {item.description || "-"}
-                <br />
-                <button className="details-btn">Details</button>
+                <button
+                  className="details-btn"
+                  onClick={() => setSelectedDescription(item.description)}
+                >
+                  Details
+                </button>
               </td>
               <td>{renderActionButton(item)}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {selectedDescription && (
+        <div className="description-popup">
+          <h4>Description</h4>
+          <p>{selectedDescription}</p>
+          <button
+            className="close-btn"
+            onClick={() => setSelectedDescription("")}
+          >
+            Close
+          </button>
+        </div>
+      )}
     </div>
   );
 };

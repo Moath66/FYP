@@ -77,3 +77,19 @@
   cursor: pointer;
   display: inline-block;
 }
+
+/* Optional: fade effect on popup */
+.description-popup {
+  transition: all 0.3s ease;
+}
+
+/* Optional: background overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 998;
+}
