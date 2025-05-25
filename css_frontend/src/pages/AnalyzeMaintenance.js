@@ -7,11 +7,16 @@ import {
 
 const AnalyzeMaintenance = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
+  const [showDesc, setShowDesc] = useState(null);
 
   const fetchData = async () => {
     try {
       const data = await getAllMaintenance();
-      setMaintenanceList(data);
+      // Sort by equipment_id ascending
+      const sorted = [...data].sort((a, b) =>
+        a.equipment_id.localeCompare(b.equipment_id)
+      );
+      setMaintenanceList(sorted);
     } catch (error) {
       console.error("Error fetching maintenance data:", error);
     }
@@ -60,6 +65,12 @@ const AnalyzeMaintenance = () => {
         >
           No Checking
         </button>
+        <button
+          onClick={() => setShowDesc(item.description)}
+          className="details-btn"
+        >
+          Details
+        </button>
       </div>
     );
   };
@@ -93,6 +104,17 @@ const AnalyzeMaintenance = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Floating Description Popup */}
+      {showDesc && (
+        <div className="description-popup">
+          <h4>📝 Description</h4>
+          <p>{showDesc}</p>
+          <button onClick={() => setShowDesc(null)} className="close-btn">
+            Close
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,7 +9,12 @@ const TrackingMaintenanceApp = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const data = await getMaintenanceByResident(user._id);
-      setMaintenanceList(data);
+
+      // ✅ Sort by equipment ID (e.g., EQ0001, EQ0002)
+      const sorted = [...data].sort((a, b) =>
+        (a.equipment_id || "").localeCompare(b.equipment_id || "")
+      );
+      setMaintenanceList(sorted);
     } catch (error) {
       console.error("Error fetching maintenance data:", error);
     }
@@ -37,7 +42,7 @@ const TrackingMaintenanceApp = () => {
 
   return (
     <div className="tracking-container">
-      <h2>🧰 Tracking Maintenance Application</h2>
+      <h2>💼 Tracking Maintenance Application</h2>
       <table className="tracking-table">
         <thead>
           <tr>
