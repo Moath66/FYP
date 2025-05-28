@@ -6,6 +6,7 @@ const PreVisitorRegis = () => {
   const [formData, setFormData] = useState({
     visitor_name: "",
     phone_number: "",
+    passport_number: "",
     purpose: "",
     date: "",
     email: "",
@@ -28,6 +29,7 @@ const PreVisitorRegis = () => {
       setFormData({
         visitor_name: "",
         phone_number: "",
+        passport_number: "", // ✅ Reset
         purpose: "",
         date: "",
         email: "",
@@ -57,7 +59,6 @@ const PreVisitorRegis = () => {
           onChange={handleChange}
           required
         />
-
         <label>Phone Number</label>
         <input
           type="text"
@@ -66,7 +67,14 @@ const PreVisitorRegis = () => {
           onChange={handleChange}
           required
         />
-
+        <label>Passport Number</label> {/* ✅ New Field */}
+        <input
+          type="text"
+          name="passport_number"
+          value={formData.passport_number}
+          onChange={handleChange}
+          required
+        />
         <label>Purpose of Visit</label>
         <input
           type="text"
@@ -75,7 +83,6 @@ const PreVisitorRegis = () => {
           onChange={handleChange}
           required
         />
-
         <label>Date</label>
         <input
           type="date"
@@ -84,7 +91,6 @@ const PreVisitorRegis = () => {
           onChange={handleChange}
           required
         />
-
         <label>Email</label>
         <input
           type="email"
@@ -93,7 +99,6 @@ const PreVisitorRegis = () => {
           onChange={handleChange}
           required
         />
-
         <button type="submit" className="submit-btn">
           Register Visitor
         </button>

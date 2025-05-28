@@ -94,6 +94,7 @@ const SecurityCheckVisitor = () => {
               <th>#</th>
               <th>Visitor ID</th>
               <th>Visitor Name</th>
+              <th>Passport No</th>
               <th>Purpose</th>
               <th>Phone</th>
               <th>Email</th>
@@ -108,6 +109,7 @@ const SecurityCheckVisitor = () => {
                   <td>{i + 1}</td>
                   <td>{v.visitorId}</td>
                   <td>{v.visitor_name}</td>
+                  <td>{v.passport_number || "-"}</td>
                   <td>
                     <button
                       className="btn-details"

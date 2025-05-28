@@ -9,6 +9,7 @@ const visitorSchema = new mongoose.Schema(
     },
     visitor_name: String,
     phone_number: String,
+    passport_number: String, // ✅ New field added here
     purpose: String,
     date: Date,
     email: String,

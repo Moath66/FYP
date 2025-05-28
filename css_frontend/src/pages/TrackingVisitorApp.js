@@ -62,6 +62,7 @@ const TrackingVisitorApp = () => {
               <th>#</th>
               <th>ID</th>
               <th>Visitor Name</th>
+              <th>Passport No</th>
               <th>QR Code</th>
               <th>Status</th>
             </tr>
@@ -75,6 +76,7 @@ const TrackingVisitorApp = () => {
                     <td>{index + 1}</td>
                     <td>{visitor.visitorId}</td>
                     <td>{visitor.visitor_name}</td>
+                    <td>{visitor.passport_number || "-"}</td>
                     <td>
                       {visitor.status === "approved" ? (
                         <img

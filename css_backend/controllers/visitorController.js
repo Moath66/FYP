@@ -9,9 +9,7 @@ const generateVisitorId = async () => {
       createdAt: -1,
     });
 
-    let lastId = "VIS000";
-    if (last?.visitorId) lastId = last.visitorId;
-
+    let lastId = last?.visitorId || "VIS000";
     let number = parseInt(lastId.replace("VIS", "")) + 1;
     let newId;
     let exists = true;
@@ -36,16 +34,23 @@ exports.registerVisitor = async (req, res) => {
     const visitorId = await generateVisitorId();
 
     if (!visitorId || visitorId === "VISNaN") {
-      console.error("❌ visitorId generation failed:", visitorId);
       return res.status(500).json({ message: "Invalid visitor ID generated" });
     }
 
-    const { visitor_name, phone_number, purpose, date, email } = req.body;
+    const {
+      visitor_name,
+      phone_number,
+      passport_number,
+      purpose,
+      date,
+      email,
+    } = req.body;
 
     const visitor = new Visitor({
       visitorId,
       visitor_name,
       phone_number,
+      passport_number, // ✅ New field
       purpose,
       date,
       email,
@@ -86,7 +91,7 @@ exports.getByResident = async (req, res) => {
   }
 };
 
-// 🔹 Get Pending Visitors (Security)
+// 🔹 Get Pending Visitors
 exports.getPending = async (req, res) => {
   try {
     const pending = await Visitor.find({ status: "pending" }).sort({
@@ -104,16 +109,16 @@ exports.approveVisitor = async (req, res) => {
   try {
     const id = req.params.id;
     const visitor = await Visitor.findById(id).populate("submittedBy");
-
     if (!visitor) return res.status(404).json({ message: "Visitor not found" });
 
     const resident = visitor.submittedBy;
     const security = await User.findById(req.user.userId);
 
-    // Build payload
+    // ✅ Add passport_number to QR
     const qrPayload = {
       visitorId: visitor.visitorId,
       visitor_name: visitor.visitor_name,
+      passport_number: visitor.passport_number,
       phone_number: visitor.phone_number,
       email: visitor.email,
       purpose: visitor.purpose,
@@ -136,7 +141,6 @@ exports.approveVisitor = async (req, res) => {
     const scanURL = `${baseUrl}/scan?data=${encoded}`;
 
     const qrCodeData = await QRCode.toDataURL(scanURL);
-
     visitor.status = "approved";
     visitor.qrCode = qrCodeData;
     await visitor.save();
