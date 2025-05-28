@@ -104,48 +104,52 @@ const SecurityCheckVisitor = () => {
           </thead>
           <tbody>
             {filtered.length > 0 ? (
-              filtered.map((v, i) => (
-                <tr key={v._id}>
-                  <td>{i + 1}</td>
-                  <td>{v.visitorId}</td>
-                  <td>{v.visitor_name}</td>
-                  <td>{v.passport_number || "-"}</td>
-                  <td>
-                    <button
-                      className="btn-details"
-                      onClick={() => {
-                        setSelectedPurpose(v.purpose || "No details provided.");
-                        setShowPurposeBox(true);
-                      }}
-                    >
-                      Details
-                    </button>
-                  </td>
-                  <td>{v.phone_number}</td>
-                  <td>{v.email}</td>
-                  <td>{new Date(v.date).toLocaleDateString()}</td>
-                  <td>
-                    {v.status === "pending" ? (
-                      <>
-                        <button
-                          className="btn-approve"
-                          onClick={() => handleApprove(v)}
-                        >
-                          Approve
-                        </button>
-                        <button
-                          className="btn-deny"
-                          onClick={() => handleDeny(v)}
-                        >
-                          Deny
-                        </button>
-                      </>
-                    ) : (
-                      <span className="completed-status">✅ Completed</span>
-                    )}
-                  </td>
-                </tr>
-              ))
+              [...filtered]
+                .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
+                .map((v, i) => (
+                  <tr key={v._id}>
+                    <td>{i + 1}</td>
+                    <td>{v.visitorId}</td>
+                    <td>{v.visitor_name}</td>
+                    <td>{v.passport_number || "-"}</td>
+                    <td>
+                      <button
+                        className="btn-details"
+                        onClick={() => {
+                          setSelectedPurpose(
+                            v.purpose || "No details provided."
+                          );
+                          setShowPurposeBox(true);
+                        }}
+                      >
+                        Details
+                      </button>
+                    </td>
+                    <td>{v.phone_number}</td>
+                    <td>{v.email}</td>
+                    <td>{new Date(v.date).toLocaleDateString()}</td>
+                    <td>
+                      {v.status === "pending" ? (
+                        <>
+                          <button
+                            className="btn-approve"
+                            onClick={() => handleApprove(v)}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="btn-deny"
+                            onClick={() => handleDeny(v)}
+                          >
+                            Deny
+                          </button>
+                        </>
+                      ) : (
+                        <span className="completed-status">✅ Completed</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
             ) : (
               <tr>
                 <td colSpan="8" style={{ textAlign: "center", color: "gray" }}>
