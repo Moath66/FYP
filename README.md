@@ -117,6 +117,6 @@ npm run build
 
 ## 👨‍🎓 Developer Info
 
-|                    Name            |                  Role                        |
-
-| Moath Mohamed Abdalla Hassan Morsy | Web Developer / Full Stack Software Engineer |
+|              Name                   |                      Role                         |
+|-------------------------------------|---------------------------------------------------|
+| Moath Mohamed Abdalla Hassan Morsy	| Web Developer / Full Stack Software Engineer      |
