@@ -1,0 +1,158 @@
+.about-page {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Top Navigation */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #004c99;
+  padding: 10px 20px;
+  color: white;
+}
+
+.top-nav .nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.top-nav .nav-links a:hover,
+.top-nav .nav-links .active {
+  color: #ffd700;
+  border-bottom: 2px solid #ffd700;
+}
+
+.login-button {
+  background-color: #ffd700;
+  border: none;
+  padding: 8px 16px;
+  color: #004c99;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button i {
+  margin-right: 5px;
+}
+
+/* Header Section */
+.about-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #e6f2ff;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-content {
+  flex: 1 1 500px;
+}
+
+.text-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #004c99;
+}
+
+.text-content .highlight {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.text-content ul {
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.text-content li strong {
+  color: #004c99;
+}
+
+.image-content {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.image-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Section */
+.app-footer {
+  background-color: #004c99;
+  color: white;
+  padding-top: 40px;
+  margin-top: 40px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px 40px;
+  gap: 30px;
+}
+
+.footer-content h3 {
+  color: #ffd700;
+  margin-bottom: 10px;
+}
+
+.footer-content p,
+.footer-content a {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin: 8px 0;
+}
+
+.footer-links a:hover {
+  color: #ffd700;
+}
+
+.social-icons a {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  color: white;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #ffd700;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 10px;
+  background-color: #003366;
+  font-size: 0.85rem;
+  color: #aaa;
+}

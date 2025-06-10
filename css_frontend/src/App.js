@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import AboutUs from "./pages/AboutUs";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminManageUsers from "./pages/AdminManageUsers";
@@ -34,6 +35,9 @@ function App() {
       <Routes>
         {/* Public Pages */}
         <Route path="/" element={<Home />} />
+
+        <Route path="/about-us" element={<AboutUs />} />
+
         <Route path="/login" element={<Login />} />
 
         {/* Admin Routes */}
