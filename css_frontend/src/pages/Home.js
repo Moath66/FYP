@@ -256,9 +256,7 @@ const Home = () => {
               <li>
                 <Link to="/features">Features</Link>
               </li>
-              <li>
-                <Link to="/contact">Contact</Link>
-              </li>
+
               <li>
                 <Link to="/help">Help</Link>
               </li>
