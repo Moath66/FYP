@@ -19,11 +19,11 @@ const AboutUs = () => {
           </Link>
         </div>
         <button className="login-button" onClick={() => navigate("/login")}>
-          <i className="bi bi-box-arrow-in-right"></i> Login
+          <i className="bi bi-box-arrow-in-right"></i> <span>Login</span>
         </button>
       </div>
 
-      {/* Header Section */}
+      {/* About Header Section */}
       <section className="about-header">
         <div className="container">
           <div className="text-content">
@@ -31,19 +31,22 @@ const AboutUs = () => {
             <p className="highlight">
               "The Community Services System (CSS) is designed to enhance
               residential living by offering seamless management of daily
-              operations, ensuring security, efficiency, and convenience for
-              all residents, security personnel, and staff."
+              operations, ensuring security, efficiency, and convenience for all
+              residents, security personnel, and staff."
             </p>
             <h3>Who Can Use It?</h3>
-            <ul>
+            <ul className="who-can-use">
               <li>
-                <strong>Residents:</strong> Report lost items, register visitors, submit maintenance requests.
+                <strong>🏠 Residents:</strong> Report lost items, register
+                visitors, submit maintenance requests.
               </li>
               <li>
-                <strong>Security Personnel:</strong> Manage visitor check-ins and enhance safety.
+                <strong>🔒 Security Personnel:</strong> Manage visitor check-ins
+                and enhance safety.
               </li>
               <li>
-                <strong>Staff:</strong> Handle maintenance and keep everything running smoothly.
+                <strong>🛠️ Staff:</strong> Handle maintenance and keep
+                everything running smoothly.
               </li>
             </ul>
           </div>
@@ -80,17 +83,31 @@ const AboutUs = () => {
           <div className="footer-links">
             <h3>Quick Links</h3>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/about-us">About</Link></li>
-              <li><Link to="/features">Features</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about-us">About</Link>
+              </li>
+              <li>
+                <Link to="/features">Features</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
             </ul>
           </div>
           <div className="footer-contact">
             <h3>Contact</h3>
-            <p><i className="bi bi-envelope"></i> info@css-system.com</p>
-            <p><i className="bi bi-telephone"></i> +1 (555) 123-4567</p>
-            <p><i className="bi bi-geo-alt"></i> 123 Community St, City</p>
+            <p>
+              <i className="bi bi-envelope"></i> info@css-system.com
+            </p>
+            <p>
+              <i className="bi bi-telephone"></i> +1 (555) 123-4567
+            </p>
+            <p>
+              <i className="bi bi-geo-alt"></i> 123 Community St, City
+            </p>
           </div>
         </div>
         <div className="footer-bottom">
