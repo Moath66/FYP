@@ -52,8 +52,8 @@ const AboutUs = () => {
           </div>
           <div className="image-content">
             <img
-              src={`${process.env.PUBLIC_URL}/css-about-logo.png`}
-              alt="CSS Illustration"
+              src={`${process.env.PUBLIC_URL}/logo-css.png`}
+              alt="CSS Logo"
             />
           </div>
         </div>
