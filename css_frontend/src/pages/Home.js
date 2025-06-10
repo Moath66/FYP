@@ -207,32 +207,39 @@ const Home = () => {
             <p>A comprehensive system for community services management.</p>
             <div className="social-icons">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/16NaJqHkm1/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i className="bi bi-facebook"></i>
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/meezo_mo3az"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i className="bi bi-twitter"></i>
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/moathmorsy-dev/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i className="bi bi-linkedin"></i>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/moath_mo.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i className="bi bi-instagram"></i>
+              </a>
+              <a
+                href="https://github.com/Moath66/FYP"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-github"></i>
               </a>
             </div>
           </div>
@@ -258,13 +265,14 @@ const Home = () => {
           <div className="footer-contact">
             <h3>Contact</h3>
             <p>
-              <i className="bi bi-envelope"></i> info@css-system.com
+              <i className="bi bi-envelope"></i> mohamed-a2@graduate.utm.my.
             </p>
             <p>
-              <i className="bi bi-telephone"></i> +1 (555) 123-4567
+              <i className="bi bi-telephone"></i> +60 1129635974
             </p>
             <p>
-              <i className="bi bi-geo-alt"></i> 123 Community St, City
+              <i className="bi bi-geo-alt"></i> D'summit Residence, Jalan
+              Kempas, 81300 Johor Bahru
             </p>
           </div>
         </div>
