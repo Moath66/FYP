@@ -26,7 +26,7 @@ const Features = () => {
       {/* Features Header Section */}
       <section className="features-header">
         <div className="container">
-          <h1>How It Works</h1>
+          <h1>How It Works ?</h1>
           <div className="features-grid">
             <div className="feature-card">
               <img
