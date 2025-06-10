@@ -123,13 +123,14 @@ const AboutUs = () => {
           <div className="footer-contact">
             <h3>Contact</h3>
             <p>
-              <i className="bi bi-envelope"></i> info@css-system.com
+              <i className="bi bi-envelope"></i> mohamed-a2@graduate.utm.my.
             </p>
             <p>
-              <i className="bi bi-telephone"></i> +1 (555) 123-4567
+              <i className="bi bi-telephone"></i> +60 1129635974
             </p>
             <p>
-              <i className="bi bi-geo-alt"></i> 123 Community St, City
+              <i className="bi bi-geo-alt"></i> D'summit Residence, Jalan
+              Kempas, 81300 Johor Bahru
             </p>
           </div>
         </div>
