@@ -1,0 +1,137 @@
+.benefits-page {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.nav-links a {
+  margin-right: 20px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: #00a9a5;
+  border-bottom: 2px solid #00a9a5;
+}
+
+.login-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.benefits-section {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.benefits-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.benefits-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.benefits-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  flex: 1;
+}
+
+.card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #fff;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.card-1 {
+  background-color: #f28b82;
+}
+.card-2 {
+  background-color: #fdd663;
+  color: #000;
+}
+.card-3 {
+  background-color: #81c995;
+}
+.card-4 {
+  background-color: #aecbfa;
+  color: #000;
+}
+
+.benefits-image img {
+  max-width: 300px;
+  border-radius: 12px;
+}
+
+/* Footer styles — same as others */
+.app-footer {
+  background-color: #00a9a5;
+  color: white;
+  padding-top: 3rem;
+}
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0 2rem 2rem;
+}
+.footer-about,
+.footer-links,
+.footer-contact {
+  flex: 1;
+  min-width: 220px;
+  margin-bottom: 1.5rem;
+}
+.footer-links ul {
+  list-style: none;
+  padding-left: 0;
+}
+.footer-links li {
+  margin-bottom: 0.6rem;
+}
+.footer-links a {
+  color: white;
+  text-decoration: none;
+}
+.footer-links a:hover {
+  text-decoration: underline;
+}
+.social-icons a {
+  color: white;
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+.footer-contact i {
+  margin-right: 6px;
+}
+.footer-bottom {
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+}

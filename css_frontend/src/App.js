@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Features from "./pages/Features";
-// import Help from "./pages/Help";
-// import Benefits from "./pages/Benefits";
+import Help from "./pages/Help";
+import Benefits from "./pages/Benefits";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminManageUsers from "./pages/AdminManageUsers";
@@ -40,8 +40,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/features" element={<Features />} />
-        {/* <Route path="/help" element={<Help />} />
-        <Route path="/benefits" element={<Benefits />} /> */}
+        <Route path="/help" element={<Help />} />
+        <Route path="/benefits" element={<Benefits />} />
         <Route path="/login" element={<Login />} />
         {/* Admin Routes */}
         <Route
