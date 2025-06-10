@@ -66,17 +66,40 @@ const AboutUs = () => {
             <h3>CSS</h3>
             <p>A comprehensive system for community services management.</p>
             <div className="social-icons">
-              <a href="https://facebook.com" target="_blank" rel="noreferrer">
+              <a
+                href="https://www.facebook.com/share/16NaJqHkm1/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i className="bi bi-facebook"></i>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+              <a
+                href="https://x.com/meezo_mo3az"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i className="bi bi-twitter"></i>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+              <a
+                href="https://www.linkedin.com/in/moathmorsy-dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i className="bi bi-linkedin"></i>
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <a
+                href="https://www.instagram.com/moath_mo.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i className="bi bi-instagram"></i>
+              </a>
+              <a
+                href="https://github.com/Moath66"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-github"></i>
               </a>
             </div>
           </div>

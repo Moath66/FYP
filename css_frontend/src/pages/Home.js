@@ -235,7 +235,7 @@ const Home = () => {
                 <i className="bi bi-instagram"></i>
               </a>
               <a
-                href="https://github.com/Moath66/FYP"
+                href="https://github.com/Moath66"
                 target="_blank"
                 rel="noopener noreferrer"
               >
