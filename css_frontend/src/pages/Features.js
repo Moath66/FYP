@@ -30,7 +30,7 @@ const Features = () => {
           <div className="features-grid">
             <div className="feature-card">
               <img
-                src={`${process.env.PUBLIC_URL}/feature-lostfound.png`}
+                src={`${process.env.PUBLIC_URL}/lostfound.png`}
                 alt="Lost and Found"
               />
               <h3>Lost & Found (with QR Code)</h3>
@@ -41,7 +41,7 @@ const Features = () => {
             </div>
             <div className="feature-card">
               <img
-                src={`${process.env.PUBLIC_URL}/feature-visitor.png`}
+                src={`${process.env.PUBLIC_URL}/visitor.png`}
                 alt="Pre-Visitor Registration"
               />
               <h3>Pre-Visitor Registration (with QR Code)</h3>
@@ -52,7 +52,7 @@ const Features = () => {
             </div>
             <div className="feature-card">
               <img
-                src={`${process.env.PUBLIC_URL}/feature-maintenance.png`}
+                src={`${process.env.PUBLIC_URL}/maintenance.png`}
                 alt="Maintenance Request"
               />
               <h3>Maintenance Request</h3>
