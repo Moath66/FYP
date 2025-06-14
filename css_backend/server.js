@@ -64,9 +64,6 @@ connectDB();
 // ✅ Import Routes
 const authRoutes = require("./api_routes/authRoutes");
 const adminRoutes = require("./api_routes/adminRoutes");
-const residentRoutes = require("./api_routes/residentRoutes");
-const securityRoutes = require("./api_routes/securityRoutes");
-const staffRoutes = require("./api_routes/staffRoutes");
 const userRoutes = require("./api_routes/userRoutes");
 const itemRoutes = require("./api_routes/itemRoutes");
 const visitorRoutes = require("./api_routes/visitorRoutes");
@@ -74,9 +71,6 @@ const maintenanceRoutes = require("./api_routes/maintenanceRoutes");
 
 // ✅ Use Routes
 app.use("/api/admin", adminRoutes);
-app.use("/api/resident", residentRoutes);
-app.use("/api/security", securityRoutes);
-app.use("/api/staff", staffRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/items", itemRoutes);
