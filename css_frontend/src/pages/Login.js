@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "./Login.css"; // Make sure to use the new CSS file
+import "../styles/Login.css"; // Make sure to use the new CSS file
 
 // Inline SVG icons for use in the component
 const MailIcon = () => (
