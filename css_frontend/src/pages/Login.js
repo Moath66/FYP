@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/Login.css"; // Make sure to use the new CSS file
+import "../styles/Login.css"; // Corrected path
 
 // Inline SVG icons for use in the component
 const MailIcon = () => (
@@ -38,8 +40,24 @@ const LockIcon = () => (
   </svg>
 );
 
+const HomeIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+  </svg>
+);
+
 const Login = () => {
-  // --- All your existing state and logic remains unchanged ---
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -93,7 +111,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-  // --- End of unchanged logic ---
 
   return (
     <div className="login-page-container">
@@ -116,6 +133,9 @@ const Login = () => {
       </div>
 
       <div className="form-section">
+        <Link to="/" className="home-button">
+          <HomeIcon /> Home
+        </Link>
         <div className="login-card">
           <h2 className="login-title">Welcome Back</h2>
           <p className="login-subtitle">
@@ -172,7 +192,10 @@ const Login = () => {
           </form>
 
           <p className="signup-link">
-            Need help? <Link to="/contact">Contact support</Link>
+            Need help?{" "}
+            <Link to="/help" className="contact-support-link">
+              Contact support
+            </Link>
           </p>
         </div>
       </div>
