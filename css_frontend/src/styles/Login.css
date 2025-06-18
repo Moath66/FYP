@@ -1,55 +1,86 @@
-/* styles/login.css */
+/* styles/Login.css */
 
-.login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .login-heading {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-  
-  .login-error {
-    color: red;
-    font-size: 14px;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-input {
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  
-  .login-button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .forgot-password-link {
-    color: #007bff;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: center;
-  }
-  
-  .forgot-password-link:hover {
-    text-decoration: underline;
-  }
+.login-page {
+  background-color: #f8fafa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  
+.login-card {
+  background-color: #ffffff;
+  max-width: 400px;
+  width: 90%;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #004d40; /* dark teal tone */
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.login-error {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border 0.3s;
+}
+
+.login-input:focus {
+  border-color: #00bfa5; /* teal accent from your landing page */
+  outline: none;
+}
+
+.login-button {
+  padding: 12px;
+  background-color: #00bfa5; /* teal accent */
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background-color: #009e88;
+}
+
+.forgot-password-link {
+  color: #007bff;
+  margin-top: 18px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.forgot-password-link:hover {
+  color: #0056b3;
+}

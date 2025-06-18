@@ -31,7 +31,7 @@ const Login = () => {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", user.role);
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("userId", user._id); // ✅ Add this line
+      localStorage.setItem("userId", user._id);
 
       alert("✅ Login successful!");
 
@@ -59,45 +59,42 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-heading">Login</h2>
-      {error && <p className="login-error">{error}</p>}
-      <form onSubmit={handleLogin} className="login-form">
-        <input
-          type="text"
-          placeholder="Enter email or username"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          required
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="login-input"
-        />
-        <button type="submit" disabled={loading} className="login-button">
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Please sign in to your account</p>
 
-      {/* ✅ Forgot Password Link */}
-      <p
-        className="forgot-password-link"
-        onClick={() => navigate("/forgot-password")}
-        style={{
-          marginTop: "10px",
-          color: "#007bff",
-          cursor: "pointer",
-          textAlign: "center",
-          textDecoration: "underline",
-        }}
-      >
-        Forgot Password?
-      </p>
+        {error && <p className="login-error">{error}</p>}
+
+        <form onSubmit={handleLogin} className="login-form">
+          <input
+            type="text"
+            placeholder="Email or Username"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            required
+            className="login-input"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="login-input"
+          />
+          <button type="submit" disabled={loading} className="login-button">
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        <p
+          className="forgot-password-link"
+          onClick={() => navigate("/forgot-password")}
+        >
+          Forgot Password?
+        </p>
+      </div>
     </div>
   );
 };
