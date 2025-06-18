@@ -1,5 +1,5 @@
 /* styles/Login.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 :root {
   --primary-color: #009688; /* Teal color from your landing page */
@@ -7,12 +7,13 @@
   --background-color: #f4f7f6;
   --text-color: #333;
   --muted-text-color: #666;
-  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --border-color: #e2e8f0;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   background-color: var(--background-color);
 }
@@ -75,11 +76,41 @@ body {
 
 /* Right Form Section */
 .form-section {
+  position: relative; /* For positioning the home button */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   background-color: var(--background-color);
+}
+
+.home-button {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: inline-flex; /* To align icon and text */
+  align-items: center; /* To align icon and text */
+  gap: 0.5rem; /* Space between icon and text */
+  padding: 0.6rem 1.2rem;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.home-button:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-1px);
+}
+
+.home-button svg {
+  /* Style for the HomeIcon */
+  width: 18px;
+  height: 18px;
 }
 
 .login-card {
@@ -207,13 +238,17 @@ body {
   color: var(--muted-text-color);
 }
 
-.signup-link a {
+.signup-link a,
+.contact-support-link {
+  /* Apply styles to both links */
   color: var(--primary-color);
   font-weight: 600;
   text-decoration: none;
 }
 
-.signup-link a:hover {
+.signup-link a:hover,
+.contact-support-link:hover {
+  /* Apply hover styles to both */
   text-decoration: underline;
 }
 
@@ -228,6 +263,10 @@ body {
   .form-section {
     min-height: 100vh;
   }
+  .home-button {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -239,5 +278,15 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  .home-button {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  .home-button svg {
+    width: 16px;
+    height: 16px;
   }
 }
