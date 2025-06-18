@@ -269,7 +269,7 @@ const Home = () => {
           <div className="footer-contact">
             <h3>Contact</h3>
             <p>
-              <i className="bi bi-envelope"></i> mohamed-a2@graduate.utm.my.
+              <i className="bi bi-envelope"></i> mohamed-a2@graduate.utm.my
             </p>
             <p>
               <i className="bi bi-telephone"></i> +60 1129635974
