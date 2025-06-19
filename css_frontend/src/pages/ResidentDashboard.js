@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import ResidentSidebar from "../components/ResidentSidebar";
 import "../styles/ResidentDashboard.css";
 // Import your actual API functions
-import { getMaintenanceByResident } from "../api/maintenanceApis";
-import { getVisitorsByResident } from "../api/visitorApis";
-import { fetchItemsByUser } from "../api/itemApis";
+import { getMaintenanceByResident } from "../api/maintenanceApi";
+import { getVisitorsByResident } from "../api/visitorApi";
+import { fetchItemsByUser } from "../api/itemApi";
 
 const ResidentDashboard = () => {
   const navigate = useNavigate();
