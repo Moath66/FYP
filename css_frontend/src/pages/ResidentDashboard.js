@@ -87,7 +87,7 @@ const ResidentDashboard = () => {
       <main className="dashboard-main-content">
         <header className="main-content-header">
           <h2>Resident Dashboard</h2>
-          <p>Welcome back, {userName}! 👋</p>
+          <p>Welcome back, {userName}!  👋</p>
         </header>
 
         {/* Welcome Card */}
