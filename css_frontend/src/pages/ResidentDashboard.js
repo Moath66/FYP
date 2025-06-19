@@ -1,14 +1,5 @@
 "use client";
 import { useNavigate } from "react-router-dom";
-import {
-  FaClipboardList,
-  FaSearch,
-  FaUserPlus,
-  FaTools,
-  FaHistory,
-  FaWrench,
-  FaAddressCard,
-} from "react-icons/fa";
 import ResidentSidebar from "../components/ResidentSidebar"; // Import the new sidebar
 import "../styles/ResidentDashboard.css"; // Ensure this path is correct
 
@@ -20,63 +11,46 @@ const ResidentDashboard = () => {
 
   const quickActions = [
     {
-      icon: <FaClipboardList />,
       title: "Report Lost Item",
-      description: "Submit a lost item report",
+      description: "Easily submit a report for any lost belongings.",
       path: "/report-lost-item",
-      iconBg: "#e8f0fe", // Light blue
-      iconColor: "#4285f4", // Blue
     },
     {
-      icon: <FaSearch />,
       title: "Report Found Item",
-      description: "Submit a found item report",
+      description: "Help others by reporting items you've found.",
       path: "/report-found-item",
-      iconBg: "#e6f4ea", // Light green
-      iconColor: "#34a853", // Green
     },
     {
-      icon: <FaUserPlus />,
       title: "Pre-Register a Visitor",
-      description: "Create a new visitor registration",
+      description: "Streamline visitor entry by pre-registering guests.",
       path: "/pre-register-visitor",
-      iconBg: "#fcefe3", // Light orange
-      iconColor: "#fbbc05", // Orange
     },
     {
-      icon: <FaTools />,
       title: "Request Maintenance",
-      description: "Submit a new maintenance request",
+      description: "Submit a new request for property maintenance.",
       path: "/request-maintenance",
-      iconBg: "#fde2e2", // Light red
-      iconColor: "#ea4335", // Red
     },
   ];
 
-  const trackingActions = [
+  const trackingApplications = [
     {
-      icon: <FaHistory />,
-      title: "Track Item Application",
-      description: "View status of lost/found items",
+      title: "Track Item Applications",
+      description: "View the current status of your lost/found item reports.",
       path: "/track-item",
-      iconBg: "#e8f0fe",
-      iconColor: "#4285f4",
+      status: "2 Pending, 1 Resolved", // Example status
     },
     {
-      icon: <FaWrench />,
-      title: "Track Maintenance Application",
-      description: "Check maintenance request status",
+      title: "Track Maintenance Requests",
+      description: "Check the progress of your submitted maintenance requests.",
       path: "/track-maintenance",
-      iconBg: "#e6f4ea",
-      iconColor: "#34a853",
+      status: "1 In Progress", // Example status
     },
     {
-      icon: <FaAddressCard />,
-      title: "Track Visitor Application",
-      description: "Follow up on your visitor registration",
+      title: "Track Visitor Registrations",
+      description:
+        "Follow up on the approval status of your visitor registrations.",
       path: "/track-visitor",
-      iconBg: "#fcefe3",
-      iconColor: "#fbbc05",
+      status: "All Approved", // Example status
     },
   ];
 
@@ -89,54 +63,37 @@ const ResidentDashboard = () => {
           <p>Welcome back, {userName}! 👋</p>
         </header>
 
-        <section className="stats-overview">
-          {/* Reusing the stat-card class for quick actions */}
-          {quickActions.map((action, index) => (
-            <div
-              key={index}
-              className="stat-card"
-              onClick={() => navigate(action.path)}
-            >
+        <section className="dashboard-section">
+          <h3>Quick Actions</h3>
+          <div className="action-cards-grid">
+            {quickActions.map((action, index) => (
               <div
-                className="stat-card-icon"
-                style={{
-                  backgroundColor: action.iconBg,
-                  color: action.iconColor,
-                }}
+                key={index}
+                className="action-card-simple"
+                onClick={() => navigate(action.path)}
               >
-                {action.icon}
+                <h4>{action.title}</h4>
+                <p>{action.description}</p>
               </div>
-              <div className="stat-card-info">
-                <h3>{action.title}</h3>
-                <p className="stat-description">{action.description}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
 
-        <section className="stats-overview" style={{ marginTop: "2rem" }}>
-          {/* Reusing the stat-card class for tracking actions */}
-          {trackingActions.map((action, index) => (
-            <div
-              key={index}
-              className="stat-card"
-              onClick={() => navigate(action.path)}
-            >
+        <section className="dashboard-section" style={{ marginTop: "2rem" }}>
+          <h3>Tracking Applications</h3>
+          <div className="action-cards-grid">
+            {trackingApplications.map((app, index) => (
               <div
-                className="stat-card-icon"
-                style={{
-                  backgroundColor: action.iconBg,
-                  color: action.iconColor,
-                }}
+                key={index}
+                className="action-card-status"
+                onClick={() => navigate(app.path)}
               >
-                {action.icon}
+                <h4>{app.title}</h4>
+                <p>{app.description}</p>
+                {app.status && <div className="status-badge">{app.status}</div>}
               </div>
-              <div className="stat-card-info">
-                <h3>{action.title}</h3>
-                <p className="stat-description">{action.description}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
       </main>
     </div>
