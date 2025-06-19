@@ -1,5 +1,4 @@
-import React from "react";
-import "../styles/ResidentDashboard.css";
+"use client";
 import { useNavigate } from "react-router-dom";
 import {
   FaUserEdit,
@@ -11,11 +10,13 @@ import {
   FaWrench,
   FaAddressCard,
 } from "react-icons/fa";
+import "../styles/ResidentDashboard.css"; // Ensure this path is correct
 
 const ResidentDashboard = () => {
   const navigate = useNavigate();
 
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  // Safely parse user data from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const userName = storedUser?.userName || "Resident";
 
   const quickActions = [
@@ -72,9 +73,8 @@ const ResidentDashboard = () => {
         <h1>Resident Dashboard</h1>
       </header>
 
-      <div className="dashboard-section">
-        <h2>Welcome {userName}</h2>
-
+      <section className="dashboard-section welcome-section">
+        <h2>Welcome {userName}!</h2>
         <button
           className="manage-profile-button"
           onClick={() => navigate("/resident/profile")}
@@ -82,9 +82,9 @@ const ResidentDashboard = () => {
           <FaUserEdit className="manage-profile-icon" />
           Manage Profile
         </button>
-      </div>
+      </section>
 
-      <div className="quick-actions-section">
+      <section className="dashboard-section quick-actions-section">
         <h3>Quick Actions</h3>
         <div className="action-cards-container">
           {quickActions.map((action, index) => (
@@ -101,9 +101,9 @@ const ResidentDashboard = () => {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="quick-actions-section">
+      <section className="dashboard-section tracking-actions-section">
         <h3>Tracking Applications</h3>
         <div className="action-cards-container">
           {trackingActions.map((action, index) => (
@@ -120,7 +120,7 @@ const ResidentDashboard = () => {
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };
