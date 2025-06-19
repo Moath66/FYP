@@ -1,155 +1,172 @@
-/* 🔹 Modal Overlay */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+/* src/components/UserForm.css */
+/* Using variables from a global scope or defined in AdminDashboard.css context */
+.user-form-overlay .modal-content {
+  /* Specific class for user form modal */
+  background-color: var(--card-bg, white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow, 0 5px 15px rgba(0, 0, 0, 0.2));
+  width: 100%;
+  max-width: 500px; /* Good width for forms */
+  animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  /* 🔹 Modal Content */
-  .modal-content {
-    background: #fff;
-    width: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    text-align: center;
-    animation: fadeIn 0.3s ease-in-out;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* 🔹 Modal Header */
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .modal-header h2 {
-    font-size: 20px;
-    color: #333;
-  }
-  
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #888;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .close-btn:hover {
-    color: #ff4d4d;
-  }
-  
-  /* 🔹 Form Styling */
-  .user-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .user-form label {
-    text-align: left;
-    font-size: 14px;
-    font-weight: bold;
-    color: #444;
-    margin-top: 10px;
-  }
-  
-  .user-form input {
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  .user-form input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-  }
-  
-  /* 🔹 Radio Buttons */
-  .radio-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-  
-  .radio-group label {
-    font-size: 14px;
-    font-weight: normal;
-    cursor: pointer;
-  }
-  
-  .radio-group input {
-    margin-right: 5px;
-  }
-  
-  /* 🔹 Error Message */
-  .error-msg {
-    color: #ff4d4d;
-    font-size: 14px;
-    background: #ffe6e6;
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  /* 🔹 Buttons */
-  .form-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-  }
-  
-  .cancel-btn {
-    background: #888;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-  }
-  
-  .cancel-btn:hover {
-    background: #555;
-  }
-  
-  .add-btn {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-  }
-  
-  .add-btn:hover {
-    background: #0056b3;
-  }
-  
-  /* 🔹 Animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
+}
+
+.user-form-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.user-form-modal-content .modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color, #333);
+}
+
+.user-form-modal-content .modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  font-weight: 300; /* Lighter weight for 'x' */
+  color: var(--muted-text-color, #6c757d);
+  cursor: pointer;
+  padding: 0.25rem; /* Easier to click */
+  line-height: 1; /* Prevent extra space */
+}
+.user-form-modal-content .modal-close-button:hover {
+  color: var(--text-color, #333);
+}
+
+.user-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* Consistent gap */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--text-color, #333);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  box-sizing: border-box; /* Important for padding and border */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color, #009688);
+  box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2); /* Using primary color with alpha */
+}
+
+.form-hint {
+  font-size: 0.8rem;
+  color: var(--muted-text-color, #6c757d);
+  margin-top: 0.25rem;
+}
+
+.role-radio-group {
+  display: flex;
+  gap: 1.5rem; /* More space between radio options */
+  margin-top: 0.25rem;
+  flex-wrap: wrap; /* Allow wrapping if many roles */
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: normal; /* Normal weight for radio text */
+  color: var(--text-color, #333);
+}
+
+.radio-label input[type="radio"] {
+  margin-right: 0.5rem;
+  accent-color: var(--primary-color, #009688); /* Modern way to color radio */
+  width: 16px; /* Custom size */
+  height: 16px;
+}
+
+.form-error-message {
+  color: var(--danger-color, #e74c3c);
+  background-color: #fde2e2; /* Lighter red background */
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--danger-color, #e74c3c);
+  text-align: left;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.button-cancel,
+.button-submit {
+  padding: 0.7rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.button-cancel {
+  background-color: #f1f3f5; /* Light grey */
+  color: var(--text-color, #333);
+  border: 1px solid #dee2e6; /* Subtle border */
+}
+.button-cancel:hover {
+  background-color: #e9ecef;
+}
+
+.button-submit {
+  background-color: var(--primary-color, #009688);
+  color: white;
+}
+.button-submit:hover:not(:disabled) {
+  background-color: var(--primary-hover-color, #00796b);
+  transform: translateY(-1px); /* Subtle lift */
+}
+.button-submit:disabled {
+  background-color: #b2dfdb; /* Lighter primary for disabled */
+  cursor: not-allowed;
+}

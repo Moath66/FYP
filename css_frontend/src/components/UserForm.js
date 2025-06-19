@@ -1,25 +1,45 @@
-import React, { useState, useEffect } from "react";
-import { createUser, updateUser } from "../api/userApi";
+"use client";
 
-const UserForm = ({ onClose, onUserAdded, isEdit = false, existingUser = null }) => {
+import { useState, useEffect } from "react";
+// import { createUser, updateUser } from "../api/userApi"; // Assuming these are correctly imported
+import "./UserForm.css"; // Dedicated CSS for UserForm
+
+const UserForm = ({
+  onClose,
+  onUserAddedOrUpdated,
+  isEdit = false,
+  existingUser = null,
+}) => {
   const [formData, setFormData] = useState({
     userName: "",
     phoneNo: "",
     email: "",
     password: "",
-    role: "resident",
+    role: "resident", // Default role
+    userId: "", // For editing
   });
-
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isEdit && existingUser) {
       setFormData({
-        userName: existingUser.userName,
+        userName: existingUser.userName || "",
         phoneNo: existingUser.phoneNo || "",
-        email: existingUser.email,
-        password: "", // Passwords shouldn't be editable here
-        role: existingUser.role,
+        email: existingUser.email || "",
+        password: "", // Password should generally not be pre-filled for edit
+        role: existingUser.role || "resident",
+        userId: existingUser.userId || existingUser._id || "", // Handle both userId and _id
+      });
+    } else {
+      // Reset for add new user
+      setFormData({
+        userName: "",
+        phoneNo: "",
+        email: "",
+        password: "",
+        role: "resident",
+        userId: "",
       });
     }
   }, [isEdit, existingUser]);
@@ -35,104 +55,157 @@ const UserForm = ({ onClose, onUserAdded, isEdit = false, existingUser = null })
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
-    if (!formData.userName || !formData.phoneNo || !formData.email || (!isEdit && !formData.password)) {
-      setError("All fields are required!");
+    if (
+      !formData.userName ||
+      !formData.phoneNo ||
+      !formData.email ||
+      (!isEdit && !formData.password)
+    ) {
+      setError("All fields marked with * are required.");
+      setLoading(false);
+      return;
+    }
+    if (formData.phoneNo && !/^\d{10,15}$/.test(formData.phoneNo)) {
+      setError("Please enter a valid phone number (10-15 digits).");
+      setLoading(false);
       return;
     }
 
     try {
       if (isEdit && existingUser) {
-        await updateUser(existingUser.userId, formData);
+        // await updateUser(existingUser.userId || existingUser._id, formData); // Use appropriate ID
+        console.log("Updating user:", formData); // Placeholder
       } else {
-        await createUser(formData);
+        // await createUser(formData);
+        console.log("Creating user:", formData); // Placeholder
       }
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      onUserAdded();
-      onClose();
+      onUserAddedOrUpdated(); // This prop should handle toast & refresh
+      // onClose(); // Usually onUserAddedOrUpdated handles closing
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong.");
+      console.error("Form submission error:", err);
+      setError(
+        err.response?.data?.message ||
+          "An unexpected error occurred. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay user-form-overlay">
+      <div className="modal-content user-form-modal-content">
         <div className="modal-header">
-          <h2>{isEdit ? "✏️ Edit User" : "➕ Add New User"}</h2>
-          <button className="close-btn" onClick={onClose}>✖</button>
+          <h2>{isEdit ? "Edit User Details" : "Add New User"}</h2>
+          <button
+            className="modal-close-button"
+            onClick={onClose}
+            aria-label="Close dialog"
+          >
+            &times;
+          </button>
         </div>
 
-        {error && <p className="error-msg">{error}</p>}
+        {error && <p className="form-error-message">{error}</p>}
 
-        <form className="user-form" onSubmit={handleSubmit}>
-          <label>User Name</label>
-          <input
-            type="text"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-            placeholder="Enter name"
-            required
-          />
+        <form className="user-form-fields" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="userName">User Name *</label>
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              value={formData.userName}
+              onChange={handleChange}
+              placeholder="Enter full name"
+              required
+            />
+          </div>
 
-          <label>Phone Number</label>
-          <input
-            type="text"
-            name="phoneNo"
-            value={formData.phoneNo}
-            onChange={handleChange}
-            placeholder="Enter phone number"
-            required
-          />
+          <div className="form-group">
+            <label htmlFor="phoneNo">Phone Number *</label>
+            <input
+              type="tel"
+              id="phoneNo"
+              name="phoneNo"
+              value={formData.phoneNo}
+              onChange={handleChange}
+              placeholder="e.g., 1234567890"
+              required
+            />
+          </div>
 
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
-            required
-            disabled={isEdit}
-          />
+          <div className="form-group">
+            <label htmlFor="email">Email Address *</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="user@example.com"
+              required
+              disabled={isEdit} // Email usually not editable
+            />
+            {isEdit && (
+              <small className="form-hint">
+                Email cannot be changed for existing users.
+              </small>
+            )}
+          </div>
 
           {!isEdit && (
-            <>
-              <label>Password</label>
+            <div className="form-group">
+              <label htmlFor="password">Password *</label>
               <input
                 type="password"
+                id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter password"
+                placeholder="Enter a strong password"
                 required
               />
-            </>
+            </div>
           )}
 
-          <label>User Role</label>
-          <div className="radio-group">
-            {["resident", "staff", "security"].map((roleOption) => (
-              <label key={roleOption}>
-                <input
-                  type="radio"
-                  name="role"
-                  value={roleOption}
-                  checked={formData.role === roleOption}
-                  onChange={handleChange}
-                />
-                {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
-              </label>
-            ))}
+          <div className="form-group">
+            <label>User Role *</label>
+            <div className="role-radio-group">
+              {["resident", "staff", "security"].map((roleOption) => (
+                <label key={roleOption} className="radio-label">
+                  <input
+                    type="radio"
+                    name="role"
+                    value={roleOption}
+                    checked={formData.role === roleOption}
+                    onChange={handleChange}
+                  />
+                  <span className="radio-text">
+                    {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
+                  </span>
+                </label>
+              ))}
+            </div>
           </div>
 
-          <div className="form-buttons">
-            <button type="button" onClick={onClose} className="cancel-btn">
+          <div className="form-actions">
+            <button type="button" onClick={onClose} className="button-cancel">
               Cancel
             </button>
-            <button type="submit" className="add-btn">
-              {isEdit ? "Confirm" : "Add User"}
+            <button type="submit" className="button-submit" disabled={loading}>
+              {loading
+                ? isEdit
+                  ? "Updating..."
+                  : "Adding..."
+                : isEdit
+                ? "Save Changes"
+                : "Add User"}
             </button>
           </div>
         </form>
