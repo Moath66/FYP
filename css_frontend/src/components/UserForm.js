@@ -1,15 +1,10 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-// import { createUser, updateUser } from "../api/userApi"; // Assuming these are correctly imported
-import "../styles/UserForm.css"; // Dedicated CSS for UserForm
+import { useState, useEffect } from "react"
+import { createUser, updateUser } from "../api/userApi" // Import the API functions
+import "./UserForm.css" // Dedicated CSS for UserForm
 
-const UserForm = ({
-  onClose,
-  onUserAddedOrUpdated,
-  isEdit = false,
-  existingUser = null,
-}) => {
+const UserForm = ({ onClose, onUserAddedOrUpdated, isEdit = false, existingUser = null }) => {
   const [formData, setFormData] = useState({
     userName: "",
     phoneNo: "",
@@ -17,9 +12,9 @@ const UserForm = ({
     password: "",
     role: "resident", // Default role
     userId: "", // For editing
-  });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  })
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (isEdit && existingUser) {
@@ -30,83 +25,61 @@ const UserForm = ({
         password: "", // Password should generally not be pre-filled for edit
         role: existingUser.role || "resident",
         userId: existingUser.userId || existingUser._id || "", // Handle both userId and _id
-      });
+      })
     } else {
       // Reset for add new user
-      setFormData({
-        userName: "",
-        phoneNo: "",
-        email: "",
-        password: "",
-        role: "resident",
-        userId: "",
-      });
+      setFormData({ userName: "", phoneNo: "", email: "", password: "", role: "resident", userId: "" })
     }
-  }, [isEdit, existingUser]);
+  }, [isEdit, existingUser])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    e.preventDefault()
+    setError("")
+    setLoading(true)
 
-    if (
-      !formData.userName ||
-      !formData.phoneNo ||
-      !formData.email ||
-      (!isEdit && !formData.password)
-    ) {
-      setError("All fields marked with * are required.");
-      setLoading(false);
-      return;
+    if (!formData.userName || !formData.phoneNo || !formData.email || (!isEdit && !formData.password)) {
+      setError("All fields marked with * are required.")
+      setLoading(false)
+      return
     }
     if (formData.phoneNo && !/^\d{10,15}$/.test(formData.phoneNo)) {
-      setError("Please enter a valid phone number (10-15 digits).");
-      setLoading(false);
-      return;
+      setError("Please enter a valid phone number (10-15 digits).")
+      setLoading(false)
+      return
     }
 
     try {
       if (isEdit && existingUser) {
-        // await updateUser(existingUser.userId || existingUser._id, formData); // Use appropriate ID
-        console.log("Updating user:", formData); // Placeholder
+        // Use existingUser.userId or existingUser._id as the identifier for the update API call
+        await updateUser(existingUser.userId || existingUser._id, formData)
       } else {
-        // await createUser(formData);
-        console.log("Creating user:", formData); // Placeholder
+        await createUser(formData)
       }
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      onUserAddedOrUpdated(); // This prop should handle toast & refresh
-      // onClose(); // Usually onUserAddedOrUpdated handles closing
+      onUserAddedOrUpdated() // This prop should handle toast & refresh
+      onClose() // Close the modal on success
     } catch (err) {
-      console.error("Form submission error:", err);
-      setError(
-        err.response?.data?.message ||
-          "An unexpected error occurred. Please try again."
-      );
+      console.error("Form submission error:", err)
+      setError(err.message || "An unexpected error occurred. Please try again.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="modal-overlay user-form-overlay">
       <div className="modal-content user-form-modal-content">
         <div className="modal-header">
           <h2>{isEdit ? "Edit User Details" : "Add New User"}</h2>
-          <button
-            className="modal-close-button"
-            onClick={onClose}
-            aria-label="Close dialog"
-          >
+          <button className="modal-close-button" onClick={onClose} aria-label="Close dialog">
             &times;
           </button>
         </div>
@@ -152,11 +125,7 @@ const UserForm = ({
               required
               disabled={isEdit} // Email usually not editable
             />
-            {isEdit && (
-              <small className="form-hint">
-                Email cannot be changed for existing users.
-              </small>
-            )}
+            {isEdit && <small className="form-hint">Email cannot be changed for existing users.</small>}
           </div>
 
           {!isEdit && (
@@ -186,9 +155,7 @@ const UserForm = ({
                     checked={formData.role === roleOption}
                     onChange={handleChange}
                   />
-                  <span className="radio-text">
-                    {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
-                  </span>
+                  <span className="radio-text">{roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}</span>
                 </label>
               ))}
             </div>
@@ -199,19 +166,13 @@ const UserForm = ({
               Cancel
             </button>
             <button type="submit" className="button-submit" disabled={loading}>
-              {loading
-                ? isEdit
-                  ? "Updating..."
-                  : "Adding..."
-                : isEdit
-                ? "Save Changes"
-                : "Add User"}
+              {loading ? (isEdit ? "Updating..." : "Adding...") : isEdit ? "Save Changes" : "Add User"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserForm;
+export default UserForm
