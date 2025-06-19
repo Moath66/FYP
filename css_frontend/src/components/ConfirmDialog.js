@@ -1,6 +1,6 @@
 "use client";
 
-import "./ConfirmDialog.css"; // Dedicated CSS for ConfirmDialog
+import "../styles/ConfirmDialog.css"; // Dedicated CSS for ConfirmDialog
 
 const ConfirmDialog = ({
   message,

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 // import { createUser, updateUser } from "../api/userApi"; // Assuming these are correctly imported
-import "./UserForm.css"; // Dedicated CSS for UserForm
+import "../styles/UserForm.css"; // Dedicated CSS for UserForm
 
 const UserForm = ({
   onClose,
