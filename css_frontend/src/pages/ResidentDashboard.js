@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ResidentSidebar from "../components/ResidentSidebar";
 import "../styles/ResidentDashboard.css";
-// Import your actual API functions
+
 import { getMaintenanceByResident } from "../api/maintenanceApi";
 import { getVisitorsByResident } from "../api/visitorApi";
 import { fetchItemsByUser } from "../api/itemApi";
@@ -87,7 +87,7 @@ const ResidentDashboard = () => {
       <main className="dashboard-main-content">
         <header className="main-content-header">
           <h2>Resident Dashboard</h2>
-          <p>Welcome back, {userName}!  👋</p>
+          <p>Welcome back, {userName}! 👋</p>
         </header>
 
         {/* Welcome Card */}
