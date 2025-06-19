@@ -1,114 +1,91 @@
-/* ConfirmDialog.css */
-
-/* Fullscreen overlay */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* src/components/ConfirmDialog.css */
+.confirm-dialog-overlay .modal-content {
+  /* Specific class for confirm dialog modal */
+  background-color: var(--card-bg, white);
+  padding: 1.5rem 2rem; /* Adjusted padding */
+  border-radius: 12px;
+  box-shadow: var(--shadow, 0 5px 15px rgba(0, 0, 0, 0.2));
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3); /* softer, more transparent */
-  backdrop-filter: blur(4px); /* slight blur effect */
+  max-width: 450px;
+  text-align: center; /* Center content by default */
+  animation: fadeInModal 0.3s ease-out; /* Re-use animation */
+}
+
+.confirm-dialog-modal-content .modal-header {
   display: flex;
+  justify-content: space-between; /* Title on left, close on right */
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeInOverlay 0.3s ease-in-out;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
 }
 
-/* Popup card */
-.popup-card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-  text-align: center;
-  width: 380px;
-  max-width: 90%;
-  animation: slideUpFade 0.3s ease-in-out;
+.confirm-dialog-modal-content .modal-header h3 {
+  /* Changed from h2 to h3 for semantic hierarchy */
+  margin: 0;
+  font-size: 1.25rem; /* Slightly smaller than form title */
+  font-weight: 600;
+  color: var(--text-color, #333);
+  text-align: left; /* Align title to left */
 }
 
-.popup-card p {
-  font-size: 15px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-/* Button wrapper */
-.confirm-dialog-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-/* Cancel button */
-.cancel-btn {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 20px;
+.confirm-dialog-modal-content .modal-close-button {
+  background: none;
   border: none;
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: var(--muted-text-color, #6c757d);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+.confirm-dialog-modal-content .modal-close-button:hover {
+  color: var(--text-color, #333);
+}
+
+.confirm-dialog-message {
+  font-size: 1.05rem; /* Slightly larger for readability */
+  color: var(--text-color, #333);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  text-align: left; /* Align message to left for better reading */
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.75rem;
+  margin-top: 1rem; /* Space above buttons */
+}
+
+/* Re-use button styles from UserForm.css or ensure consistency */
+.confirm-dialog-actions .button-cancel {
+  background-color: #f1f3f5;
+  color: var(--text-color, #333);
+  border: 1px solid #dee2e6;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
-  transition: background-color 0.2s ease-in-out;
+}
+.confirm-dialog-actions .button-cancel:hover {
+  background-color: #e9ecef;
 }
 
-.cancel-btn:hover {
-  background-color: #b3b3b3;
-}
-
-/* Confirm button */
-.confirm-btn {
-  background-color: rgba(220, 53, 69, 0.8) !important; /* less intense red */
-  color: white !important;
-  padding: 10px 20px;
-  border: none;
+.confirm-dialog-actions .button-confirm-action {
+  background-color: var(
+    --danger-color,
+    #e74c3c
+  ); /* Red for confirm delete/destructive actions */
+  color: white;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease-in-out;
 }
-
-.confirm-btn:hover {
-  background-color: rgba(200, 35, 51, 0.9);
-  transform: scale(1.05); /* subtle zoom */
-  box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
-}
-
-/* Animations */
-@keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUpFade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .popup-card {
-    padding: 20px;
-  }
-
-  .confirm-btn,
-  .cancel-btn {
-    font-size: 14px;
-    padding: 8px 14px;
-  }
+.confirm-dialog-actions .button-confirm-action:hover {
+  background-color: var(--danger-hover-color, #c0392b);
 }
