@@ -8,51 +8,14 @@ const ResidentDashboard = () => {
 
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const userName = storedUser?.userName || "Resident";
+  const userEmail = storedUser?.email || "resident@example.com"; // Assuming email is available
 
-  const quickActions = [
-    {
-      title: "Report Lost Item",
-      description: "Easily submit a report for any lost belongings.",
-      path: "/report-lost-item",
-    },
-    {
-      title: "Report Found Item",
-      description: "Help others by reporting items you've found.",
-      path: "/report-found-item",
-    },
-    {
-      title: "Pre-Register a Visitor",
-      description: "Streamline visitor entry by pre-registering guests.",
-      path: "/pre-register-visitor",
-    },
-    {
-      title: "Request Maintenance",
-      description: "Submit a new request for property maintenance.",
-      path: "/request-maintenance",
-    },
-  ];
-
-  const trackingApplications = [
-    {
-      title: "Track Item Applications",
-      description: "View the current status of your lost/found item reports.",
-      path: "/track-item",
-      status: "2 Pending, 1 Resolved", // Example status
-    },
-    {
-      title: "Track Maintenance Requests",
-      description: "Check the progress of your submitted maintenance requests.",
-      path: "/track-maintenance",
-      status: "1 In Progress", // Example status
-    },
-    {
-      title: "Track Visitor Registrations",
-      description:
-        "Follow up on the approval status of your visitor registrations.",
-      path: "/track-visitor",
-      status: "All Approved", // Example status
-    },
-  ];
+  // Placeholder data for activity counts
+  const activityCounts = {
+    pendingMaintenance: 2,
+    upcomingVisitors: 1,
+    activeLostFound: 0,
+  };
 
   return (
     <div className="dashboard-layout">
@@ -63,36 +26,81 @@ const ResidentDashboard = () => {
           <p>Welcome back, {userName}! 👋</p>
         </header>
 
-        <section className="dashboard-section">
-          <h3>Quick Actions</h3>
-          <div className="action-cards-grid">
-            {quickActions.map((action, index) => (
-              <div
-                key={index}
-                className="action-card-simple"
-                onClick={() => navigate(action.path)}
-              >
-                <h4>{action.title}</h4>
-                <p>{action.description}</p>
-              </div>
-            ))}
+        {/* New: Welcome Card */}
+        <section className="dashboard-section welcome-card">
+          <div className="welcome-content">
+            <h3>Hello, {userName}!</h3>
+            <p>
+              Your central hub for managing community services. Quickly access
+              your requests, track applications, and stay informed.
+            </p>
+            <button
+              className="welcome-button"
+              onClick={() => navigate("/resident/profile")}
+            >
+              Manage Your Profile
+            </button>
+          </div>
+          <div className="welcome-illustration">
+            {/* Placeholder for an illustration or dynamic content */}
+            <img
+              src="/placeholder.svg?height=150&width=150"
+              alt="Welcome illustration"
+              className="welcome-img"
+            />
           </div>
         </section>
 
-        <section className="dashboard-section" style={{ marginTop: "2rem" }}>
-          <h3>Tracking Applications</h3>
-          <div className="action-cards-grid">
-            {trackingApplications.map((app, index) => (
-              <div
-                key={index}
-                className="action-card-status"
-                onClick={() => navigate(app.path)}
-              >
-                <h4>{app.title}</h4>
-                <p>{app.description}</p>
-                {app.status && <div className="status-badge">{app.status}</div>}
-              </div>
-            ))}
+        {/* New: Your Activity Overview */}
+        <section className="dashboard-section activity-overview">
+          <h3>Your Activity Overview</h3>
+          <div className="activity-cards-grid">
+            <div className="activity-card">
+              <h4>Pending Maintenance Requests</h4>
+              <p className="activity-count">
+                {activityCounts.pendingMaintenance}
+              </p>
+              <span className="activity-status">Action Required</span>
+            </div>
+            <div className="activity-card">
+              <h4>Upcoming Visitors</h4>
+              <p className="activity-count">
+                {activityCounts.upcomingVisitors}
+              </p>
+              <span className="activity-status">Scheduled</span>
+            </div>
+            <div className="activity-card">
+              <h4>Active Lost & Found Reports</h4>
+              <p className="activity-count">{activityCounts.activeLostFound}</p>
+              <span className="activity-status">No Active Reports</span>
+            </div>
+          </div>
+        </section>
+
+        {/* New: Community Updates (Placeholder) */}
+        <section className="dashboard-section community-updates">
+          <h3>Community Updates</h3>
+          <div className="update-item">
+            <h4>Notice: Annual Building Maintenance</h4>
+            <p className="update-date">June 15, 2025</p>
+            <p>
+              Scheduled maintenance will occur from June 20-25. Expect minor
+              disruptions.
+            </p>
+            <a href="#" className="read-more-link">
+              Read More
+            </a>
+          </div>
+          <div className="update-item">
+            <h4>Reminder: Community Event - Summer BBQ</h4>
+            <p className="update-date">June 10, 2025</p>
+            <p>
+              Join us for our annual Summer BBQ on July 1st at the main park.
+              RSVP by June 25th!
+            </p>
+            <a href="#" className="read-more-link">
+              Read More
+            </a>
           </div>
         </section>
       </main>

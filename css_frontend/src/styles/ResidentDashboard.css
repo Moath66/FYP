@@ -15,6 +15,14 @@
   --muted-text-color: #6c757d;
   --border-color: #e0e0e0;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* New colors for activity cards */
+  --activity-card-bg-1: #e8f0fe; /* Light blue */
+  --activity-card-text-1: #4285f4; /* Blue */
+  --activity-card-bg-2: #e6f4ea; /* Light green */
+  --activity-card-text-2: #34a853; /* Green */
+  --activity-card-bg-3: #fcefe3; /* Light orange */
+  --activity-card-text-3: #fbbc05; /* Orange */
 }
 
 body {
@@ -34,7 +42,9 @@ body {
   flex-grow: 1;
   padding: 2rem;
   overflow-y: auto;
-  background-color: var(--content-bg); /* Ensure main content has its background */
+  background-color: var(
+    --content-bg
+  ); /* Ensure main content has its background */
 }
 
 .main-content-header {
@@ -70,92 +80,177 @@ body {
   text-align: left; /* Align section headings to left */
 }
 
-.action-cards-grid {
+/* Welcome Card Specific Styles */
+.welcome-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2.5rem; /* More generous padding */
+  background: linear-gradient(to right, #e0f2f1, #ffffff); /* Subtle gradient */
+  border: 1px solid #b2dfdb; /* Lighter teal border */
+}
+
+.welcome-content {
+  flex: 1;
+}
+
+.welcome-card h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-color); /* Use primary color for welcome heading */
+  margin-bottom: 0.75rem;
+}
+
+.welcome-card p {
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.welcome-button:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+}
+
+.welcome-illustration {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(
+    0,
+    150,
+    136,
+    0.1
+  ); /* Light teal background for illustration */
+  border-radius: 50%; /* Circular shape */
+}
+
+.welcome-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Activity Overview Specific Styles */
+.activity-overview {
+  margin-top: 2rem;
+}
+
+.activity-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly wider cards */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
-/* Styling for Quick Action Cards (no icon) */
-.action-card-simple {
+.activity-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  text-align: left;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.action-card-simple:hover {
+.activity-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.action-card-simple h4 {
-  font-size: 1.1rem; /* Larger title */
-  font-weight: 600;
-  color: var(--heading-color);
-  margin: 0 0 0.5rem 0;
-}
-
-.action-card-simple p {
-  font-size: 0.9rem;
+.activity-card h4 {
+  font-size: 1.05rem;
+  font-weight: 500;
   color: var(--muted-text-color);
-  line-height: 1.5;
-  margin: 0;
+  margin: 0 0 0.75rem 0;
 }
 
-/* Styling for Tracking Application Cards (with status) */
-.action-card-status {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative; /* For status badge positioning */
+.activity-count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color); /* Highlight count with primary color */
+  margin-bottom: 0.75rem;
 }
 
-.action-card-status:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-}
-
-.action-card-status h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--heading-color);
-  margin: 0 0 0.5rem 0;
-}
-
-.action-card-status p {
-  font-size: 0.9rem;
-  color: var(--muted-text-color);
-  line-height: 1.5;
-  margin: 0 0 1rem 0; /* Space before status badge */
-}
-
-.status-badge {
+.activity-status {
   display: inline-block;
   padding: 0.4rem 0.8rem;
-  border-radius: 20px; /* Pill shape */
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
-  background-color: #e6f4ea; /* Light green for status */
-  color: #34a853; /* Green text */
-  align-self: flex-start; /* Align to left */
-  margin-top: auto; /* Push to bottom */
+  background-color: #f0fdf4; /* Very light green */
+  color: #16a34a; /* Darker green */
+}
+
+/* Community Updates Specific Styles */
+.community-updates {
+  margin-top: 2rem;
+}
+
+.update-item {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.update-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.update-item h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin: 0 0 0.25rem 0;
+}
+
+.update-item .update-date {
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+  margin-bottom: 0.75rem;
+}
+
+.update-item p {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.read-more-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.read-more-link:hover {
+  color: var(--primary-hover-color);
+  text-decoration: underline;
 }
 
 /* Responsive adjustments */
@@ -177,24 +272,37 @@ body {
     font-size: 1.1rem;
     margin-bottom: 1rem;
   }
-  .action-cards-grid {
+  .welcome-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .welcome-card h3 {
+    font-size: 1.5rem;
+  }
+  .welcome-illustration {
+    margin-top: 1.5rem;
+  }
+  .activity-cards-grid {
     grid-template-columns: 1fr; /* Stack cards vertically on smaller screens */
     gap: 1rem;
   }
-  .action-card-simple,
-  .action-card-status {
+  .activity-card {
     padding: 1.2rem;
   }
-  .action-card-simple h4,
-  .action-card-status h4 {
+  .activity-card h4 {
     font-size: 1rem;
   }
-  .action-card-simple p,
-  .action-card-status p {
-    font-size: 0.85rem;
+  .activity-count {
+    font-size: 2rem;
   }
-  .status-badge {
+  .activity-status {
     font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
+  }
+  .update-item h4 {
+    font-size: 1rem;
+  }
+  .update-item p {
+    font-size: 0.85rem;
   }
 }
