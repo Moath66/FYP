@@ -1,0 +1,181 @@
+/* src/styles/ResidentSidebar.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Reusing variables from AdminDashboard.css for consistency */
+  --primary-color: #009688; /* Teal */
+  --primary-hover-color: #00796b;
+  --sidebar-bg: #2c3e50; /* Dark blue/grey from Admin */
+  --sidebar-text-color: #ecf0f1;
+  --sidebar-active-bg: #34495e;
+  --content-bg: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-color: #333;
+  --muted-text-color: #6c757d;
+  --border-color: #e0e0e0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.resident-sidebar {
+  width: 260px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #4a627a; /* Slightly lighter border */
+}
+
+.sidebar-logo {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  padding-top: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  color: var(--sidebar-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-item:hover {
+  background-color: var(--sidebar-active-bg);
+}
+
+.nav-item.active {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-separator {
+  height: 1px;
+  background-color: #4a627a;
+  margin: 1rem 0;
+}
+
+.sidebar-group-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #95a5a6; /* Lighter grey for labels */
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  text-transform: uppercase;
+}
+
+.sidebar-logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  margin-top: auto; /* Pushes to the bottom */
+  background-color: transparent;
+  color: var(--sidebar-text-color);
+  border: 1px solid #566f88;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-logout-button:hover {
+  background-color: #e74c3c; /* Reddish hover for logout */
+  border-color: #e74c3c;
+  color: white;
+}
+
+/* Responsive adjustments for sidebar (similar to AdminDashboard) */
+@media (max-width: 768px) {
+  .resident-sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row; /* Horizontal layout for mobile sidebar */
+    justify-content: space-between;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .sidebar-header {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+  .sidebar-title,
+  .sidebar-separator,
+  .sidebar-group-label {
+    display: none; /* Hide title, separators, and labels on small screens for space */
+  }
+  .sidebar-nav {
+    display: flex; /* Horizontal nav items */
+    flex-grow: 0;
+    gap: 0.5rem;
+  }
+  .nav-item {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0;
+  }
+  .nav-item svg + span {
+    /* Hide text if there's an icon */
+    display: none;
+  }
+  @media (min-width: 480px) {
+    /* Show text on slightly larger small screens */
+    .nav-item svg + span {
+      display: inline;
+    }
+  }
+
+  .sidebar-logout-button {
+    width: auto;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0;
+  }
+  .sidebar-logout-button svg + span {
+    /* Hide text if there's an icon */
+    display: none;
+  }
+  @media (min-width: 480px) {
+    /* Show text on slightly larger small screens */
+    .sidebar-logout-button svg + span {
+      display: inline;
+    }
+  }
+}

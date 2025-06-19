@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminManageUsers from "./pages/AdminManageUsers";
 import ResidentDashboard from "./pages/ResidentDashboard";
+import ResidentSidebar from "./components/ResidentSidebar";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import NotFound from "./pages/NotFound";
@@ -69,6 +70,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/resident/sidebar"
+          element={
+            <ProtectedRoute requiredRole="resident">
+              <ResidentSidebar />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/security/dashboard"
           element={
