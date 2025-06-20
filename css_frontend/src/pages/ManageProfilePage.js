@@ -95,84 +95,86 @@ const ManageProfilePage = () => {
   }
 
   return (
-    <div className="manage-profile-container">
-      <header className="profile-header">
-        <h1>Manage Profile</h1>
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          ⬅ Back to Dashboard
-        </button>
-      </header>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="manage-profile-container">
+        <header className="profile-header">
+          <h1>Manage Profile</h1>
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            ⬅ Back to Dashboard
+          </button>
+        </header>
 
-      <form className="profile-form">
-        <label htmlFor="userName">User Name</label>
-        <input
-          type="text"
-          id="userName"
-          name="userName"
-          value={formData.userName}
-          onChange={handleChange}
-          placeholder="Enter name"
-        />
-
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Enter email"
-          disabled // Email usually not editable from profile
-        />
-
-        <label htmlFor="password">Password</label>
-        <div className="password-input-container">
+        <form className="profile-form">
+          <label htmlFor="userName">User Name</label>
           <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            name="password"
-            value={formData.password}
-            readOnly
+            type="text"
+            id="userName"
+            name="userName"
+            value={formData.userName}
+            onChange={handleChange}
+            placeholder="Enter name"
           />
-          <span
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="password-toggle-icon"
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </span>
-        </div>
 
-        <label htmlFor="phoneNo">Phone Number</label>
-        <input
-          type="text"
-          id="phoneNo"
-          name="phoneNo"
-          value={formData.phoneNo}
-          onChange={handleChange}
-          placeholder="Enter phone number"
-        />
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email"
+            disabled // Email usually not editable from profile
+          />
 
-        <div className="profile-buttons-container">
-          <button type="button" className="update-btn" onClick={handleEdit}>
-            Update Profile
-          </button>
-          <button
-            type="button"
-            className="delete-btn"
-            onClick={() => setShowConfirmDialog(true)}
-          >
-            Delete Account
-          </button>
-        </div>
-      </form>
+          <label htmlFor="password">Password</label>
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={formData.password}
+              readOnly
+            />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="password-toggle-icon"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
-      {showConfirmDialog && (
-        <ConfirmDialog
-          message="Are you sure you want to delete your account? This action cannot be undone."
-          onCancel={() => setShowConfirmDialog(false)}
-          onConfirm={confirmDelete}
-        />
-      )}
+          <label htmlFor="phoneNo">Phone Number</label>
+          <input
+            type="text"
+            id="phoneNo"
+            name="phoneNo"
+            value={formData.phoneNo}
+            onChange={handleChange}
+            placeholder="Enter phone number"
+          />
+
+          <div className="profile-buttons-container">
+            <button type="button" className="update-btn" onClick={handleEdit}>
+              Update Profile
+            </button>
+            <button
+              type="button"
+              className="delete-btn"
+              onClick={() => setShowConfirmDialog(true)}
+            >
+              Delete Account
+            </button>
+          </div>
+        </form>
+
+        {showConfirmDialog && (
+          <ConfirmDialog
+            message="Are you sure you want to delete your account? This action cannot be undone."
+            onCancel={() => setShowConfirmDialog(false)}
+            onConfirm={confirmDelete}
+          />
+        )}
+      </div>
     </div>
   );
 };
