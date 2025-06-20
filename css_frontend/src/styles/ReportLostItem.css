@@ -63,7 +63,7 @@
 
 .lost-card-title {
   margin-bottom: 0; /* Remove bottom margin as it's now in a flex container */
-  color: #007d7b; /* Teal/Green from landing/login pages */
+  color: #eff2f2; /* Teal/Green from landing/login pages */
   text-align: center;
   font-size: 1.6em; /* Adjust font size to match header h1 */
   font-weight: 700;
