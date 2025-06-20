@@ -310,7 +310,7 @@ const ReportFoundItem = () => {
             />
             <div className="btn-close-wrapper">
               <button className="btn-close" onClick={() => setShowImage(null)}>
-                Close
+                
               </button>
             </div>
           </div>
