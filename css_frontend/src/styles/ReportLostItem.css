@@ -1,22 +1,44 @@
-.lost-container {
-  max-width: 720px;
-  margin: 60px auto;
-  padding: 20px;
+/* Global body styles should be in a separate global CSS file if needed,
+   not here to avoid conflicts with other pages. */
+
+/* Wrapper for centering the page content */
+.lost-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Light gray background matching login/landing */
+  padding: 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
 .lost-card {
+  max-width: 600px;
+  width: 100%; /* Ensure it takes full width up to max-width */
   background-color: #ffffff;
   padding: 30px 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  border-radius: 12px; /* Slightly less rounded than before for consistency */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 
-.lost-card h2 {
+.lost-card-title {
   margin-bottom: 25px;
-  color: #007bff;
+  color: #007d7b; /* Teal/Green from landing/login pages */
   text-align: center;
-  font-size: 24px;
+  font-size: 1.8em; /* Slightly larger */
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between icon and text */
+}
+
+.lost-card-icon {
+  color: #007d7b; /* Match title color */
+  width: 30px;
+  height: 30px;
 }
 
 .lost-form .form-group {
@@ -28,69 +50,129 @@
   font-weight: 600;
   margin-bottom: 8px;
   color: #333;
+  font-size: 0.95em;
 }
 
 .lost-form input,
 .lost-form textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0; /* Lighter border */
+  border-radius: 8px; /* More rounded inputs */
+  font-size: 1em;
+  color: #333;
   background-color: #fefefe;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lost-form input:focus,
+.lost-form textarea:focus {
+  border-color: #007d7b; /* Teal/Green focus border */
+  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2); /* Soft focus shadow */
+  outline: none;
 }
 
 .lost-form textarea {
   resize: vertical;
+  min-height: 80px; /* Ensure a minimum height */
 }
 
 .upload-box {
   width: 100%;
   height: 160px;
-  border: 2px dashed #aaa;
-  border-radius: 12px;
+  border: 2px dashed #a0a0a0; /* Slightly darker dashed border */
+  border-radius: 10px;
   color: #666;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   background-color: #f9f9f9;
   padding: 16px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
 .upload-box:hover {
   background-color: #f1f1f1;
+  border-color: #007d7b; /* Teal/Green on hover */
+}
+
+.upload-label {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.upload-icon {
+  color: #007d7b; /* Teal/Green icon */
+  margin-bottom: 8px;
 }
 
 .image-preview {
   width: 100%;
-  max-height: 160px;
-  object-fit: contain;
-  border-radius: 10px;
+  max-height: 100%; /* Fill the box height */
+  object-fit: contain; /* Ensure image is fully visible */
+  border-radius: 8px;
 }
 
 .submit-btn {
   width: 100%;
   padding: 12px;
-  font-size: 16px;
-  background-color: #007bff;
+  font-size: 1.05em;
+  background-color: #007d7b; /* Teal/Green primary button */
   border: none;
   color: white;
-  border-radius: 10px;
+  border-radius: 8px; /* More rounded button */
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: 15px; /* Add some space above the button */
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background-color: #006666; /* Darker teal/green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.success-msg {
-  margin-top: 15px;
-  text-align: center;
-  color: green;
-  font-weight: 500;
+.submit-btn:disabled {
+  background-color: #a0a0a0; /* Gray out when disabled */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .lost-card {
+    padding: 20px 25px;
+    border-radius: 8px;
+  }
+
+  .lost-card-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  .lost-form input,
+  .lost-form textarea {
+    padding: 10px 12px;
+  }
+
+  .upload-box {
+    height: 140px;
+  }
+
+  .submit-btn {
+    padding: 10px;
+    font-size: 1em;
+  }
 }

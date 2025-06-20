@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import "../styles/ReportLostItem.css";
-import { FaCloudUploadAlt } from "react-icons/fa";
+"use client";
+
+import { useState } from "react";
+import "../styles/ReportLostItem.css"; // Ensure this path is correct
+import { CloudUpload, Package } from "lucide-react"; // Using Lucide icons
 import { toast } from "react-toastify";
-import { submitLostItem } from "../api/itemApi";
+import { submitLostItem } from "../api/itemApi"; // Keep your existing API import
 
 const ReportLostItem = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +48,7 @@ const ReportLostItem = () => {
       });
       setPreview(null);
     } catch (err) {
+      console.error("Failed to report lost item:", err);
       toast.error("❌ Failed to report lost item.");
     } finally {
       setLoading(false);
@@ -53,14 +56,19 @@ const ReportLostItem = () => {
   };
 
   return (
-    <div className="lost-container">
+    <div className="lost-page-wrapper">
+      {" "}
+      {/* New wrapper for centering */}
       <div className="lost-card">
-        <h2>📦 Report Lost Item</h2>
+        <h2 className="lost-card-title">
+          <Package className="lost-card-icon" /> Report Lost Item
+        </h2>
         <form className="lost-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Item Name</label>
+            <label htmlFor="itemName">Item Name</label>
             <input
               type="text"
+              id="itemName"
               name="itemName"
               value={formData.itemName}
               onChange={handleChange}
@@ -69,9 +77,10 @@ const ReportLostItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Location</label>
+            <label htmlFor="location">Location</label>
             <input
               type="text"
+              id="location"
               name="location"
               value={formData.location}
               onChange={handleChange}
@@ -80,9 +89,10 @@ const ReportLostItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Date</label>
+            <label htmlFor="date">Date</label>
             <input
               type="date"
+              id="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
@@ -91,8 +101,9 @@ const ReportLostItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Description</label>
+            <label htmlFor="description">Description</label>
             <textarea
+              id="description"
               name="description"
               rows="3"
               value={formData.description}
@@ -104,16 +115,25 @@ const ReportLostItem = () => {
           <div className="form-group">
             <label>Upload Picture</label>
             <div className="upload-box">
-              <label style={{ width: "100%", height: "100%", cursor: "pointer" }}>
+              <label htmlFor="picture-upload" className="upload-label">
                 {preview ? (
-                  <img src={preview} alt="preview" className="image-preview" />
+                  <img
+                    src={preview || "/placeholder.svg"}
+                    alt="preview"
+                    className="image-preview"
+                  />
                 ) : (
                   <>
-                    <FaCloudUploadAlt size={32} />
+                    <CloudUpload size={32} className="upload-icon" />
                     <span>Click to upload image</span>
                   </>
                 )}
-                <input type="file" hidden onChange={handleFileChange} />
+                <input
+                  type="file"
+                  id="picture-upload"
+                  hidden
+                  onChange={handleFileChange}
+                />
               </label>
             </div>
           </div>
