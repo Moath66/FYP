@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import "../styles/ReportFoundItem.css"; // Ensure this path is correct
-import { FaCloudUploadAlt, FaSearch, FaArrowLeft } from "react-icons/fa"; // Using react-icons/fa
+import {
+  FaCloudUploadAlt,
+  FaSearch,
+  FaArrowLeft,
+  FaBoxOpen,
+} from "react-icons/fa"; // Using react-icons/fa for all icons
 import { toast } from "react-toastify";
 import { searchLostItems, confirmFoundItem } from "../api/itemApi";
 import { useNavigate } from "react-router-dom";
-import { Package } from "react-feather";
 
 const ReportFoundItem = () => {
   const [formData, setFormData] = useState({
@@ -105,7 +109,7 @@ const ReportFoundItem = () => {
       <div className="lost-card">
         <header className="profile-header">
           <h2 className="lost-card-title">
-            <Package className="lost-card-icon" /> Report Found Item
+            <FaBoxOpen className="lost-card-icon" /> Report Found Item
           </h2>
           <button className="back-btn" onClick={() => navigate(-1)}>
             <FaArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
