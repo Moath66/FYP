@@ -1,17 +1,20 @@
 "use client";
 
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
-import "../styles/ManageProfilePage.css";
 import { useState, useEffect } from "react";
+import "../styles/ManageProfilePage.css";
 import { useNavigate } from "react-router-dom";
 import { getUserById, updateUser, deleteUser } from "../api/userApi";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react"; // Using Lucide React icons
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Shadcn Card
-import { Input } from "@/components/ui/input"; // Shadcn Input
-import { Label } from "@/components/ui/label"; // Shadcn Label
-import { Button } from "@/components/ui/button"; // Shadcn Button
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card"; // Changed to relative path
+import { Input } from "../components/ui/input"; // Changed to relative path
+import { Label } from "../components/ui/label"; // Changed to relative path
+import { Button } from "../components/ui/button"; // Changed to relative path
 import ConfirmDialog from "../components/ConfirmDialog"; // Existing ConfirmDialog
 
 const ManageProfilePage = () => {
