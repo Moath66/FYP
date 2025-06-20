@@ -1,6 +1,5 @@
 "use client";
 
-import "../styles/ManageProfilePage.css";
 import { useState, useEffect } from "react";
 import "../styles/ManageProfilePage.css";
 import { useNavigate } from "react-router-dom";
