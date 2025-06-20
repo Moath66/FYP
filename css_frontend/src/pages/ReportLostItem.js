@@ -49,7 +49,7 @@ const ReportLostItem = () => {
         picture: null,
       });
       setPreview(null);
-      navigate("/dashboard"); // Redirect to dashboard after successful submission
+      navigate("/resident/dashboard"); // Redirect to the correct dashboard path
     } catch (err) {
       console.error("Failed to report lost item:", err);
       toast.error("❌ Failed to report lost item.");
