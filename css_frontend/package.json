@@ -19,7 +19,12 @@
     "react-router-dom": "^7.4.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^11.0.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,5 +50,10 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/node": "^20.0.0"
+  }
 }
