@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ResidentSidebar from "../components/ResidentSidebar";
 import "../styles/ResidentDashboard.css";
 
+// Ensure these import paths exactly match your file names (e.g., maintenanceApis.js vs maintenanceApi.js)
 import { getMaintenanceByResident } from "../api/maintenanceApis";
 import { getVisitorsByResident } from "../api/visitorApis";
 import { fetchItemsByUser } from "../api/itemApi";
@@ -56,12 +57,9 @@ const ResidentDashboard = () => {
 
         // Fetch Lost & Found Items
         const lostFoundItems = await fetchItemsByUser(userId);
-        // Assuming 'lost' or 'found' and 'unresolved' status for active reports
+        // Corrected: Use "unclaimed" as per your Item model enum, not "unresolved"
         const activeLostFound = lostFoundItems.filter(
-          (item) =>
-            item.status === "lost" ||
-            item.status === "found" ||
-            item.status === "unresolved"
+          (item) => item.status === "lost" || item.status === "unclaimed"
         ).length;
         console.log("Lost & Found Items:", lostFoundItems);
 
@@ -87,7 +85,7 @@ const ResidentDashboard = () => {
       <main className="dashboard-main-content">
         <header className="main-content-header">
           <h2>Resident Dashboard</h2>
-          <p>Welcome back, 👋</p>
+          <p>Welcome back, {userName}! 👋</p>
         </header>
 
         {/* Welcome Card */}
@@ -98,6 +96,19 @@ const ResidentDashboard = () => {
               Your central hub for managing community services. Quickly access
               your requests, track applications, and stay informed.
             </p>
+            <button
+              className="welcome-button"
+              onClick={() => navigate("/resident/profile")}
+            >
+              Manage Your Profile
+            </button>
+          </div>
+          <div className="welcome-illustration">
+            <img
+              src="/placeholder.svg?height=150&width=150"
+              alt="Welcome illustration"
+              className="welcome-img"
+            />
           </div>
         </section>
 

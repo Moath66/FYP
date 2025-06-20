@@ -1,5 +1,5 @@
 const Item = require("../models/Item");
-const User = require("../models/User");
+const User = require("../models/User"); // Ensure this path is correct
 const QRCode = require("qrcode");
 
 // 🔢 Generate a unique ITEM ID
@@ -9,7 +9,7 @@ const generateItemId = async () => {
   });
 
   const latestId = latestItem?.itemId || "ITEM000";
-  const number = parseInt(latestId.replace("ITEM", "")) + 1;
+  const number = Number.parseInt(latestId.replace("ITEM", "")) + 1;
   return `ITEM${number.toString().padStart(3, "0")}`;
 };
 
@@ -33,7 +33,7 @@ const submitLostItem = async (req, res) => {
       picture: picturePath,
       type: "lost",
       status: "lost",
-      reportedBy: req.user.userId,
+      reportedBy: req.user.userId, // Assuming req.user.userId is the MongoDB _id of the logged-in user
     });
 
     await newItem.save();
@@ -75,7 +75,7 @@ const confirmFoundItem = async (req, res) => {
     item.type = "lost";
     if (picturePath) item.picture = picturePath;
     item.foundDate = new Date();
-    item.foundBy = req.user.userId;
+    item.foundBy = req.user.userId; // Assuming req.user.userId is the MongoDB _id of the logged-in user
 
     await item.save();
 
@@ -181,10 +181,10 @@ const claimItem = async (req, res) => {
 // 📦 Items Reported by User
 const getItemsByUser = async (req, res) => {
   try {
-    const user = await User.findOne({ userId: Number(req.params.userId) });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const items = await Item.find({ reportedBy: user._id }).sort({
+    // Corrected: Directly use req.params.userId (which is the MongoDB _id from frontend)
+    // to query the 'reportedBy' field in the Item model.
+    // No need to find the User by userId field first.
+    const items = await Item.find({ reportedBy: req.params.userId }).sort({
       createdAt: -1,
     });
     res.json(items);
