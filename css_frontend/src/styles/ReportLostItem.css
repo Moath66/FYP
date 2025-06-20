@@ -23,11 +23,49 @@
   box-sizing: border-box;
 }
 
+/* Header Section (reused from ManageProfilePage.css) */
+.profile-header {
+  background-color: #007d7b; /* Teal/Green from landing/login pages */
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  border-top-left-radius: 12px; /* Match card border-radius */
+  border-top-right-radius: 12px; /* Match card border-radius */
+}
+
+.profile-header h1 {
+  margin: 0;
+  font-size: 1.6em;
+  font-weight: 600;
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
 .lost-card-title {
-  margin-bottom: 25px;
+  margin-bottom: 0; /* Remove bottom margin as it's now in a flex container */
   color: #007d7b; /* Teal/Green from landing/login pages */
   text-align: center;
-  font-size: 1.8em; /* Slightly larger */
+  font-size: 1.6em; /* Adjust font size to match header h1 */
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -155,6 +193,22 @@
   .lost-card {
     padding: 20px 25px;
     border-radius: 8px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .profile-header h1,
+  .lost-card-title {
+    font-size: 1.4em;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .lost-card-title {

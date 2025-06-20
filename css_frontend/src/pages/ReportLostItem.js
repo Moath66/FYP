@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import "../styles/ReportLostItem.css"; // Ensure this path is correct
-import { CloudUpload, Package } from "lucide-react"; // Using Lucide icons
+import { CloudUpload, Package, ArrowLeft } from "lucide-react"; // Using Lucide icons
 import { toast } from "react-toastify";
 import { submitLostItem } from "../api/itemApi"; // Keep your existing API import
+import { useNavigate } from "react-router-dom";
 
 const ReportLostItem = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const ReportLostItem = () => {
 
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +49,7 @@ const ReportLostItem = () => {
         picture: null,
       });
       setPreview(null);
+      navigate("/dashboard"); // Redirect to dashboard after successful submission
     } catch (err) {
       console.error("Failed to report lost item:", err);
       toast.error("❌ Failed to report lost item.");
@@ -60,9 +63,18 @@ const ReportLostItem = () => {
       {" "}
       {/* New wrapper for centering */}
       <div className="lost-card">
-        <h2 className="lost-card-title">
-          <Package className="lost-card-icon" /> Report Lost Item
-        </h2>
+        <header className="profile-header">
+          {" "}
+          {/* Reusing profile-header class */}
+          <h2 className="lost-card-title">
+            <Package className="lost-card-icon" /> Report Lost Item
+          </h2>
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            {" "}
+            {/* Reusing back-btn class */}
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+          </button>
+        </header>
         <form className="lost-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="itemName">Item Name</label>
