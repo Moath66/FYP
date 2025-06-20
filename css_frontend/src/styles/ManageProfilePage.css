@@ -1,112 +1,47 @@
-/* Container for the entire profile page */
-.manage-profile-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #fefefe;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* src/styles/ManageProfilePage.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* Reusing variables from AdminDashboard.css/ResidentDashboard.css for consistency */
+:root {
+  --primary-color: #009688; /* Teal */
+  --primary-hover-color: #00796b;
+  --background-color: #f4f7f6; /* Light background */
+  --card-bg: #ffffff;
+  --text-color: #333;
+  --muted-text-color: #6c757d;
+  --border-color: #e0e0e0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --destructive-color: #dc3545; /* Red for delete */
+  --destructive-hover-color: #b02a37;
 }
 
-/* Header section */
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1a3e72;
-  color: white;
-  padding: 15px 20px;
-  border-radius: 10px 10px 0 0;
-}
-
-.dashboard-header h1 {
+body {
+  font-family: "Poppins", sans-serif;
   margin: 0;
-  font-size: 22px;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-.back-btn {
-  background: #f0f0f0;
-  color: #1a3e72;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
+/* The main container and card styling are now handled by Tailwind classes in the JS file:
+   .flex .items-center .justify-center .min-h-screen .bg-gray-100 .p-4
+   and Card component with .w-full .max-w-md .shadow-lg
+*/
 
-.back-btn:hover {
-  background-color: #e0e0e0;
-}
+/* Remove most of the old CSS rules as they are replaced by Tailwind and shadcn components */
+/* .manage-profile-container { ... } */
+/* .dashboard-header { ... } */
+/* .back-btn { ... } */
+/* .profile-form { ... } */
+/* .profile-form label { ... } */
+/* .profile-form input { ... } */
+/* .profile-buttons-container { ... } */
+/* .profile-buttons-container button { ... } */
+/* .edit-btn { ... } */
+/* .delete-btn { ... } */
 
-/* Profile form */
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.profile-form label {
-  font-weight: bold;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #333;
-}
-
-.profile-form input {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  width: 100%;
-}
-
-/* Action buttons layout */
-.profile-buttons-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 25px;
-}
-
-.profile-buttons-container button {
-  flex: 1;
-  min-width: 120px;
-  padding: 12px;
-  font-size: 15px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.profile-buttons-container button:hover {
-  transform: scale(1.02);
-}
-
-.edit-btn {
-  background-color: #007bff;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #0056b3;
-}
-
-.delete-btn {
-  background-color: #dc3545;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #b02a37;
-}
-
-/* Confirmation Modal */
-.modal-overlay {
+/* Keep modal styles if ConfirmDialog.css is not globally imported or needs overrides */
+/* Assuming ConfirmDialog.css handles its own styling, but if not, these would be needed: */
+/* .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -121,13 +56,13 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--card-bg);
   padding: 30px;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow);
   transition: all 0.3s ease;
   transform: scale(1);
 }
@@ -160,33 +95,17 @@
 }
 
 .confirm-btn {
-  background: #dc3545;
+  background: var(--destructive-color);
   color: white;
 }
 
 .confirm-btn:hover {
-  background-color: #c82333;
-}
+  background-color: var(--destructive-hover-color);
+} */
 
-/* Accessibility Focus Styles */
+/* Accessibility Focus Styles - these are good to keep if not handled by shadcn/Tailwind defaults */
 button:focus,
 input:focus {
-  outline: 2px solid #007bff;
+  outline: 2px solid var(--primary-color); /* Use primary color for focus */
   outline-offset: 2px;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 480px) {
-  .manage-profile-container {
-    padding: 20px;
-  }
-
-  .modal {
-    padding: 20px;
-  }
-
-  .modal-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
 }
