@@ -37,19 +37,29 @@ const ResidentDashboard = () => {
         // Fetch Maintenance Requests
         const maintenanceRequests = await getMaintenanceByResident(userId);
         // Assuming 'pending' or 'in progress' are statuses for active requests
+        // IMPORTANT: Check your backend Maintenance model and controller to ensure 'status' field is returned.
         const pendingMaintenance = maintenanceRequests.filter(
-          (req) => req.status === "pending" || req.status === "in progress"
+          (req) =>
+            req.status &&
+            (req.status.toLowerCase() === "pending" ||
+              req.status.toLowerCase() === "in progress")
         ).length;
         console.log("Maintenance Requests:", maintenanceRequests);
 
         // Fetch Visitor Registrations
         const visitorRegistrations = await getVisitorsByResident();
         // Assuming 'pending' or 'approved' and future date for upcoming visitors
+        // IMPORTANT: Check your backend Visitor model and controller to ensure 'status' and 'visitDate' fields are returned.
         const now = new Date();
         const upcomingVisitors = visitorRegistrations.filter((visitor) => {
-          const visitDate = new Date(visitor.visitDate); // Assuming a 'visitDate' field
+          const visitDate = visitor.visitDate
+            ? new Date(visitor.visitDate)
+            : null; // Check if visitDate exists
           return (
-            (visitor.status === "pending" || visitor.status === "approved") &&
+            visitor.status &&
+            (visitor.status.toLowerCase() === "pending" ||
+              visitor.status.toLowerCase() === "approved") &&
+            visitDate &&
             visitDate >= now
           );
         }).length;
@@ -58,8 +68,12 @@ const ResidentDashboard = () => {
         // Fetch Lost & Found Items
         const lostFoundItems = await fetchItemsByUser(userId);
         // Corrected: Use "unclaimed" as per your Item model enum, not "unresolved"
+        // IMPORTANT: Ensure your backend Item controller returns the 'status' field.
         const activeLostFound = lostFoundItems.filter(
-          (item) => item.status === "lost" || item.status === "unclaimed"
+          (item) =>
+            item.status &&
+            (item.status.toLowerCase() === "lost" ||
+              item.status.toLowerCase() === "unclaimed")
         ).length;
         console.log("Lost & Found Items:", lostFoundItems);
 

@@ -1,5 +1,5 @@
 const Item = require("../models/Item");
-const User = require("../models/User"); // Ensure this path is correct
+const User = require("../models/User");
 const QRCode = require("qrcode");
 
 // 🔢 Generate a unique ITEM ID
@@ -33,7 +33,7 @@ const submitLostItem = async (req, res) => {
       picture: picturePath,
       type: "lost",
       status: "lost",
-      reportedBy: req.user.userId, // Assuming req.user.userId is the MongoDB _id of the logged-in user
+      reportedBy: req.user.userId,
     });
 
     await newItem.save();
@@ -75,7 +75,7 @@ const confirmFoundItem = async (req, res) => {
     item.type = "lost";
     if (picturePath) item.picture = picturePath;
     item.foundDate = new Date();
-    item.foundBy = req.user.userId; // Assuming req.user.userId is the MongoDB _id of the logged-in user
+    item.foundBy = req.user.userId;
 
     await item.save();
 
@@ -181,12 +181,12 @@ const claimItem = async (req, res) => {
 // 📦 Items Reported by User
 const getItemsByUser = async (req, res) => {
   try {
-    // Corrected: Directly use req.params.userId (which is the MongoDB _id from frontend)
-    // to query the 'reportedBy' field in the Item model.
-    // No need to find the User by userId field first.
-    const items = await Item.find({ reportedBy: req.params.userId }).sort({
-      createdAt: -1,
-    });
+    // Corrected: Query by reportedBy (MongoDB _id) and explicitly select status
+    const items = await Item.find({ reportedBy: req.params.userId })
+      .select("itemId itemName date location description status type") // Explicitly select fields, including status
+      .sort({
+        createdAt: -1,
+      });
     res.json(items);
   } catch (err) {
     console.error("❌ getItemsByUser error:", err);
