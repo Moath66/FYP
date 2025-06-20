@@ -1,7 +1,13 @@
-import React, { useState } from "react";
-import "../styles/ReportFoundItem.css";
-import { FaCloudUploadAlt, FaSearch } from "react-icons/fa";
-import { searchLostItems, confirmFoundItem } from "../api/itemApi";
+"use client";
+
+import { useState } from "react";
+import "../styles/ReportFoundItem.css"; // Ensure this path is correct
+import { CloudUpload, Package, ArrowLeft, Search } from "lucide-react"; // Using Lucide icons
+import { toast } from "react-toastify";
+import { searchLostItems, confirmFoundItem } from "../api/itemApi"; // Keep your existing API imports
+import { useNavigate } from "react-router-dom";
+import DescriptionModal from "../components/DescriptionModal"; // New modal import
+import ImageModal from "../components/ImageModal"; // New modal import
 
 const ReportFoundItem = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +24,12 @@ const ReportFoundItem = () => {
   const [showDesc, setShowDesc] = useState(null);
   const [showImage, setShowImage] = useState(null);
   const [reportedIds, setReportedIds] = useState([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
 
+  const navigate = useNavigate();
+
+  // Ensure this matches your backend's base URL for images
   const apiBaseURL =
     process.env.REACT_APP_API_BASE_URL?.replace("/api", "") || "";
 
@@ -38,16 +49,22 @@ const ReportFoundItem = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoadingSearch(true);
     try {
       const matches = await searchLostItems({ itemName: formData.itemName });
       setMatchedItems(matches);
       setShowResults(true);
+      toast.success("🔍 Search complete!");
     } catch (err) {
-      alert("❌ Error searching for match");
+      console.error("Error searching for match:", err);
+      toast.error("❌ Error searching for match");
+    } finally {
+      setLoadingSearch(false);
     }
   };
 
   const handleConfirm = async (matchedItemId) => {
+    setLoadingConfirm(true);
     try {
       const form = new FormData();
       form.append("matchedItemId", matchedItemId);
@@ -60,9 +77,10 @@ const ReportFoundItem = () => {
       }
 
       await confirmFoundItem(form);
-      alert("✅ Found item reported successfully.");
+      toast.success("✅ Found item reported successfully. Redirecting...");
       setReportedIds((prev) => [...prev, matchedItemId]);
 
+      // Clear form after successful submission
       setFormData({
         itemName: "",
         location: "",
@@ -71,21 +89,37 @@ const ReportFoundItem = () => {
         picture: null,
       });
       setPreview(null);
+
+      // Redirect to dashboard after a short delay for toast to show
+      setTimeout(() => {
+        navigate("/resident/dashboard");
+      }, 1500);
     } catch (err) {
-      alert("❌ Error confirming item.");
+      console.error("Error confirming item:", err);
+      toast.error("❌ Error confirming item.");
+    } finally {
+      setLoadingConfirm(false);
     }
   };
 
   return (
-    <div className="found-container">
-      <div className="found-card">
-        <h2>📦 Report Found Item</h2>
+    <div className="lost-page-wrapper">
+      <div className="lost-card">
+        <header className="profile-header">
+          <h2 className="lost-card-title">
+            <Package className="lost-card-icon" /> Report Found Item
+          </h2>
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+          </button>
+        </header>
 
-        <form className="found-form" onSubmit={handleSearch}>
+        <form className="lost-form" onSubmit={handleSearch}>
           <div className="form-group">
-            <label>Item Name</label>
+            <label htmlFor="itemName">Item Name</label>
             <input
               type="text"
+              id="itemName"
               name="itemName"
               value={formData.itemName}
               onChange={handleChange}
@@ -94,9 +128,10 @@ const ReportFoundItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Location</label>
+            <label htmlFor="location">Location</label>
             <input
               type="text"
+              id="location"
               name="location"
               value={formData.location}
               onChange={handleChange}
@@ -105,9 +140,10 @@ const ReportFoundItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Date</label>
+            <label htmlFor="date">Date</label>
             <input
               type="date"
+              id="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
@@ -116,8 +152,9 @@ const ReportFoundItem = () => {
           </div>
 
           <div className="form-group">
-            <label>Description</label>
+            <label htmlFor="description">Description</label>
             <textarea
+              id="description"
               name="description"
               rows="3"
               value={formData.description}
@@ -129,24 +166,37 @@ const ReportFoundItem = () => {
           <div className="form-group">
             <label>Upload Picture</label>
             <div className="upload-box">
-              <label
-                style={{ width: "100%", height: "100%", cursor: "pointer" }}
-              >
+              <label htmlFor="picture-upload" className="upload-label">
                 {preview ? (
-                  <img src={preview} alt="preview" className="image-preview" />
+                  <img
+                    src={preview || "/placeholder.svg"}
+                    alt="preview"
+                    className="image-preview"
+                  />
                 ) : (
                   <>
-                    <FaCloudUploadAlt size={32} />
+                    <CloudUpload size={32} className="upload-icon" />
                     <span>Click to upload image</span>
                   </>
                 )}
-                <input type="file" hidden onChange={handleFileChange} />
+                <input
+                  type="file"
+                  id="picture-upload"
+                  hidden
+                  onChange={handleFileChange}
+                />
               </label>
             </div>
           </div>
 
-          <button type="submit" className="search-btn">
-            <FaSearch /> Search for Match
+          <button type="submit" className="submit-btn" disabled={loadingSearch}>
+            {loadingSearch ? (
+              "Searching..."
+            ) : (
+              <>
+                <Search className="mr-2 h-5 w-5" /> Search for Match
+              </>
+            )}
           </button>
         </form>
       </div>
@@ -172,26 +222,25 @@ const ReportFoundItem = () => {
               <tbody>
                 {matchedItems.map((item, index) => (
                   <tr key={item._id}>
-                    <td>{index + 1}</td>
-                    <td>{item.itemName}</td>
-                    <td>{new Date(item.date).toLocaleDateString()}</td>
-                    <td>{item.location}</td>
-                    <td>
+                    <td data-label="#">{index + 1}</td>
+                    <td data-label="Item Name">{item.itemName}</td>
+                    <td data-label="Date">
+                      {new Date(item.date).toLocaleDateString()}
+                    </td>
+                    <td data-label="Location">{item.location}</td>
+                    <td data-label="Description">
                       {item.description ? (
-                        <>
-                          <button
-                            className="read-more-btn"
-                            onClick={() => setShowDesc(item.description)}
-                          >
-                            Read More
-                          </button>
-                        </>
+                        <button
+                          className="read-more-btn"
+                          onClick={() => setShowDesc(item.description)}
+                        >
+                          Read More
+                        </button>
                       ) : (
                         "—"
                       )}
                     </td>
-
-                    <td>
+                    <td data-label="Picture">
                       {item.picture ? (
                         <img
                           src={`${apiBaseURL}${item.picture}`}
@@ -201,31 +250,26 @@ const ReportFoundItem = () => {
                             setShowImage(`${apiBaseURL}${item.picture}`)
                           }
                           onError={(e) =>
-                            (e.target.src = "https://via.placeholder.com/60")
+                            (e.currentTarget.src =
+                              "/placeholder.svg?height=60&width=60")
                           }
                         />
                       ) : (
                         <span>—</span>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Action">
                       {item.status === "lost" &&
                       !reportedIds.includes(item._id) ? (
                         <button
                           className="found-btn"
                           onClick={() => handleConfirm(item._id)}
+                          disabled={loadingConfirm}
                         >
-                          Confirm
+                          {loadingConfirm ? "Confirming..." : "Confirm"}
                         </button>
                       ) : (
-                        <button
-                          className="found-btn reported"
-                          disabled
-                          style={{
-                            backgroundColor: "#ffc107",
-                            cursor: "default",
-                          }}
-                        >
+                        <button className="found-btn reported" disabled>
                           Reported
                         </button>
                       )}
@@ -238,30 +282,14 @@ const ReportFoundItem = () => {
         </div>
       )}
 
-      {/* Modal: Description */}
       {showDesc && (
-        <div className="modal-overlay" onClick={() => setShowDesc(null)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h4>📋 Item Description</h4>
-            <p>{showDesc}</p>
-            <button className="btn-close" onClick={() => setShowDesc(null)} />
-          </div>
-        </div>
+        <DescriptionModal
+          description={showDesc}
+          onClose={() => setShowDesc(null)}
+        />
       )}
-
-      {/* Modal: Image */}
       {showImage && (
-        <div className="modal-overlay" onClick={() => setShowImage(null)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <img src={showImage} alt="Detail" className="modal-image" />
-            <div className="btn-close-wrapper">
-              <button
-                className="btn-close"
-                onClick={() => setShowImage(null)}
-              ></button>
-            </div>
-          </div>
-        </div>
+        <ImageModal imageUrl={showImage} onClose={() => setShowImage(null)} />
       )}
     </div>
   );

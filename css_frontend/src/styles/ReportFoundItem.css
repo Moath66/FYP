@@ -1,229 +1,317 @@
-.found-container {
-  max-width: 1100px;
-  margin: 60px auto;
-  padding: 20px;
+/* Global body styles should be in a separate global CSS file if needed,
+   not here to avoid conflicts with other pages. */
+
+/* Wrapper for centering the page content */
+.lost-page-wrapper {
+  display: flex;
+  flex-direction: column; /* Allow multiple cards to stack */
+  justify-content: flex-start; /* Align content to the top */
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Light gray background matching login/landing */
+  padding: 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
-.found-card,
+.lost-card,
 .matched-card {
+  max-width: 600px; /* Max width for the form card */
+  width: 100%; /* Ensure it takes full width up to max-width */
   background-color: #ffffff;
-  padding: 30px;
-  margin-bottom: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  padding: 0; /* Remove padding from here, apply to content */
+  margin-bottom: 20px; /* Space between cards */
+  border-radius: 12px; /* Consistent border-radius */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden; /* Ensures header border-radius applies */
 }
 
-.found-card h2,
-.matched-card h3 {
-  color: #007bff;
-  margin-bottom: 20px;
+.matched-card {
+  max-width: 1100px; /* Wider for the table */
+  padding: 30px; /* Add padding back for matched card content */
 }
 
-.found-form .form-group {
-  margin-bottom: 18px;
+/* Header Section (reused from ManageProfilePage.css) */
+.profile-header {
+  background-color: #007d7b; /* Teal/Green from landing/login pages */
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  border-top-left-radius: 12px; /* Match card border-radius */
+  border-top-right-radius: 12px; /* Match card border-radius */
 }
 
-.found-form label {
+.profile-header h1 {
+  margin: 0;
+  font-size: 1.6em;
   font-weight: 600;
-  margin-bottom: 6px;
-  display: block;
-  color: #333;
 }
 
-.found-form input,
-.found-form textarea {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  border: 1px solid #ccc;
+.back-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: white;
+  padding: 8px 15px;
   border-radius: 8px;
-}
-
-.found-form textarea {
-  resize: vertical;
-}
-
-.upload-box {
-  height: 150px;
-  background-color: #f5f5f5;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+.lost-card-title {
+  margin-bottom: 0; /* Remove bottom margin as it's now in a flex container */
+  color: white; /* Title color is white as it's in the header */
   text-align: center;
-  padding: 20px;
-  position: relative;
+  font-size: 1.6em; /* Adjust font size to match header h1 */
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  gap: 10px; /* Space between icon and text */
 }
 
-.upload-box img.image-preview {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
+.lost-card-icon {
+  color: white; /* Icon color is white as it's in the header */
+  width: 30px;
+  height: 30px;
 }
 
-.search-btn {
-  margin-top: 10px;
-  padding: 12px;
-  width: 100%;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
+.lost-form {
+  padding: 30px 40px; /* Apply padding to the form content */
+}
+
+.lost-form .form-group {
+  margin-bottom: 20px;
+}
+
+.lost-form label {
+  display: block;
   font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 0.95em;
 }
 
-.search-btn:hover {
-  background-color: #0056b3;
+.lost-form input,
+.lost-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0; /* Lighter border */
+  border-radius: 8px; /* More rounded inputs */
+  font-size: 1em;
+  color: #333;
+  background-color: #fefefe;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.lost-form input:focus,
+.lost-form textarea:focus {
+  border-color: #007d7b; /* Teal/Green focus border */
+  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2); /* Soft focus shadow */
+  outline: none;
+}
+
+.lost-form textarea {
+  resize: vertical;
+  min-height: 80px; /* Ensure a minimum height */
+}
+
+.upload-box {
+  width: 100%;
+  height: 160px;
+  border: 2px dashed #a0a0a0; /* Slightly darker dashed border */
+  border-radius: 10px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  padding: 16px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.upload-box:hover {
+  background-color: #f1f1f1;
+  border-color: #007d7b; /* Teal/Green on hover */
+}
+
+.upload-label {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.upload-icon {
+  color: #007d7b; /* Teal/Green icon */
+  margin-bottom: 8px;
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 100%; /* Fill the box height */
+  object-fit: contain; /* Ensure image is fully visible */
+  border-radius: 8px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.05em;
+  background-color: #007d7b; /* Teal/Green primary button */
+  border: none;
+  color: white;
+  border-radius: 8px; /* More rounded button */
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: 15px; /* Add some space above the button */
+  display: flex; /* For icon and text alignment */
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-btn:hover {
+  background-color: #006666; /* Darker teal/green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:disabled {
+  background-color: #a0a0a0; /* Gray out when disabled */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Matched Items Table */
+.matched-card h3 {
+  color: #007d7b; /* Teal/Green for heading */
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  font-weight: 600;
+  text-align: center;
 }
 
 .matched-card table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate; /* Use separate for rounded corners on cells */
+  border-spacing: 0; /* Remove space between cells */
   margin-top: 20px;
-  font-size: 15px;
+  font-size: 0.95em;
+  border-radius: 8px; /* Rounded corners for the table */
+  overflow: hidden; /* Ensures rounded corners apply */
 }
 
 .matched-card th,
 .matched-card td {
   padding: 12px;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f0f0f0; /* Lighter border */
 }
 
 .matched-card th {
-  background-color: #f2f6fc;
+  background-color: #e6f7f7; /* Light teal background for header */
   color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.matched-card tbody tr:last-child td {
+  border-bottom: none; /* No border on last row */
 }
 
 .thumb {
   width: 60px;
-  height: auto;
+  height: 60px; /* Fixed height for consistent display */
+  object-fit: cover; /* Crop image to fit */
   border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #eee; /* Subtle border */
 }
 
 .thumb:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Found Button Base */
+/* Action Buttons in Table */
 .found-btn {
-  background-color: #28a745;
+  background-color: #28a745; /* Green for confirm */
   color: white;
   padding: 8px 14px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.9em;
   font-weight: 500;
   transition: background-color 0.2s ease;
 }
 
 .found-btn:hover {
-  background-color: #1e7e34;
+  background-color: #218838;
 }
 
-/* ✅ Reported State */
 .found-btn.reported {
-  background-color: #ffc107;
+  background-color: #ffc107; /* Yellow for reported */
   color: #333;
   cursor: default;
 }
 
 .found-btn.reported:hover {
-  background-color: #e0b800;
+  background-color: #e0a800;
 }
 
 .no-match {
   color: #666;
   text-align: center;
   font-style: italic;
+  padding: 20px;
+  font-size: 1.1em;
 }
 
-/* 🧾 Modal Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* softened dim */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-card {
-  background: #fff;
-  padding: 30px 35px;
-  border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-  position: relative;
-  animation: fadeIn 0.3s ease;
-}
-
-.modal-card h4 {
-  color: #007bff;
-  font-size: 22px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.modal-card p {
-  font-size: 16px;
-  color: #333;
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  word-wrap: break-word;
-}
-
-.modal-image {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-
-.btn-close-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.btn-close {
-  background-color: #f8d7da;
-  color: #721c24;
+/* Read More Button */
+.read-more-btn {
+  background-color: #007d7b; /* Teal/Green for read more */
+  color: white;
+  padding: 6px 12px;
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.85em;
   cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
-.btn-close:hover {
-  background-color: #f5c6cb;
+.read-more-btn:hover {
+  background-color: #006666;
 }
+
+/* Modals (Shadcn Dialog handles overlay, but custom content styling) */
+/* The .modal-overlay, .modal-card, .btn-close classes from previous custom modals
+   are largely replaced by Shadcn's Dialog components.
+   The styling for the content *inside* the dialogs is handled by the new modal components. */
 
 /* 📱 Responsive Table on Small Screens */
 @media (max-width: 768px) {
@@ -239,13 +327,16 @@
 
   .matched-card tr {
     margin-bottom: 15px;
-    border-bottom: 2px solid #eee;
+    border: 1px solid #eee; /* Add border to individual rows */
+    border-radius: 8px;
+    overflow: hidden;
   }
 
   .matched-card td {
     text-align: right;
     position: relative;
     padding-left: 50%;
+    border-bottom: none; /* Remove individual cell borders */
   }
 
   .matched-card td::before {
@@ -264,31 +355,48 @@
 
   .thumb {
     width: 100%;
-    max-width: 120px;
+    max-width: 100px; /* Adjust max-width for mobile */
+    height: auto; /* Allow height to adjust */
   }
 
   .upload-box {
     height: auto;
     padding: 15px;
   }
-}
 
-/* 📌 Align "Read More" under description */
-.read-more-btn {
-  margin-top: 8px;
-  background-color: #dc3545;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  font-weight: 500;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .lost-card,
+  .matched-card {
+    padding: 0; /* Reset padding for mobile, content handles it */
+    margin-bottom: 15px;
+  }
 
-.read-more-btn:hover {
-  background-color: #c82333;
+  .lost-form {
+    padding: 20px 25px;
+  }
+
+  .matched-card {
+    padding: 20px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 15px 20px;
+  }
+
+  .profile-header h1,
+  .lost-card-title {
+    font-size: 1.4em;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .submit-btn {
+    padding: 10px;
+    font-size: 1em;
+  }
 }
