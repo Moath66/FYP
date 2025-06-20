@@ -1,35 +1,12 @@
-/* src/styles/ManageProfilePage.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-/* Reusing variables from AdminDashboard.css/ResidentDashboard.css for consistency */
-:root {
-  --primary-color: #009688; /* Teal from login page */
-  --primary-hover-color: #00796b; /* Darker teal */
-  --background-color: #f4f7f6; /* Light background */
-  --card-bg: #ffffff;
-  --text-color: #333;
-  --muted-text-color: #6c757d;
-  --border-color: #e0e0e0;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --destructive-color: #dc3545; /* Red for delete */
-  --destructive-hover-color: #b02a37;
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
 /* Container for the entire profile page */
 .manage-profile-container {
   max-width: 600px;
   margin: 50px auto;
   padding: 30px;
-  background-color: var(--card-bg);
+  background-color: #fefefe;
   border-radius: 12px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header section */
@@ -37,7 +14,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--primary-color); /* Changed to primary teal */
+  background-color: #1a3e72;
   color: white;
   padding: 15px 20px;
   border-radius: 10px 10px 0 0;
@@ -49,19 +26,18 @@ body {
 }
 
 .back-btn {
-  background: white; /* Changed to white background */
-  color: var(--primary-color); /* Changed to primary teal text */
+  background: #f0f0f0;
+  color: #1a3e72;
   padding: 8px 14px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .back-btn:hover {
-  background-color: #e0e0e0; /* Lighter grey on hover */
-  color: var(--primary-hover-color); /* Darker teal text on hover */
+  background-color: #e0e0e0;
 }
 
 /* Profile form */
@@ -72,43 +48,19 @@ body {
 }
 
 .profile-form label {
-  font-weight: 600; /* Slightly bolder */
+  font-weight: bold;
   margin-top: 15px;
   margin-bottom: 5px;
   font-size: 14px;
-  color: var(--text-color);
+  color: #333;
 }
 
 .profile-form input {
   padding: 10px;
-  border-radius: 8px; /* Slightly more rounded */
-  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  border: 1px solid #ccc;
   font-size: 15px;
   width: 100%;
-  box-sizing: border-box; /* Ensure padding doesn't increase width */
-}
-
-/* Password input with icon */
-.password-input-wrapper {
-  position: relative;
-}
-
-.password-input-wrapper input {
-  padding-right: 40px; /* Space for the icon */
-}
-
-.password-toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: var(--muted-text-color);
-  font-size: 18px; /* Adjust icon size */
-}
-
-.password-toggle-icon:hover {
-  color: var(--text-color);
 }
 
 /* Action buttons layout */
@@ -126,39 +78,104 @@ body {
   padding: 12px;
   font-size: 15px;
   border: none;
-  border-radius: 8px; /* Slightly more rounded */
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600; /* Bolder text */
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .profile-buttons-container button:hover {
-  transform: translateY(-2px); /* Subtle lift effect */
+  transform: scale(1.02);
 }
 
 .edit-btn {
-  background-color: var(--primary-color); /* Changed to primary teal */
+  background-color: #007bff;
   color: white;
 }
 
 .edit-btn:hover {
-  background-color: var(--primary-hover-color); /* Darker teal on hover */
+  background-color: #0056b3;
 }
 
 .delete-btn {
-  background-color: var(--destructive-color); /* Red for destructive action */
+  background-color: #dc3545;
   color: white;
 }
 
 .delete-btn:hover {
-  background-color: var(--destructive-hover-color); /* Darker red on hover */
+  background-color: #b02a37;
 }
 
-/* Confirmation Modal (styles are in ConfirmDialog.css, but keeping focus styles here) */
+/* Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  background: #ccc;
+  color: black;
+}
+
+.confirm-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #c82333;
+}
+
 /* Accessibility Focus Styles */
 button:focus,
 input:focus {
-  outline: 2px solid var(--primary-color); /* Use primary color for focus */
+  outline: 2px solid #007bff;
   outline-offset: 2px;
 }
 
@@ -166,43 +183,14 @@ input:focus {
 @media (max-width: 480px) {
   .manage-profile-container {
     padding: 20px;
-    margin: 20px auto;
   }
 
-  .dashboard-header {
-    padding: 12px 15px;
+  .modal {
+    padding: 20px;
   }
 
-  .dashboard-header h1 {
-    font-size: 20px;
-  }
-
-  .back-btn {
-    padding: 6px 10px;
-    font-size: 14px;
-  }
-
-  .profile-form {
-    padding: 15px;
-  }
-
-  .profile-form label {
-    font-size: 13px;
-  }
-
-  .profile-form input {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .profile-buttons-container {
+  .modal-buttons {
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
-  }
-
-  .profile-buttons-container button {
-    padding: 10px;
-    font-size: 14px;
   }
 }

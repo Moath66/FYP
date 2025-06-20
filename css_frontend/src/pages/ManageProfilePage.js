@@ -1,18 +1,16 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserById, updateUser, deleteUser } from "../api/userApi";
 import { toast } from "react-toastify";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react"; // Changed from react-icons/fa to lucide-react
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
-import "../styles/ManageProfilePage.css"; // Keep this import
+import "../styles/ManageProfilePage.css";
 import ConfirmDialog from "../components/ConfirmDialog";
 
 const ManageProfilePage = () => {
   const navigate = useNavigate();
   const storedUser = JSON.parse(localStorage.getItem("user"));
-  const userId = storedUser?._id || storedUser?.userId; // Ensure we get the MongoDB _id
+  const userId = storedUser?.userId;
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -23,34 +21,26 @@ const ManageProfilePage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        if (!userId) {
-          toast.error("❌ User ID not found. Please log in again.");
-          navigate("/login");
-          return;
-        }
+        if (!userId) throw new Error("Missing user ID");
 
         const data = await getUserById(userId);
         setFormData({
           userName: data.userName || "",
           email: data.email || "",
-          password: "********", // for display only, never pre-fill actual password
+          password: "********", // for display only
           phoneNo: data.phoneNo || "",
         });
       } catch (err) {
-        console.error("Error loading user data:", err);
-        toast.error("❌ Failed to load user data. Please try again.");
-      } finally {
-        setLoading(false);
+        toast.error("❌ Failed to load user data");
       }
     };
 
     fetchUser();
-  }, [userId, navigate]);
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,13 +49,11 @@ const ManageProfilePage = () => {
 
   const handleEdit = async () => {
     try {
-      // Only send fields that are actually editable and not the placeholder password
       const { password, ...safeData } = formData;
       await updateUser(userId, safeData);
       toast.success("✅ Profile updated successfully");
     } catch (error) {
-      console.error("Update failed:", error);
-      toast.error("❌ Update failed. Please try again.");
+      toast.error("❌ Update failed");
     }
   };
 
@@ -78,84 +66,64 @@ const ManageProfilePage = () => {
         navigate("/login");
       }, 1500);
     } catch (error) {
-      console.error("Failed to delete account:", error);
-      toast.error("❌ Failed to delete account. Please try again.");
+      toast.error("❌ Failed to delete account");
     }
   };
-
-  if (loading) {
-    return (
-      <div
-        className="manage-profile-container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "300px",
-        }}
-      >
-        <p style={{ fontSize: "1.2rem", color: "var(--muted-text-color)" }}>
-          Loading profile data...
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="manage-profile-container">
       <header className="dashboard-header">
         <h1>Manage Profile</h1>
         <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={16} style={{ marginRight: "8px" }} /> Back to
-          Dashboard
+          ⬅ Back to Dashboard
         </button>
       </header>
 
       <form className="profile-form">
-        <label htmlFor="userName">User Name</label>
+        <label>User Name</label>
         <input
           type="text"
-          id="userName"
           name="userName"
           value={formData.userName}
           onChange={handleChange}
           placeholder="Enter name"
         />
 
-        <label htmlFor="email">Email</label>
+        <label>Email</label>
         <input
           type="email"
-          id="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Enter email"
-          disabled // Email is typically not editable
         />
 
-        <label htmlFor="password">Password</label>
-        <div className="password-input-wrapper">
+        <label>Password</label>
+        <div style={{ position: "relative" }}>
           <input
             type={showPassword ? "text" : "password"}
-            id="password"
             name="password"
             value={formData.password}
             readOnly
-            placeholder="********"
+            style={{ paddingRight: "30px" }}
           />
           <span
-            className="password-toggle-icon"
             onClick={() => setShowPassword((prev) => !prev)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "10px",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+            }}
           >
-            {showPassword ? <EyeOff /> : <Eye />}
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
 
-        <label htmlFor="phoneNo">Phone Number</label>
+        <label>Phone Number</label>
         <input
           type="text"
-          id="phoneNo"
           name="phoneNo"
           value={formData.phoneNo}
           onChange={handleChange}
@@ -164,7 +132,7 @@ const ManageProfilePage = () => {
 
         <div className="profile-buttons-container">
           <button type="button" className="edit-btn" onClick={handleEdit}>
-            Update Profile
+            Update
           </button>
           <button
             type="button"
@@ -178,12 +146,9 @@ const ManageProfilePage = () => {
 
       {showConfirmDialog && (
         <ConfirmDialog
-          message="Are you sure you want to delete your account? This action cannot be undone."
+          message="Are you sure you want to delete your account?"
           onCancel={() => setShowConfirmDialog(false)}
           onConfirm={confirmDelete}
-          confirmButtonText="Yes, Delete My Account" // Added explicit text
-          cancelButtonText="Cancel" // Added explicit text
-          title="Confirm Account Deletion" // Added title
         />
       )}
     </div>
