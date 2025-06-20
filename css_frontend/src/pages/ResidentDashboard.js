@@ -87,7 +87,7 @@ const ResidentDashboard = () => {
       <main className="dashboard-main-content">
         <header className="main-content-header">
           <h2>Resident Dashboard</h2>
-          <p>Welcome back, {userName}! 👋</p>
+          <p>Welcome back, 👋</p>
         </header>
 
         {/* Welcome Card */}
@@ -98,19 +98,6 @@ const ResidentDashboard = () => {
               Your central hub for managing community services. Quickly access
               your requests, track applications, and stay informed.
             </p>
-            <button
-              className="welcome-button"
-              onClick={() => navigate("/resident/profile")}
-            >
-              Manage Your Profile
-            </button>
-          </div>
-          <div className="welcome-illustration">
-            <img
-              src="/placeholder.svg?height=150&width=150"
-              alt="Welcome illustration"
-              className="welcome-img"
-            />
           </div>
         </section>
 
