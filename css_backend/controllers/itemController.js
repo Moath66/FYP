@@ -9,7 +9,7 @@ const generateItemId = async () => {
   });
 
   const latestId = latestItem?.itemId || "ITEM000";
-  const number = Number.parseInt(latestId.replace("ITEM", "")) + 1;
+  const number = parseInt(latestId.replace("ITEM", "")) + 1;
   return `ITEM${number.toString().padStart(3, "0")}`;
 };
 
@@ -181,12 +181,12 @@ const claimItem = async (req, res) => {
 // 📦 Items Reported by User
 const getItemsByUser = async (req, res) => {
   try {
-    // Corrected: Query by reportedBy (MongoDB _id) and explicitly select status
-    const items = await Item.find({ reportedBy: req.params.userId })
-      .select("itemId itemName date location description status type") // Explicitly select fields, including status
-      .sort({
-        createdAt: -1,
-      });
+    const user = await User.findOne({ userId: Number(req.params.userId) });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const items = await Item.find({ reportedBy: user._id }).sort({
+      createdAt: -1,
+    });
     res.json(items);
   } catch (err) {
     console.error("❌ getItemsByUser error:", err);

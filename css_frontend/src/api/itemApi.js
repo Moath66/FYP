@@ -23,7 +23,7 @@ export const submitLostItem = async (formData) => {
     if (formData.picture) {
       form.append("picture", formData.picture);
     }
-  
+
     const response = await axios.post(`${API_URL}/lost`, form, {
       headers: {
         "Content-Type": "multipart/form-data",
