@@ -3,8 +3,8 @@
 
 /* Reusing variables from AdminDashboard.css/ResidentDashboard.css for consistency */
 :root {
-  --primary-color: #009688; /* Teal */
-  --primary-hover-color: #00796b;
+  --primary-color: #009688; /* Teal from login page */
+  --primary-hover-color: #00796b; /* Darker teal */
   --background-color: #f4f7f6; /* Light background */
   --card-bg: #ffffff;
   --text-color: #333;
@@ -22,90 +22,187 @@ body {
   color: var(--text-color);
 }
 
-/* The main container and card styling are now handled by Tailwind classes in the JS file:
-   .flex .items-center .justify-center .min-h-screen .bg-gray-100 .p-4
-   and Card component with .w-full .max-w-md .shadow-lg
-*/
-
-/* Remove most of the old CSS rules as they are replaced by Tailwind and shadcn components */
-/* .manage-profile-container { ... } */
-/* .dashboard-header { ... } */
-/* .back-btn { ... } */
-/* .profile-form { ... } */
-/* .profile-form label { ... } */
-/* .profile-form input { ... } */
-/* .profile-buttons-container { ... } */
-/* .profile-buttons-container button { ... } */
-/* .edit-btn { ... } */
-/* .delete-btn { ... } */
-
-/* Keep modal styles if ConfirmDialog.css is not globally imported or needs overrides */
-/* Assuming ConfirmDialog.css handles its own styling, but if not, these would be needed: */
-/* .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  animation: fadeIn 0.3s ease;
-}
-
-.modal {
-  background: var(--card-bg);
+/* Container for the entire profile page */
+.manage-profile-container {
+  max-width: 600px;
+  margin: 50px auto;
   padding: 30px;
+  background-color: var(--card-bg);
   border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  transform: scale(1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-buttons {
+/* Header section */
+.dashboard-header {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color); /* Changed to primary teal */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px 10px 0 0;
 }
 
-.cancel-btn,
-.confirm-btn {
-  padding: 10px 20px;
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back-btn {
+  background: white; /* Changed to white background */
+  color: var(--primary-color); /* Changed to primary teal text */
+  padding: 8px 14px;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.cancel-btn {
-  background: #ccc;
-  color: black;
+.back-btn:hover {
+  background-color: #e0e0e0; /* Lighter grey on hover */
+  color: var(--primary-hover-color); /* Darker teal text on hover */
 }
 
-.confirm-btn {
-  background: var(--destructive-color);
+/* Profile form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.profile-form label {
+  font-weight: 600; /* Slightly bolder */
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.profile-form input {
+  padding: 10px;
+  border-radius: 8px; /* Slightly more rounded */
+  border: 1px solid var(--border-color);
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding doesn't increase width */
+}
+
+/* Password input with icon */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  padding-right: 40px; /* Space for the icon */
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--muted-text-color);
+  font-size: 18px; /* Adjust icon size */
+}
+
+.password-toggle-icon:hover {
+  color: var(--text-color);
+}
+
+/* Action buttons layout */
+.profile-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.profile-buttons-container button {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px; /* Slightly more rounded */
+  cursor: pointer;
+  font-weight: 600; /* Bolder text */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-buttons-container button:hover {
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.edit-btn {
+  background-color: var(--primary-color); /* Changed to primary teal */
   color: white;
 }
 
-.confirm-btn:hover {
-  background-color: var(--destructive-hover-color);
-} */
+.edit-btn:hover {
+  background-color: var(--primary-hover-color); /* Darker teal on hover */
+}
 
-/* Accessibility Focus Styles - these are good to keep if not handled by shadcn/Tailwind defaults */
+.delete-btn {
+  background-color: var(--destructive-color); /* Red for destructive action */
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: var(--destructive-hover-color); /* Darker red on hover */
+}
+
+/* Confirmation Modal (styles are in ConfirmDialog.css, but keeping focus styles here) */
+/* Accessibility Focus Styles */
 button:focus,
 input:focus {
   outline: 2px solid var(--primary-color); /* Use primary color for focus */
   outline-offset: 2px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .manage-profile-container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .dashboard-header {
+    padding: 12px 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 20px;
+  }
+
+  .back-btn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .profile-form {
+    padding: 15px;
+  }
+
+  .profile-form label {
+    font-size: 13px;
+  }
+
+  .profile-form input {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .profile-buttons-container {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .profile-buttons-container button {
+    padding: 10px;
+    font-size: 14px;
+  }
 }

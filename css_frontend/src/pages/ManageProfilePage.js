@@ -1,21 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import "../styles/ManageProfilePage.css";
 import { useNavigate } from "react-router-dom";
 import { getUserById, updateUser, deleteUser } from "../api/userApi";
 import { toast } from "react-toastify";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react"; // Using Lucide React icons
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card"; // Changed to relative path
-import { Input } from "../components/ui/input"; // Changed to relative path
-import { Label } from "../components/ui/label"; // Changed to relative path
-import { Button } from "../components/ui/button"; // Changed to relative path
-import ConfirmDialog from "../components/ConfirmDialog"; // Existing ConfirmDialog
+import { Eye, EyeOff, ArrowLeft } from "lucide-react"; // Changed from react-icons/fa to lucide-react
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/ManageProfilePage.css"; // Keep this import
+import ConfirmDialog from "../components/ConfirmDialog";
 
 const ManageProfilePage = () => {
   const navigate = useNavigate();
@@ -93,124 +85,105 @@ const ManageProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-lg text-gray-600">Loading profile data...</p>
+      <div
+        className="manage-profile-container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "300px",
+        }}
+      >
+        <p style={{ fontSize: "1.2rem", color: "var(--muted-text-color)" }}>
+          Loading profile data...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="bg-cyan-600 text-white rounded-t-lg p-4 flex flex-row items-center justify-between">
-          <CardTitle className="text-xl font-semibold">
-            Manage Profile
-          </CardTitle>
-          <Button
-            variant="outline"
-            className="bg-white text-cyan-600 hover:bg-gray-100 hover:text-cyan-700 flex items-center gap-2"
-            onClick={() => navigate(-1)}
+    <div className="manage-profile-container">
+      <header className="dashboard-header">
+        <h1>Manage Profile</h1>
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <ArrowLeft size={16} style={{ marginRight: "8px" }} /> Back to
+          Dashboard
+        </button>
+      </header>
+
+      <form className="profile-form">
+        <label htmlFor="userName">User Name</label>
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          value={formData.userName}
+          onChange={handleChange}
+          placeholder="Enter name"
+        />
+
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email"
+          disabled // Email is typically not editable
+        />
+
+        <label htmlFor="password">Password</label>
+        <div className="password-input-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
+            value={formData.password}
+            readOnly
+            placeholder="********"
+          />
+          <span
+            className="password-toggle-icon"
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
-            <ArrowLeft size={16} /> Back to Dashboard
-          </Button>
-        </CardHeader>
-        <CardContent className="p-6 space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="userName">User Name</Label>
-            <Input
-              id="userName"
-              type="text"
-              name="userName"
-              value={formData.userName}
-              onChange={handleChange}
-              placeholder="Enter name"
-            />
-          </div>
+            {showPassword ? <EyeOff /> : <Eye />}
+          </span>
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter email"
-              disabled // Email is typically not editable
-            />
-            <p className="text-sm text-muted-foreground">
-              Email cannot be changed.
-            </p>
-          </div>
+        <label htmlFor="phoneNo">Phone Number</label>
+        <input
+          type="text"
+          id="phoneNo"
+          name="phoneNo"
+          value={formData.phoneNo}
+          onChange={handleChange}
+          placeholder="Enter phone number"
+        />
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                readOnly
-                placeholder="********"
-                className="pr-10" // Add padding for the icon
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword((prev) => !prev)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Contact support to change your password.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="phoneNo">Phone Number</Label>
-            <Input
-              id="phoneNo"
-              type="text"
-              name="phoneNo"
-              value={formData.phoneNo}
-              onChange={handleChange}
-              placeholder="Enter phone number"
-            />
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Button
-              type="button"
-              className="flex-1 bg-cyan-600 hover:bg-cyan-700"
-              onClick={handleEdit}
-            >
-              Update Profile
-            </Button>
-            <Button
-              type="button"
-              variant="destructive" // Shadcn destructive variant for red button
-              className="flex-1 bg-red-600 hover:bg-red-700"
-              onClick={() => setShowConfirmDialog(true)}
-            >
-              Delete Account
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        <div className="profile-buttons-container">
+          <button type="button" className="edit-btn" onClick={handleEdit}>
+            Update Profile
+          </button>
+          <button
+            type="button"
+            className="delete-btn"
+            onClick={() => setShowConfirmDialog(true)}
+          >
+            Delete Account
+          </button>
+        </div>
+      </form>
 
       {showConfirmDialog && (
         <ConfirmDialog
           message="Are you sure you want to delete your account? This action cannot be undone."
           onCancel={() => setShowConfirmDialog(false)}
           onConfirm={confirmDelete}
-          confirmButtonText="Yes, Delete My Account"
-          cancelButtonText="Cancel"
-          title="Confirm Account Deletion"
+          confirmButtonText="Yes, Delete My Account" // Added explicit text
+          cancelButtonText="Cancel" // Added explicit text
+          title="Confirm Account Deletion" // Added title
         />
       )}
     </div>
