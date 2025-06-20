@@ -1,123 +1,187 @@
-/* Container for the entire profile page */
-.manage-profile-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #fefefe;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* General Body and Container Styling */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5; /* Light gray background matching login/landing */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* Header section */
-.dashboard-header {
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.manage-profile-container {
+  max-width: 500px;
+  width: 95%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensures rounded corners apply to header */
+  margin: 20px auto; /* Adjust margin for smaller screens */
+}
+
+/* Header Section */
+.profile-header {
+  background-color: #007d7b; /* Teal/Green from landing/login pages */
+  color: white;
+  padding: 20px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a3e72;
-  color: white;
-  padding: 15px 20px;
-  border-radius: 10px 10px 0 0;
+  font-size: 1.1em;
 }
 
-.dashboard-header h1 {
+.profile-header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 1.6em;
+  font-weight: 600;
 }
 
 .back-btn {
-  background: #f0f0f0;
-  color: #1a3e72;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .back-btn:hover {
-  background-color: #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
 }
 
-/* Profile form */
+/* Profile Form */
 .profile-form {
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  gap: 15px; /* Spacing between form elements */
 }
 
 .profile-form label {
-  font-weight: bold;
-  margin-top: 15px;
+  font-weight: 600;
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 0.95em;
   color: #333;
 }
 
 .profile-form input {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 15px;
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1em;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.profile-form input:focus {
+  border-color: #007d7b;
+  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2);
+  outline: none;
+}
+
+.profile-form input[disabled] {
+  background-color: #f8f8f8;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* Password Input with Toggle */
+.password-input-container {
+  position: relative;
   width: 100%;
 }
 
-/* Action buttons layout */
+.password-input-container input {
+  padding-right: 45px; /* Space for the icon */
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+.password-toggle-icon:hover {
+  color: #555;
+}
+
+/* Action Buttons */
 .profile-buttons-container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 25px;
+  flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .profile-buttons-container button {
-  flex: 1;
-  min-width: 120px;
-  padding: 12px;
-  font-size: 15px;
+  flex: 1; /* Distributes space evenly */
+  min-width: 140px; /* Minimum width before wrapping */
+  padding: 12px 20px;
+  font-size: 1.05em;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  color: white;
 }
 
 .profile-buttons-container button:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.edit-btn {
-  background-color: #007bff;
-  color: white;
+.update-btn {
+  background-color: #007d7b; /* Teal/Green primary action */
 }
 
-.edit-btn:hover {
-  background-color: #0056b3;
+.update-btn:hover {
+  background-color: #006666;
 }
 
 .delete-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: #dc3545; /* Red destructive action */
 }
 
 .delete-btn:hover {
-  background-color: #b02a37;
+  background-color: #c82333;
 }
 
-/* Confirmation Modal */
+/* Confirmation Modal (assuming ConfirmDialog uses these classes) */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
-  animation: fadeIn 0.3s ease;
+  z-index: 1000; /* Ensure it's on top */
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .modal {
@@ -125,38 +189,48 @@
   padding: 30px;
   border-radius: 12px;
   width: 90%;
-  max-width: 400px;
+  max-width: 450px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  transform: scale(1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.modal h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.modal p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 25px;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-top: 20px;
 }
 
 .cancel-btn,
 .confirm-btn {
-  padding: 10px 20px;
+  padding: 10px 25px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .cancel-btn {
-  background: #ccc;
-  color: black;
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #d0d0d0;
 }
 
 .confirm-btn {
@@ -168,21 +242,75 @@
   background-color: #c82333;
 }
 
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 /* Accessibility Focus Styles */
 button:focus,
 input:focus {
-  outline: 2px solid #007bff;
+  outline: 2px solid #007d7b;
   outline-offset: 2px;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 480px) {
-  .manage-profile-container {
+/* Mobile Responsiveness */
+
+
+  .profile-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .profile-header h1 {
+    font-size: 1.4em;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-form {
     padding: 20px;
+    gap: 12px;
+  }
+
+  .profile-form input {
+    padding: 10px 12px;
+  }
+
+  .profile-buttons-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-buttons-container button {
+    width: 100%;
+    min-width: unset;
   }
 
   .modal {
-    padding: 20px;
+    padding: 25px;
+    border-radius: 8px;
   }
 
   .modal-buttons {
