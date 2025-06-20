@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import "../styles/ReportFoundItem.css"; // Ensure this path is correct
-import { CloudUpload, Package, ArrowLeft, Search } from "lucide-react"; // Using Lucide icons
+import { FaCloudUploadAlt, FaSearch, FaArrowLeft } from "react-icons/fa"; // Using react-icons/fa
 import { toast } from "react-toastify";
-import { searchLostItems, confirmFoundItem } from "../api/itemApi"; // Keep your existing API imports
+import { searchLostItems, confirmFoundItem } from "../api/itemApi";
 import { useNavigate } from "react-router-dom";
-import DescriptionModal from "../components/DescriptionModal"; // New modal import
-import ImageModal from "../components/ImageModal"; // New modal import
+import { Package } from "react-feather";
 
 const ReportFoundItem = () => {
   const [formData, setFormData] = useState({
@@ -21,15 +20,14 @@ const ReportFoundItem = () => {
   const [preview, setPreview] = useState(null);
   const [matchedItems, setMatchedItems] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [showDesc, setShowDesc] = useState(null);
-  const [showImage, setShowImage] = useState(null);
+  const [showDesc, setShowDesc] = useState(null); // For description modal
+  const [showImage, setShowImage] = useState(null); // For image modal
   const [reportedIds, setReportedIds] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
 
   const navigate = useNavigate();
 
-  // Ensure this matches your backend's base URL for images
   const apiBaseURL =
     process.env.REACT_APP_API_BASE_URL?.replace("/api", "") || "";
 
@@ -110,7 +108,7 @@ const ReportFoundItem = () => {
             <Package className="lost-card-icon" /> Report Found Item
           </h2>
           <button className="back-btn" onClick={() => navigate(-1)}>
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+            <FaArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
           </button>
         </header>
 
@@ -175,7 +173,7 @@ const ReportFoundItem = () => {
                   />
                 ) : (
                   <>
-                    <CloudUpload size={32} className="upload-icon" />
+                    <FaCloudUploadAlt size={32} className="upload-icon" />
                     <span>Click to upload image</span>
                   </>
                 )}
@@ -194,7 +192,7 @@ const ReportFoundItem = () => {
               "Searching..."
             ) : (
               <>
-                <Search className="mr-2 h-5 w-5" /> Search for Match
+                <FaSearch className="mr-2 h-5 w-5" /> Search for Match
               </>
             )}
           </button>
@@ -282,14 +280,37 @@ const ReportFoundItem = () => {
         </div>
       )}
 
+      {/* Modal: Description (Re-integrated) */}
       {showDesc && (
-        <DescriptionModal
-          description={showDesc}
-          onClose={() => setShowDesc(null)}
-        />
+        <div className="modal-overlay" onClick={() => setShowDesc(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <h4 className="modal-title">📋 Item Description</h4>
+            <p className="modal-description">{showDesc}</p>
+            <div className="btn-close-wrapper">
+              <button className="btn-close" onClick={() => setShowDesc(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
+
+      {/* Modal: Image (Re-integrated) */}
       {showImage && (
-        <ImageModal imageUrl={showImage} onClose={() => setShowImage(null)} />
+        <div className="modal-overlay" onClick={() => setShowImage(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={showImage || "/placeholder.svg"}
+              alt="Detail"
+              className="modal-image"
+            />
+            <div className="btn-close-wrapper">
+              <button className="btn-close" onClick={() => setShowImage(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

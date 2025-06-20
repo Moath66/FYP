@@ -308,10 +308,114 @@
   background-color: #006666;
 }
 
-/* Modals (Shadcn Dialog handles overlay, but custom content styling) */
-/* The .modal-overlay, .modal-card, .btn-close classes from previous custom modals
-   are largely replaced by Shadcn's Dialog components.
-   The styling for the content *inside* the dialogs is handled by the new modal components. */
+/* Modal Styling (Re-integrated from original structure) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker dim for better focus */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.modal-card {
+  background: #fff;
+  padding: 30px 35px;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25); /* Stronger shadow */
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  animation: slideIn 0.3s ease forwards; /* Use slideIn for entry */
+}
+
+.modal-title {
+  color: #007d7b; /* Teal/Green for modal title */
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.modal-description {
+  font-size: 1em;
+  color: #333;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  word-wrap: break-word;
+  text-align: left; /* Align description text left */
+}
+
+.modal-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.btn-close-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-close {
+  background-color: #dc3545; /* Red for close button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.3s ease;
+}
+
+.btn-close:hover {
+  background-color: #c82333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Accessibility Focus Styles */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid #007d7b;
+  outline-offset: 2px;
+}
 
 /* 📱 Responsive Table on Small Screens */
 @media (max-width: 768px) {
@@ -398,5 +502,24 @@
   .submit-btn {
     padding: 10px;
     font-size: 1em;
+  }
+
+  .modal-card {
+    padding: 25px 30px;
+    border-radius: 12px;
+  }
+
+  .modal-title {
+    font-size: 1.3em;
+  }
+
+  .modal-description {
+    font-size: 0.95em;
+    padding: 12px;
+  }
+
+  .btn-close {
+    padding: 6px 12px;
+    font-size: 0.8em;
   }
 }
