@@ -292,7 +292,7 @@ const ReportFoundItem = () => {
             <p className="modal-description">{showDesc}</p>
             <div className="btn-close-wrapper">
               <button className="btn-close" onClick={() => setShowDesc(null)}>
-                Close
+                
               </button>
             </div>
           </div>
