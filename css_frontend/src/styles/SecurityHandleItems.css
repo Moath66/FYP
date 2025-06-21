@@ -2,7 +2,7 @@
 :root {
   --primary-blue: #007bff; /* For titles, similar to screenshot's blue */
   --dark-blue: #002b5c; /* From sidebar */
-  --teal-green: #00a88e; /* From sidebar active */
+  --teal-green: #00a88e; /* From sidebar active - used for new header */
   --light-gray-bg: #f0f2f5; /* Main background */
   --white-card-bg: #ffffff; /* Card background */
   --border-light: #e0e0e0; /* Light border for cards and table */
@@ -15,6 +15,7 @@
   --status-unclaimed-bg: #ffc107; /* Orange */
   --status-returned-bg: #007bff; /* Blue */
   --status-discarded-bg: #6c757d; /* Gray */
+  --status-found-bg: #ffc107; /* Orange for 'found' status */
 
   /* Button colors */
   --btn-return-bg: #28a745; /* Green */
@@ -29,11 +30,69 @@ body {
   padding: 0;
 }
 
+/* Page Wrapper for overall layout */
+.handle-items-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--light-gray-bg);
+}
+
+/* New Header Section */
+.page-header {
+  background-color: var(--teal-green); /* Teal background */
+  color: var(--btn-text-white);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Space below header */
+}
+
+.page-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-title-icon {
+  font-size: 24px;
+}
+
+.back-button {
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  color: var(--btn-text-white);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.back-button-icon {
+  font-size: 16px;
+}
+
+/* Main content container (card wrapper) */
 .handle-items-container {
   max-width: 1100px;
-  margin: 50px auto;
-  padding: 20px;
-  box-sizing: border-box; /* Include padding in width calculation */
+  margin: 0 auto 50px auto; /* Center and add bottom margin */
+  padding: 0 20px; /* Horizontal padding */
+  box-sizing: border-box;
+  flex-grow: 1; /* Allow it to take available space */
 }
 
 .card {
@@ -41,25 +100,10 @@ body {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-light); /* Subtle border */
+  border: 1px solid var(--border-light);
 }
 
-.card-title {
-  margin-top: 0;
-  margin-bottom: 25px;
-  color: var(--primary-blue);
-  font-weight: 600;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between icon and text */
-}
-
-.folder-icon {
-  font-size: 28px; /* Adjust size of the emoji icon */
-  color: #ffc107; /* Yellow color for the folder icon */
-}
-
+/* Search Input */
 .search-input-wrapper {
   position: relative;
   margin-bottom: 25px;
@@ -95,20 +139,21 @@ body {
   font-size: 18px;
 }
 
+/* Table Styles */
 .items-table {
   width: 100%;
-  border-collapse: separate; /* Use separate to allow border-radius on cells if needed */
-  border-spacing: 0; /* Remove default spacing */
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 15px;
-  border-radius: 8px; /* Apply border-radius to the table itself */
-  overflow: hidden; /* Hide overflowing content for rounded corners */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .items-table th,
 .items-table td {
   padding: 12px 15px;
   text-align: center;
-  border-bottom: 1px solid #eee; /* Lighter border for rows */
+  border-bottom: 1px solid #eee;
 }
 
 .items-table th {
@@ -120,7 +165,7 @@ body {
 }
 
 .items-table tbody tr:last-child td {
-  border-bottom: none; /* No border for the last row */
+  border-bottom: none;
 }
 
 /* Status Pill Styling */
@@ -131,7 +176,7 @@ body {
   color: var(--btn-text-white);
   text-transform: capitalize;
   font-size: 13px;
-  display: inline-block; /* Ensures padding and border-radius work correctly */
+  display: inline-block;
 }
 
 .status-pill.unclaimed {
@@ -150,19 +195,23 @@ body {
   background-color: var(--status-discarded-bg);
 }
 
+.status-pill.found {
+  background-color: var(--status-found-bg); /* Orange for 'found' */
+}
+
 /* Action Buttons Group */
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 8px; /* Slightly smaller gap for buttons */
+  gap: 8px;
 }
 
 /* Button Styles */
 .btn-action {
-  padding: 8px 14px; /* Slightly more padding */
+  padding: 8px 14px;
   color: var(--btn-text-white);
   border: none;
-  border-radius: 6px; /* More rounded corners */
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -178,7 +227,7 @@ body {
 }
 
 .btn-return:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #218838;
 }
 
 .btn-discard {
@@ -186,7 +235,7 @@ body {
 }
 
 .btn-discard:hover {
-  background-color: #c82333; /* Darker red on hover */
+  background-color: #c82333;
 }
 
 /* Passive / No Action */
@@ -206,22 +255,28 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .page-header {
+    padding: 10px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .back-button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
   .handle-items-container {
-    margin: 20px auto;
-    padding: 15px;
+    margin: 0 auto 20px auto;
+    padding: 0 15px;
   }
 
   .card {
     padding: 20px;
-  }
-
-  .card-title {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-
-  .folder-icon {
-    font-size: 24px;
   }
 
   .search-input {
