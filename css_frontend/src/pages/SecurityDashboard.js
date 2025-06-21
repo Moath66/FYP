@@ -8,9 +8,6 @@ import {
   FaFolderOpen,
   FaEye,
   FaHome,
-  FaClipboardList,
-  FaWrench,
-  FaUsers,
   FaSignOutAlt,
 } from "react-icons/fa"; // Using Fa icons as per original code
 
@@ -66,24 +63,6 @@ const SecurityDashboard = () => {
     },
   ];
 
-  const trackingItems = [
-    {
-      title: "Track Item App.",
-      url: "/track-item-app",
-      icon: FaClipboardList,
-    },
-    {
-      title: "Track Maint. App.",
-      url: "/track-maintenance-app",
-      icon: FaWrench,
-    },
-    {
-      title: "Track Visitor App.",
-      url: "/track-visitor-app",
-      icon: FaUsers,
-    },
-  ];
-
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -125,23 +104,6 @@ const SecurityDashboard = () => {
               </li>
             ))}
           </ul>
-
-          <h4 className="sidebar-group-label">Tracking</h4>
-          <ul className="sidebar-menu">
-            {trackingItems.map((item) => (
-              <li key={item.title}>
-                <button
-                  className={`sidebar-menu-button ${
-                    activePath === item.url ? "active" : ""
-                  }`}
-                  onClick={() => handleNavigation(item.url)}
-                >
-                  <item.icon className="sidebar-menu-icon" />
-                  <span>{item.title}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
         </nav>
         <div className="sidebar-footer">
           <button
@@ -168,13 +130,6 @@ const SecurityDashboard = () => {
             Your central hub for managing security operations. Quickly access
             reports, handle items, and monitor visitors.
           </p>
-          <button
-            className="manage-profile-button"
-            onClick={() => handleNavigation("/security/profile")}
-          >
-            <FaUserEdit className="manage-profile-icon" />
-            Manage Profile
-          </button>
         </div>
 
         {/* Activity Overview Section */}

@@ -174,29 +174,6 @@ body {
   margin-bottom: 20px;
 }
 
-.manage-profile-button {
-  padding: 10px 20px;
-  background-color: var(--sidebar-bg); /* Use sidebar dark blue */
-  color: var(--sidebar-active-text);
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.manage-profile-button:hover {
-  background-color: var(--sidebar-hover-bg);
-}
-
-.manage-profile-icon {
-  font-size: 18px;
-}
-
 /* Section Titles */
 .section-title {
   font-size: 20px;
@@ -257,9 +234,7 @@ body {
 }
 
 .activity-status.no-active-reports {
-  background-color: var(
-    --action-required-bg
-  ); /* Using green for "no unresolved" as it's a good state */
+  background-color: var(--action-required-bg); /* Using green for "no unresolved" as it's a good state */
   color: var(--action-required-text);
 }
 
