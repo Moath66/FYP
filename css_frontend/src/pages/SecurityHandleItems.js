@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import "../styles/SecurityHandleItems.css";
-import { fetchAllItems, updateItemStatus } from "../api/itemApi";
+import { fetchAllItems, updateItemStatus } from "../api/itemApi"; // Keeping backend imports as is
 
 const SecurityHandleItems = () => {
   const [items, setItems] = useState([]);
@@ -53,15 +55,20 @@ const SecurityHandleItems = () => {
   return (
     <div className="handle-items-container">
       <div className="card">
-        <h2>📁 Handle Items</h2>
+        <h2 className="card-title">
+          <span className="folder-icon">📁</span> Handle Items
+        </h2>
 
-        <input
-          type="text"
-          className="search-input"
-          placeholder="🔍 Search by item name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by item name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
         <table className="items-table">
           <thead>
@@ -84,7 +91,7 @@ const SecurityHandleItems = () => {
                 <td>{new Date(item.date).toLocaleDateString()}</td>
                 <td>{item.location}</td>
                 <td>
-                  <span className={`status ${item.status}`}>
+                  <span className={`status-pill ${item.status}`}>
                     {getSecurityDisplayStatus(item.status)}
                   </span>
                 </td>
@@ -92,13 +99,13 @@ const SecurityHandleItems = () => {
                   {item.status === "claimed" ? (
                     <div className="action-buttons">
                       <button
-                        className="btn-return"
+                        className="btn-action btn-return"
                         onClick={() => handleStatusChange(item._id, "returned")}
                       >
                         Returned
                       </button>
                       <button
-                        className="btn-discard"
+                        className="btn-action btn-discard"
                         onClick={() =>
                           handleStatusChange(item._id, "discarded")
                         }
