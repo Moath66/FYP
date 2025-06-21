@@ -110,8 +110,8 @@
 
 .search-icon {
   position: absolute;
-  left: 15px;
-  top: 44%; /* Adjusted from 50% to nudge it down slightly */
+  left: 18px; /* Adjusted to be slightly more to the right */
+  top: 50%; /* Reset to 50% and rely on padding for horizontal gap */
   transform: translateY(-50%);
   color: #999;
   font-size: 1.1em;
