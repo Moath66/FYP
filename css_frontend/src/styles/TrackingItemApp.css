@@ -308,11 +308,6 @@ textarea:focus {
     padding-left: 35px;
   }
 
-  .search-icon {
-    left: 10px;
-    font-size: 1em;
-  }
-
   .status {
     font-size: 0.8em;
     padding: 5px 10px;

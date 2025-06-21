@@ -29,10 +29,14 @@
 
 /* 📝 Title */
 .qr-popup-title {
-  color: #007d7b; /* Consistent teal/green from other pages */
-  font-size: 1.8em;
-  margin-bottom: 10px;
+  color: #007d7b;
+  font-size: 2em; /* Increased font size */
+  margin-bottom: 15px; /* Adjusted margin */
   font-weight: 700;
+  display: flex; /* For centering icon if added, or just text */
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space for potential icon */
 }
 
 /* 🧾 Description */
@@ -47,11 +51,11 @@
 .qr-image {
   width: 220px;
   height: auto;
-  margin: 0 auto 20px auto; /* Center the image */
-  border: 1px solid #e0e0e0; /* Lighter border */
+  margin: 25px auto; /* Increased top/bottom margin */
+  border: 1px solid #e0e0e0;
   padding: 8px;
   border-radius: 8px;
-  display: block; /* Ensure margin auto works */
+  display: block;
 }
 
 /* 🔗 Details */
@@ -69,8 +73,8 @@
 
 .qr-scan-link-input {
   width: 100%;
-  padding: 10px 12px;
-  font-size: 0.9em;
+  padding: 12px 15px; /* Consistent padding */
+  font-size: 0.95em; /* Slightly larger font */
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-top: 8px;
@@ -95,24 +99,25 @@
 
 /* ❌ Close Button */
 .close-btn {
-  background-color: #007d7b; /* Consistent teal/green primary button */
+  background-color: #dc3545; /* Changed to a more prominent red for close/destructive action */
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 25px; /* Larger padding */
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1em;
+  font-size: 1.05em; /* Slightly larger font */
   transition: background-color 0.3s ease, transform 0.2s ease,
     box-shadow 0.2s ease;
-  display: inline-flex; /* For icon and text alignment */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  margin-top: 20px; /* Added margin top */
 }
 
 .close-btn:hover {
-  background-color: #006666;
+  background-color: #c82333; /* Darker red on hover */
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
