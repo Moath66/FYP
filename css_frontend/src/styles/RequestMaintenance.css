@@ -1,68 +1,201 @@
-.maintenance-form-container {
+/* Global body styles should be in a separate global CSS file if needed,
+   not here to avoid conflicts with other pages. */
+
+/* Wrapper for centering the page content */
+.lost-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Light gray background matching login/landing */
+  padding: 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+.lost-card {
   max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure it takes full width up to max-width */
+  background-color: #ffffff;
+  padding: 0; /* Remove padding from here, apply to form content */
+  border-radius: 12px; /* Consistent border-radius */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden; /* Ensures header border-radius applies */
 }
 
-.maintenance-form-container h2 {
-  margin-bottom: 25px;
-  font-size: 1.8rem;
+/* Header Section (reused from ManageProfilePage.css) */
+.profile-header {
+  background-color: #007d7b; /* Teal/Green from landing/login pages */
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  border-top-left-radius: 12px; /* Match card border-radius */
+  border-top-right-radius: 12px; /* Match card border-radius */
+}
+
+.profile-header h1 {
+  margin: 0;
+  font-size: 1.6em;
+  font-weight: 600;
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+.lost-card-title {
+  margin-bottom: 0; /* Remove bottom margin as it's now in a flex container */
+  color: white; /* Title color is white as it's in the header */
   text-align: center;
-  color: #333;
+  font-size: 1.6em; /* Adjust font size to match header h1 */
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between icon and text */
 }
 
-.maintenance-form label {
+.lost-card-icon {
+  color: white; /* Icon color is white as it's in the header */
+  width: 30px;
+  height: 30px;
+}
+
+.lost-form {
+  padding: 30px 40px; /* Apply padding to the form content */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Spacing between form elements */
+}
+
+.lost-form .form-group {
+  margin-bottom: 0; /* Reset margin as gap handles spacing */
+}
+
+.lost-form label {
   display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+  font-weight: 600;
+  margin-bottom: 8px;
   color: #333;
+  font-size: 0.95em;
 }
 
-.maintenance-form input,
-.maintenance-form textarea {
+.lost-form input,
+.lost-form textarea,
+.lost-form select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 18px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0; /* Lighter border */
+  border-radius: 8px; /* More rounded inputs */
+  font-size: 1em;
+  color: #333;
+  background-color: #fefefe;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
-.maintenance-form textarea {
+.lost-form input:focus,
+.lost-form textarea:focus,
+.lost-form select:focus {
+  border-color: #007d7b; /* Teal/Green focus border */
+  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2); /* Soft focus shadow */
+  outline: none;
+}
+
+.lost-form textarea {
   resize: vertical;
-  height: 100px;
+  min-height: 80px; /* Ensure a minimum height */
 }
 
-.maintenance-form button {
+.submit-btn {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
+  font-size: 1.05em;
+  background-color: #007d7b; /* Teal/Green primary button */
   border: none;
-  border-radius: 6px;
   color: white;
-  font-weight: bold;
-  font-size: 1rem;
+  border-radius: 8px; /* More rounded button */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: 15px; /* Add some space above the button */
+  display: flex; /* For icon and text alignment */
+  align-items: center;
+  justify-content: center;
 }
 
-.maintenance-form button:hover {
-  background-color: #0056b3;
+.submit-btn:hover {
+  background-color: #006666; /* Darker teal/green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.maintenance-form select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 18px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: white;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+.submit-btn:disabled {
+  background-color: #a0a0a0; /* Gray out when disabled */
+  cursor: not-allowed;
+  transform: none;
   box-shadow: none;
+}
+
+/* Accessibility Focus Styles */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #007d7b;
+  outline-offset: 2px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .lost-card {
+    padding: 0; /* Reset padding for mobile, content handles it */
+    margin-bottom: 15px;
+  }
+
+  .lost-form {
+    padding: 20px 25px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 15px 20px;
+  }
+
+  .profile-header h1,
+  .lost-card-title {
+    font-size: 1.4em;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .submit-btn {
+    padding: 10px;
+    font-size: 1em;
+  }
 }
