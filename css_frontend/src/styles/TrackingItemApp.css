@@ -92,7 +92,7 @@
 .search-input {
   width: 100%;
   padding: 12px 18px;
-  padding-left: 10px; /* Space for the icon */
+  padding-left: 45px; /* Increased padding-left to create more space for the icon */
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1em;
@@ -110,8 +110,8 @@
 
 .search-icon {
   position: absolute;
-  left: 18px; /* Adjusted to be slightly more to the right */
-  top: 50%; /* Reset to 50% and rely on padding for horizontal gap */
+  left: 15px; /* Keep left consistent */
+  top: 50%; /* Reset to 50% for vertical centering */
   transform: translateY(-50%);
   color: #999;
   font-size: 1.1em;
