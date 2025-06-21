@@ -134,7 +134,7 @@ const SecurityHandleItems = () => {
                         </button>
                       </div>
                     ) : (
-                      <span className="no-action">No Action</span> // Display "No Action" explicitly
+                      <span className="no-action">No Action</span>
                     )}
                   </td>
                 </tr>

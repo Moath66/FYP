@@ -112,12 +112,12 @@ body {
 .search-input {
   width: 100%;
   padding: 12px 15px 12px 40px; /* Left padding for icon */
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-light); /* Single border */
   border-radius: 8px;
   font-size: 15px;
   color: var(--text-dark);
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease; /* Removed box-shadow from transition */
 }
 
 .search-input::placeholder {
@@ -126,8 +126,8 @@ body {
 
 .search-input:focus {
   outline: none;
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  border-color: var(--primary-blue); /* Keep border color change on focus */
+  box-shadow: none; /* Removed box-shadow on focus */
 }
 
 .search-icon {
