@@ -110,8 +110,8 @@
 
 .search-icon {
   position: absolute;
-  left: 160px; /* Keep left consistent */
-  top: 40%; /* Reset to 50% for vertical centering */
+  left: 179px; /* Keep left consistent */
+  top: 35%; /* Reset to 50% for vertical centering */
   transform: translateY(-50%);
   color: #999;
   font-size: 1.1em;
