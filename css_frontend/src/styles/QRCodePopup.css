@@ -29,20 +29,20 @@
 
 /* 📝 Title */
 .qr-popup-title {
-  color: #007d7b;
-  font-size: 2em; /* Increased font size */
-  margin-bottom: 15px; /* Adjusted margin */
+  color: #007d7b; /* Consistent teal/green from other pages */
+  font-size: 2em;
+  margin-bottom: 15px;
   font-weight: 700;
-  display: flex; /* For centering icon if added, or just text */
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Space for potential icon */
+  gap: 10px;
 }
 
 /* 🧾 Description */
 .qr-popup-description {
   font-size: 1em;
-  margin-bottom: 15px;
+  margin-bottom: 25px; /* Increased margin for more separation */
   color: #555;
   line-height: 1.5;
 }
@@ -51,7 +51,7 @@
 .qr-image {
   width: 220px;
   height: auto;
-  margin: 25px auto; /* Increased top/bottom margin */
+  margin: 25px auto 30px auto; /* Increased bottom margin for more separation from link */
   border: 1px solid #e0e0e0;
   padding: 8px;
   border-radius: 8px;
@@ -63,7 +63,7 @@
   text-align: left;
   font-size: 0.95em;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Increased margin for more separation from button */
 }
 
 .qr-details-label {
@@ -73,9 +73,9 @@
 
 .qr-scan-link-input {
   width: 100%;
-  padding: 12px 15px; /* Consistent padding */
-  font-size: 0.95em; /* Slightly larger font */
-  border: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  font-size: 0.95em;
+  border: 1px solid #007d7b; /* Changed border color to teal/green for consistency */
   border-radius: 8px;
   margin-top: 8px;
   font-family: monospace;
@@ -99,25 +99,25 @@
 
 /* ❌ Close Button */
 .close-btn {
-  background-color: #dc3545; /* Changed to a more prominent red for close/destructive action */
+  background-color: #dc3545; /* Red for close/destructive action */
   color: #fff;
-  padding: 12px 25px; /* Larger padding */
+  padding: 12px 25px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1.05em; /* Slightly larger font */
+  font-size: 1.05em;
   transition: background-color 0.3s ease, transform 0.2s ease,
     box-shadow 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 20px; /* Added margin top */
+  margin-top: 20px;
 }
 
 .close-btn:hover {
-  background-color: #c82333; /* Darker red on hover */
+  background-color: #c82333;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
