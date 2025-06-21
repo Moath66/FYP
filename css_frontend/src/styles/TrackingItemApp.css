@@ -92,7 +92,7 @@
 .search-input {
   width: 100%;
   padding: 12px 18px;
-  padding-left: 30px; /* Space for the icon */
+  padding-left: 10px; /* Space for the icon */
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1em;
