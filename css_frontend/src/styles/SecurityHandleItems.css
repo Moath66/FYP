@@ -112,7 +112,6 @@ body {
 .search-input {
   width: 100%;
   padding: 12px 15px 12px 40px; /* Left padding for icon */
-  border: 1px solid var(--border-light); /* Single border */
   border-radius: 8px;
   font-size: 15px;
   color: var(--text-dark);
