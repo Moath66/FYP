@@ -14,7 +14,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa"; // Using Fa icons as per original code
 
-import "./SecurityDashboard.css"; // Import the dedicated CSS file
+import "../styles/SecurityDashboard.css"; // Import the dedicated CSS file
 
 const SecurityDashboard = () => {
   const navigate = useNavigate();
