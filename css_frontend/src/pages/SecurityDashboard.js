@@ -1,34 +1,29 @@
-import React from "react";
-import "../styles/SecurityDashboard.css";
+"use client";
 import { useNavigate } from "react-router-dom";
-import {
-  FaUserEdit,
-  FaSearch,
-  FaFolderOpen,
-  FaEye,
-} from "react-icons/fa";
+import { UserCog, Search, FolderOpen, Eye } from "lucide-react"; // Using Lucide icons
+import "../styles/SecurityDashboard.css"; // Ensure this path is correct
 
 const SecurityDashboard = () => {
   const navigate = useNavigate();
 
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const userName = storedUser?.userName || "Security";
 
   const actions = [
     {
-      icon: <FaSearch />,
+      icon: <Search />,
       title: "Report Found Item",
       description: "Submit a found item report",
       path: "/report-found-item",
     },
     {
-      icon: <FaFolderOpen />,
+      icon: <FolderOpen />,
       title: "Handle Items",
       description: "Manage found and claimed items",
       path: "/handle-items",
     },
     {
-      icon: <FaEye />,
+      icon: <Eye />,
       title: "Check Visitor",
       description: "Monitor and validate visitor entries",
       path: "/check-visitor",
@@ -49,7 +44,7 @@ const SecurityDashboard = () => {
           className="manage-profile-button"
           onClick={() => navigate("/security/profile")}
         >
-          <FaUserEdit className="manage-profile-icon" />
+          <UserCog className="manage-profile-icon" />
           Manage Profile
         </button>
       </div>
