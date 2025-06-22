@@ -13,68 +13,12 @@ import {
 } from "lucide-react"; // Using Lucide React icons
 import "../styles/AnalyzeMaintenance.css"; // Import the new CSS file
 
-// Placeholder API functions for demonstration
-const getAllMaintenance = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          _id: "maint1",
-          equipment_id: "EQ0003",
-          eq_type: "HVAC Unit",
-          eq_age: "6 months",
-          environment_condition: "Pressure",
-          usage_pattern: "Economic",
-          last_maintenance_date: new Date("2025-06-04").toISOString(),
-          description: "Routine check, filter replacement needed.",
-          status: "pending", // Using 'pending' for consistency with other pages
-        },
-        {
-          _id: "maint2",
-          equipment_id: "EQ0002",
-          eq_type: "Elevator Motor",
-          eq_age: "6 months",
-          environment_condition: "Pressure",
-          usage_pattern: "Economic",
-          last_maintenance_date: new Date("2025-06-04").toISOString(),
-          description: "Noise detected, requires further inspection.",
-          status: "Completed",
-        },
-        {
-          _id: "maint3",
-          equipment_id: "EQ0001",
-          eq_type: "Fire Alarm System",
-          eq_age: "2 months",
-          environment_condition: "Temperature",
-          usage_pattern: "Continuous",
-          last_maintenance_date: new Date("2025-06-04").toISOString(),
-          description: "Annual safety check, all clear.",
-          status: "Completed",
-        },
-        {
-          _id: "maint4",
-          equipment_id: "EQ0004",
-          eq_type: "Water Pump",
-          eq_age: "1 year",
-          environment_condition: "Humidity",
-          usage_pattern: "Heavy",
-          last_maintenance_date: new Date("2025-05-15").toISOString(),
-          description: "Pressure drop detected, needs repair.",
-          status: "pending",
-        },
-      ]);
-    }, 1000);
-  });
-};
-
-const updateMaintenanceStatus = async (id, newStatus) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(`Maintenance ${id} status updated to ${newStatus}`);
-      resolve({ success: true });
-    }, 500);
-  });
-};
+// IMPORTANT: These imports are from your existing backend integration.
+// I will NOT modify these or provide placeholder functions.
+import {
+  getAllMaintenance,
+  updateMaintenanceStatus,
+} from "../api/maintenanceApis";
 
 const AnalyzeMaintenance = () => {
   const navigate = useNavigate();
