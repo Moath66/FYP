@@ -32,6 +32,15 @@ const SecurityDashboard = () => {
     navigate(path);
   };
 
+  // Function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId"); // Clear userId if stored
+    navigate("/login"); // Redirect to the login page
+  };
+
   const mainItems = [
     {
       title: "Dashboard",
@@ -108,7 +117,7 @@ const SecurityDashboard = () => {
         <div className="sidebar-footer">
           <button
             className="sidebar-menu-button"
-            onClick={() => handleNavigation("/logout")}
+            onClick={handleLogout} // Changed to call the new handleLogout function
           >
             <FaSignOutAlt className="sidebar-menu-icon" />
             <span>Logout</span>
