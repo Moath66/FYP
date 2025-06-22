@@ -1,119 +1,337 @@
-.dashboard-container {
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* General Body Styling */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1.5;
+  color: #333;
+  background-color: #f3f4f6; /* Light gray background */
 }
 
-.dashboard-header {
-  background-color: #002b5c;
+/* Dashboard Layout */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6; /* Matches body background */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px; /* Fixed width for sidebar */
+  background-color: #002b5c; /* Dark blue background */
   color: #fff;
-  padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 12px 12px 0 0;
-  text-align: center;
-  box-shadow: inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
-.dashboard-section {
-  padding: 30px 20px;
-  background-color: #fff;
-  margin-top: 20px;
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-logo-badge {
+  background-color: #148a7d; /* Greenish accent color */
+  padding: 8px 12px;
   border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: 10px;
 }
 
-.dashboard-section h2 {
-  margin-bottom: 15px;
-  color: #1a3e72;
-  font-size: 22px;
+.sidebar-panel-text {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.dashboard-section p {
-  color: #444;
-  font-size: 16px;
+.sidebar-nav {
+  flex-grow: 1;
+  padding: 0 15px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 5px;
+}
+
+.sidebar-menu-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu-button.active {
+  background-color: #148a7d; /* Active link background */
+  font-weight: bold;
+}
+
+.sidebar-menu-icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.sidebar-group-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 15px 15px 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.sidebar-footer {
+  padding: 20px 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+}
+
+/* Main Content Area */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #f3f4f6; /* Light gray background */
+}
+
+.main-header {
+  margin-bottom: 30px;
+}
+
+.main-header h1 {
+  font-size: 2rem;
+  color: #002b5c;
+  margin-bottom: 5px;
+}
+
+.welcome-text {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  background-color: #d4edda; /* Light green background */
+  color: #155724; /* Dark green text */
+  padding: 25px 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-title {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.welcome-description {
+  font-size: 1rem;
   line-height: 1.6;
 }
 
-.manage-profile-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #002b5c;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Activity Overview Section */
+.activity-overview-section {
+  margin-bottom: 30px;
 }
 
-.manage-profile-button:hover {
-  background-color: #004080;
-}
-
-.manage-profile-icon {
-  font-size: 18px;
-}
-
-.quick-actions-section {
-  margin-top: 40px;
-  text-align: center;
-}
-
-.quick-actions-section h3 {
-  font-size: 20px;
-  margin-bottom: 20px;
+.section-title {
+  font-size: 1.5rem;
   color: #002b5c;
+  margin-bottom: 20px;
 }
 
-.action-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.activity-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
-.action-card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-left: 6px solid #002b5c;
-  border-radius: 10px;
-  padding: 20px 15px;
-  width: 230px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-align: left;
+.activity-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
-.action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-
-.action-icon {
-  font-size: 28px;
+.activity-card h4 {
+  font-size: 1.1rem;
   color: #002b5c;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-.action-content h4 {
-  margin: 0;
-  font-size: 18px;
-  color: #1a3e72;
+.activity-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #148a7d; /* Green accent for values */
+  margin-bottom: 15px;
 }
 
-.action-content p {
-  margin-top: 5px;
-  font-size: 14px;
+.activity-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activity-status .status-icon {
+  margin-right: 5px;
+  font-size: 0.9rem;
+}
+
+.activity-status.action-required {
+  background-color: #f8d7da; /* Light red */
+  color: #721c24; /* Dark red */
+}
+
+.activity-status.upcoming {
+  background-color: #ffeeba; /* Light yellow */
+  color: #856404; /* Dark yellow */
+}
+
+.activity-status.no-active-reports {
+  background-color: #e2e3e5; /* Light gray */
+  color: #495057; /* Dark gray */
+}
+
+/* Community Updates / Recent Logs Section */
+.community-updates-section {
+  margin-bottom: 30px;
+}
+
+.update-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
+}
+
+.update-card h4 {
+  font-size: 1.1rem;
+  color: #002b5c;
+  margin-bottom: 5px;
+}
+
+.update-date {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.update-description {
+  font-size: 0.95rem;
   color: #555;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.read-more {
+  color: #148a7d; /* Green accent color */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.read-more:hover {
+  color: #0e6b5f;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-header {
+    justify-content: center;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .sidebar-nav {
+    padding: 0 10px;
+  }
+
+  .sidebar-menu-button {
+    justify-content: center;
+  }
+
+  .sidebar-menu-icon {
+    margin-right: 0;
+  }
+
+  .sidebar-menu-button span {
+    display: none; /* Hide text on small screens if desired for icon-only sidebar */
+  }
+
+  .sidebar-group-label {
+    text-align: center;
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+
+  .sidebar-footer {
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .main-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .welcome-banner {
+    padding: 20px;
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .activity-cards-container {
+    grid-template-columns: 1fr; /* Stack cards on small screens */
+  }
 }
