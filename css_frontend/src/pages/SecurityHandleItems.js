@@ -12,6 +12,8 @@ import { Search, FolderOpen, ArrowLeft, Trash2, RotateCcw } from "lucide-react";
 // import { fetchAllItems, updateItemStatus } from "../api/itemApi";
 
 // Placeholder API functions for demonstration
+import { useNavigate } from "react-router-dom";
+
 const fetchAllItems = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -128,6 +130,8 @@ const SecurityHandleItems = () => {
     item.itemName.toLowerCase().includes(search.toLowerCase())
   );
 
+  const navigate = useNavigate();
+
   return (
     <div className="security-page-container">
       <div className="security-card">
@@ -136,7 +140,11 @@ const SecurityHandleItems = () => {
             <FolderOpen className="h-7 w-7" />
             Handle Items
           </h2>
-          <button type="button" className="back-to-dashboard-button">
+          <button
+            type="button"
+            className="back-to-dashboard-button"
+            onClick={() => navigate("/security/dashboard")} // Or whatever your dashboard path is
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
           </button>

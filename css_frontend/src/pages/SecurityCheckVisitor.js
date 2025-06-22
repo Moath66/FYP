@@ -20,6 +20,7 @@ import {
   XCircle,
   Info,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SecurityCheckVisitor = () => {
   const [visitors, setVisitors] = useState([]);
@@ -85,6 +86,8 @@ const SecurityCheckVisitor = () => {
       )
     : [];
 
+  const navigate = useNavigate();
+
   return (
     <div className="security-page-container">
       <div className="security-card">
@@ -93,7 +96,11 @@ const SecurityCheckVisitor = () => {
             <Book className="h-7 w-7" />
             Check Visitors
           </h2>
-          <button type="button" className="back-to-dashboard-button">
+          <button
+            type="button"
+            className="back-to-dashboard-button"
+            onClick={() => navigate("/security/dashboard")} // Or whatever your dashboard path is
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
           </button>
