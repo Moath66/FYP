@@ -136,8 +136,9 @@ const SecurityHandleItems = () => {
             <FolderOpen className="h-7 w-7" />
             Handle Items
           </h2>
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            ⬅ Back to Dashboard
+          <button type="button" className="back-to-dashboard-button">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
           </button>
         </div>
         <div className="security-card-content">
