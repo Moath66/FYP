@@ -1,19 +1,134 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import "../styles/SecurityCheckVisitor.css";
+import "../styles/SecurityCheckVisitor.css"; // Import the new CSS file
+
+// Import shadcn/ui components (ensure these are installed and configured in your MERN frontend)
+// You might need to adjust paths based on your project structure.
 import {
-  FaShieldAlt,
-  FaSearch,
-  FaCheckCircle,
-  FaTimesCircle,
-} from "react-icons/fa"; // Added FaSearch for the input icon
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "./ui/table";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Badge } from "./ui/badge";
 import {
-  fetchAllVisitorsForSecurity,
-  approveVisitor,
-  denyVisitor,
-} from "../api/visitorApis";
-import ConfirmDialog from "../components/ConfirmDialog"; // Assuming ConfirmDialog is styled separately or will be provided
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "./ui/alert-dialog";
+
+// Lucide React icons (ensure lucide-react is installed)
+import {
+  Search,
+  Book,
+  ArrowLeft,
+  CheckCircle,
+  XCircle,
+  Info,
+} from "lucide-react";
+
+// Placeholder for your API functions and ConfirmDialog
+// IMPORTANT: Replace these with your actual imports from your MERN backend integration.
+// For example:
+// import {
+//   fetchAllVisitorsForSecurity,
+//   approveVisitor,
+//   denyVisitor,
+// } from "../api/visitorApis";
+// import ConfirmDialog from "../components/ConfirmDialog"; // If you still use this for other dialogs
+
+const fetchAllVisitorsForSecurity = async () => {
+  // Simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          _id: "1",
+          visitorId: "V001",
+          visitor_name: "John Doe",
+          passport_number: "P12345",
+          purpose: "Meeting with CEO",
+          phone_number: "123-456-7890",
+          email: "john@example.com",
+          date: new Date().toISOString(),
+          status: "pending",
+        },
+        {
+          _id: "2",
+          visitorId: "V002",
+          visitor_name: "Jane Smith",
+          passport_number: "P67890",
+          purpose: "Delivery",
+          phone_number: "098-765-4321",
+          email: "jane@example.com",
+          date: new Date().toISOString(),
+          status: "pending",
+        },
+        {
+          _id: "3",
+          visitorId: "V003",
+          visitor_name: "Alice Johnson",
+          passport_number: "P11223",
+          purpose: "Interview",
+          phone_number: "555-123-4567",
+          email: "alice@example.com",
+          date: new Date().toISOString(),
+          status: "completed",
+        },
+        {
+          _id: "4",
+          visitorId: "V004",
+          visitor_name: "Bob Williams",
+          passport_number: "P44556",
+          purpose: "Maintenance",
+          phone_number: "777-888-9999",
+          email: "bob@example.com",
+          date: new Date().toISOString(),
+          status: "pending",
+        },
+      ]);
+    }, 1000);
+  });
+};
+
+const approveVisitor = async (id) => {
+  // Simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(`Visitor ${id} approved!`);
+      resolve({ success: true });
+    }, 500);
+  });
+};
+
+const denyVisitor = async (id, reason) => {
+  // Simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(`Visitor ${id} denied for reason: ${reason}`);
+      resolve({ success: true });
+    }, 500);
+  });
+};
 
 const SecurityCheckVisitor = () => {
   const [visitors, setVisitors] = useState([]);
@@ -23,7 +138,7 @@ const SecurityCheckVisitor = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [confirmData, setConfirmData] = useState(null);
+  const [confirmApproveData, setConfirmApproveData] = useState(null);
   const [denyData, setDenyData] = useState(null);
   const [reasonText, setReasonText] = useState("");
 
@@ -44,12 +159,12 @@ const SecurityCheckVisitor = () => {
   }, []);
 
   const handleApprove = async (visitor) => {
-    setConfirmData({
-      message: `✅ Are you sure you want to approve ${visitor.visitor_name} with (ID: ${visitor.visitorId}) to enter D'summit Residence?`,
+    setConfirmApproveData({
+      message: `Are you sure you want to approve ${visitor.visitor_name} (ID: ${visitor.visitorId}) to enter D'summit Residence?`,
       onConfirm: async () => {
         try {
           await approveVisitor(visitor._id);
-          setConfirmData(null);
+          setConfirmApproveData(null);
           loadVisitors();
         } catch (err) {
           alert("Approval failed.");
@@ -80,161 +195,223 @@ const SecurityCheckVisitor = () => {
     : [];
 
   return (
-    <div className="check-visitor-page-wrapper">
-      <div className="security-container">
-        <h2 className="security-title">
-          <FaShieldAlt /> Check Visitors
-        </h2>
-
-        <div className="search-input-wrapper">
-          <span className="search-icon">
-            <FaSearch />
-          </span>
-          <input
-            type="text"
-            placeholder="Search by visitor name..."
-            className="search-input" // Changed from search-box
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        {loading ? (
-          <p className="loading-message">Loading...</p>
-        ) : error ? (
-          <p className="error-message">{error}</p>
-        ) : (
-          <table className="security-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Visitor ID</th>
-                <th>Visitor Name</th>
-                <th>Passport No</th>
-                <th>Purpose</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length > 0 ? (
-                [...filtered]
-                  .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
-                  .map((v, i) => (
-                    <tr key={v._id}>
-                      <td>{i + 1}</td>
-                      <td>{v.visitorId}</td>
-                      <td>{v.visitor_name}</td>
-                      <td>{v.passport_number || "-"}</td>
-                      <td>
-                        <button
-                          className="btn-details"
-                          onClick={() => {
-                            setSelectedPurpose(
-                              v.purpose || "No details provided."
-                            );
-                            setShowPurposeBox(true);
-                          }}
-                        >
-                          Details
-                        </button>
-                      </td>
-                      <td>{v.phone_number}</td>
-                      <td>{v.email}</td>
-                      <td>{new Date(v.date).toLocaleDateString()}</td>
-                      <td>
-                        {v.status === "pending" ? (
-                          <div className="action-buttons">
-                            <button
-                              className="btn-approve"
-                              onClick={() => handleApprove(v)}
-                            >
-                              Approve
-                            </button>
-                            <button
-                              className="btn-deny"
-                              onClick={() => handleDeny(v)}
-                            >
-                              Deny
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="completed-status">
-                            <FaCheckCircle className="completed-icon" />{" "}
-                            Completed
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-              ) : (
-                <tr>
-                  <td colSpan="9" className="no-visitors">
-                    No visitors found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
-
-        {/* Purpose Pop-up */}
-        {showPurposeBox && (
-          <div className="purpose-popup-overlay">
-            <div className="purpose-content popup-card">
-              <h4>Purpose of Visit</h4>
-              <p>{selectedPurpose}</p>
-              <button
-                className="close-popup-btn"
-                onClick={() => setShowPurposeBox(false)}
-              >
-                Close
-              </button>
-            </div>
+    <div className="security-page-container">
+      <Card className="security-card">
+        <CardHeader className="security-card-header">
+          <CardTitle className="security-card-title">
+            <Book className="h-7 w-7" />
+            Check Visitors
+          </CardTitle>
+          <Button variant="outline" className="back-to-dashboard-button">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Button>
+        </CardHeader>
+        <CardContent className="security-card-content">
+          <div className="search-input-wrapper">
+            <Search />
+            <Input
+              type="text"
+              placeholder="Search by visitor name..."
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        )}
 
-        {/* Confirm Approve Dialog (assuming ConfirmDialog component is styled) */}
-        {confirmData && (
-          <ConfirmDialog
-            message={confirmData.message}
-            onCancel={() => setConfirmData(null)}
-            onConfirm={confirmData.onConfirm}
-          />
-        )}
-
-        {/* Deny Reason Dialog */}
-        {denyData && (
-          <div className="popup-overlay">
-            <div className="popup-card">
-              <p className="deny-reason-prompt">
-                <FaTimesCircle className="deny-icon" /> Enter reason to deny{" "}
-                <b>{denyData.visitor_name}</b> (ID: <b>{denyData.visitorId}</b>)
-              </p>
-              <textarea
-                rows="4"
-                value={reasonText}
-                onChange={(e) => setReasonText(e.target.value)}
-                placeholder="Please enter the reason..."
-                className="deny-reason-textarea"
-              ></textarea>
-              <div className="confirm-dialog-buttons">
-                <button
-                  className="cancel-btn"
-                  onClick={() => setDenyData(null)}
-                >
-                  Cancel
-                </button>
-                <button className="confirm-btn" onClick={submitDenial}>
-                  Confirm
-                </button>
-              </div>
+          {loading ? (
+            <p className="loading-message">Loading...</p>
+          ) : error ? (
+            <p className="error-message">{error}</p>
+          ) : (
+            <div className="table-wrapper">
+              <Table className="security-table">
+                <TableHeader className="table-header-row">
+                  <TableRow>
+                    <TableHead className="table-head">#</TableHead>
+                    <TableHead className="table-head">Visitor ID</TableHead>
+                    <TableHead className="table-head">Visitor Name</TableHead>
+                    <TableHead className="table-head">Passport No</TableHead>
+                    <TableHead className="table-head">Purpose</TableHead>
+                    <TableHead className="table-head">Phone</TableHead>
+                    <TableHead className="table-head">Email</TableHead>
+                    <TableHead className="table-head">Date</TableHead>
+                    <TableHead className="table-head">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.length > 0 ? (
+                    [...filtered]
+                      .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
+                      .map((v, i) => (
+                        <TableRow key={v._id} className="table-row">
+                          <TableCell className="table-cell">{i + 1}</TableCell>
+                          <TableCell className="table-cell font-medium">
+                            {v.visitorId}
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            {v.visitor_name}
+                          </TableCell>
+                          <TableCell className="table-cell text-gray-500">
+                            {v.passport_number || "-"}
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            <Button
+                              variant="outline"
+                              className="btn-details"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedPurpose(
+                                  v.purpose || "No details provided."
+                                );
+                                setShowPurposeBox(true);
+                              }}
+                            >
+                              <Info />
+                              Details
+                            </Button>
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            {v.phone_number}
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            {v.email}
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            {new Date(v.date).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="table-cell">
+                            {v.status === "pending" ? (
+                              <div className="action-buttons-container">
+                                <Button
+                                  className="btn-approve"
+                                  size="sm"
+                                  onClick={() => handleApprove(v)}
+                                >
+                                  <CheckCircle />
+                                  Approve
+                                </Button>
+                                <Button
+                                  className="btn-deny"
+                                  size="sm"
+                                  onClick={() => handleDeny(v)}
+                                >
+                                  <XCircle />
+                                  Deny
+                                </Button>
+                              </div>
+                            ) : (
+                              <Badge className="status-completed-badge">
+                                <CheckCircle />
+                                Completed
+                              </Badge>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={9} className="no-visitors-message">
+                        No visitors found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
             </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Purpose Pop-up (Dialog) */}
+      <Dialog open={showPurposeBox} onOpenChange={setShowPurposeBox}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="dialog-title purpose-dialog-title">
+              Purpose of Visit
+            </DialogTitle>
+            <DialogDescription className="dialog-description">
+              Details about the visitor's reason for their visit.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="dialog-content-text">
+            <p>{selectedPurpose}</p>
           </div>
-        )}
-      </div>
+          <DialogFooter className="dialog-footer">
+            <Button
+              onClick={() => setShowPurposeBox(false)}
+              className="purpose-dialog-close-btn"
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Approve Dialog (AlertDialog) */}
+      <AlertDialog
+        open={!!confirmApproveData}
+        onOpenChange={() => setConfirmApproveData(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="dialog-title approve-alert-title">
+              Confirm Approval
+            </AlertDialogTitle>
+            <AlertDialogDescription className="dialog-description">
+              {confirmApproveData?.message}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="dialog-footer">
+            <AlertDialogCancel className="approve-alert-cancel-btn">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmApproveData?.onConfirm}
+              className="approve-alert-confirm-btn"
+            >
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Deny Reason Dialog (Dialog) */}
+      <Dialog open={!!denyData} onOpenChange={() => setDenyData(null)}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="dialog-title deny-dialog-title">
+              Deny Visitor
+            </DialogTitle>
+            <DialogDescription className="dialog-description">
+              <XCircle />
+              Enter reason to deny <b>{denyData?.visitor_name}</b> (ID:{" "}
+              <b>{denyData?.visitorId}</b>)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <textarea
+              rows="4"
+              value={reasonText}
+              onChange={(e) => setReasonText(e.target.value)}
+              placeholder="Please enter the reason..."
+              className="deny-dialog-textarea"
+            ></textarea>
+          </div>
+          <DialogFooter className="dialog-footer">
+            <Button
+              variant="outline"
+              onClick={() => setDenyData(null)}
+              className="deny-dialog-cancel-btn"
+            >
+              Cancel
+            </Button>
+            <Button onClick={submitDenial} className="deny-dialog-confirm-btn">
+              Confirm Denial
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
