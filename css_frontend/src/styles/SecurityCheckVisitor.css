@@ -1,159 +1,79 @@
-/* Color Variables (consistent with previous dashboard styles) */
-:root {
-  --primary-blue: #007bff; /* For titles, similar to screenshot's blue */
-  --dark-blue: #002b5c; /* From sidebar */
-  --teal-green: #00a88e; /* From sidebar active */
-  --light-gray-bg: #f0f2f5; /* Main background */
-  --white-card-bg: #ffffff; /* Card background */
-  --border-light: #e0e0e0; /* Light border for cards and table */
-  --text-dark: #333; /* General dark text */
-  --text-medium: #555; /* Medium text */
-  --text-light: #888; /* Light text */
-
-  /* Button colors */
-  --btn-approve-bg: #28a745; /* Green */
-  --btn-deny-bg: #dc3545; /* Red */
-  --btn-details-bg: #ffc107; /* Yellow */
-  --btn-text-white: #ffffff;
-
-  /* Status colors */
-  --status-completed-text: #28a745; /* Green for completed status */
-  --status-completed-icon: #28a745; /* Green for completed icon */
-}
-
-body {
-  background-color: var(--light-gray-bg);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* Page Wrapper for overall layout */
-.check-visitor-page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: var(--light-gray-bg);
-  padding: 30px 20px; /* Padding around the main card */
-  box-sizing: border-box;
-  justify-content: center; /* Center the card vertically */
-  align-items: center; /* Center the card horizontally */
-}
-
-/* Main Container (Card) */
-.security-container.card {
+.security-container {
   max-width: 1200px;
-  width: 100%; /* Ensure it takes full width up to max-width */
-  background-color: var(--white-card-bg);
+  margin: 30px auto;
+  background-color: #fff;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Title */
 .security-title {
   font-size: 24px;
-  margin-bottom: 25px;
-  color: var(--primary-blue);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  margin-bottom: 20px;
+  color: #007bff;
+  display: flex; /* Added for icon alignment */
+  align-items: center; /* Added for icon alignment */
+  gap: 10px; /* Added for spacing between icon and text */
 }
 
-.security-title-icon {
+.security-title svg {
+  /* Targeting the FaShieldAlt icon */
   font-size: 28px;
-  color: var(--primary-blue);
+  color: #007bff;
 }
 
-/* Search Input (consistent with Handle Items) */
-.search-input-wrapper {
-  position: relative;
-  margin-bottom: 25px;
-}
-
-.search-input {
+.search-box {
   width: 100%;
-  padding: 12px 15px 12px 40px; /* Left padding for icon */
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  font-size: 15px;
-  color: var(--text-dark);
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-.search-input::placeholder {
-  color: var(--text-light);
+.search-box::placeholder {
+  /* Style for placeholder text */
+  color: #888;
 }
 
-.search-input:focus {
+.search-box:focus {
+  /* Style for focus state */
   outline: none;
-  border-color: var(--primary-blue);
-  box-shadow: none; /* Ensure no extra shadow on focus */
+  border-color: #007bff; /* Blue border on focus */
 }
 
-.search-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-light);
-  font-size: 18px;
-}
-
-/* Table Styles (consistent with Handle Items) */
 .security-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 15px;
-  border-radius: 8px;
-  overflow: hidden;
+  border-collapse: collapse;
 }
 
 .security-table th,
 .security-table td {
-  padding: 12px 15px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
   text-align: center;
-  border-bottom: 1px solid #eee;
 }
 
 .security-table th {
-  background-color: #f2f6fc; /* Light blue/gray background for header */
-  color: var(--text-dark);
+  /* Style for table headers */
+  background-color: #f2f6fc; /* Light blue/gray background */
+  color: #333;
   font-weight: 600;
   text-transform: uppercase;
   font-size: 13px;
 }
 
-.security-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-approve,
-.btn-deny,
-.btn-details {
-  padding: 8px 14px;
-  color: var(--btn-text-white);
+.btn-approve {
+  background-color: #28a745;
+  color: white;
+  padding: 6px 10px;
   border: none;
   border-radius: 6px;
+  margin-right: 5px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-approve {
-  background-color: var(--btn-approve-bg);
+  font-size: 14px; /* Added font-size for consistency */
+  transition: background-color 0.2s ease; /* Added transition */
 }
 
 .btn-approve:hover {
@@ -161,62 +81,121 @@ body {
 }
 
 .btn-deny {
-  background-color: var(--btn-deny-bg);
+  background-color: red;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px; /* Added font-size for consistency */
+  transition: background-color 0.2s ease; /* Added transition */
 }
 
 .btn-deny:hover {
-  background-color: #c82333; /* Darker red on hover */
+  background-color: #cc0000; /* Darker red on hover */
+}
+
+.tag.purpose {
+  /* This class is not used in the JS, but kept for completeness */
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background-color: #e6ffe6;
+  color: green;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .btn-details {
-  background-color: var(--btn-details-bg);
-  color: var(--text-dark); /* Black text for yellow button */
+  background-color: #ffc107;
+  color: #000;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px; /* Added font-size for consistency */
+  transition: background-color 0.2s ease; /* Added transition */
 }
 
 .btn-details:hover {
   background-color: #e0a800; /* Darker yellow on hover */
 }
 
-/* Completed Status */
+.purpose-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.purpose-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.purpose-content h4 {
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.close-popup {
+  margin-top: 20px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Added transition */
+}
+
+.close-popup:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Additional styles for consistency and missing elements from previous turns */
 .completed-status {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--status-completed-text);
+  color: #28a745; /* Green for completed status */
   font-weight: 600;
   font-size: 14px;
   gap: 5px;
 }
 
-.completed-icon {
-  color: var(--status-completed-icon);
+.completed-status svg {
+  /* Targeting the FaCheckCircle icon */
+  color: #28a745;
   font-size: 16px;
 }
 
-/* No Visitors Message */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
 .no-visitors {
   text-align: center;
-  color: var(--text-light);
+  color: gray;
   font-style: italic;
   padding: 15px;
 }
 
-/* Loading and Error Messages */
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 20px;
-  font-size: 16px;
-  color: var(--text-medium);
-}
-
-.error-message {
-  color: var(--btn-deny-bg); /* Red for error */
-}
-
-/* Pop-up Overlays */
-.purpose-popup-overlay,
 .popup-overlay {
+  /* For Deny Reason Dialog */
   position: fixed;
   top: 0;
   left: 0;
@@ -230,42 +209,19 @@ body {
 }
 
 .popup-card {
-  background-color: var(--white-card-bg);
+  /* For Deny Reason Dialog */
+  background-color: white;
   padding: 30px;
   border-radius: 10px;
   max-width: 500px;
   width: 90%;
   text-align: center;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  position: relative; /* For potential close button positioning */
 }
 
-.purpose-content h4 {
-  margin-bottom: 15px;
-  color: var(--primary-blue);
-  font-size: 20px;
-}
-
-.close-popup-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  background-color: var(--primary-blue);
-  color: var(--btn-text-white);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.close-popup-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Deny Reason Dialog Specifics */
 .deny-reason-prompt {
   font-size: 16px;
-  color: var(--text-dark);
+  color: #333;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -273,8 +229,9 @@ body {
   gap: 8px;
 }
 
-.deny-icon {
-  color: var(--btn-deny-bg);
+.deny-reason-prompt svg {
+  /* Targeting the FaTimesCircle icon */
+  color: red;
   font-size: 20px;
 }
 
@@ -282,10 +239,10 @@ body {
   width: calc(100% - 20px); /* Adjust for padding */
   padding: 10px;
   margin-bottom: 20px;
-  border: 1px solid var(--border-light);
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical;
   min-height: 80px;
   box-sizing: border-box;
 }
@@ -308,17 +265,17 @@ body {
 }
 
 .confirm-dialog-buttons .cancel-btn {
-  background-color: var(--text-light); /* Gray for cancel */
-  color: var(--btn-text-white);
+  background-color: #6c757d; /* Gray for cancel */
+  color: white;
 }
 
 .confirm-dialog-buttons .cancel-btn:hover {
-  background-color: #6c757d;
+  background-color: #5a6268;
 }
 
 .confirm-dialog-buttons .confirm-btn {
-  background-color: var(--primary-blue); /* Blue for confirm */
-  color: var(--btn-text-white);
+  background-color: #007bff; /* Blue for confirm */
+  color: white;
 }
 
 .confirm-dialog-buttons .confirm-btn:hover {
@@ -327,11 +284,8 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .check-visitor-page-wrapper {
-    padding: 20px 15px;
-  }
-
-  .security-container.card {
+  .security-container {
+    margin: 20px auto;
     padding: 20px;
   }
 
@@ -339,18 +293,13 @@ body {
     font-size: 20px;
   }
 
-  .security-title-icon {
+  .security-title svg {
     font-size: 24px;
   }
 
-  .search-input {
-    padding: 10px 15px 10px 35px;
+  .search-box {
+    padding: 8px 10px;
     font-size: 14px;
-  }
-
-  .search-icon {
-    left: 10px;
-    font-size: 16px;
   }
 
   .security-table {
@@ -365,22 +314,19 @@ body {
   .btn-approve,
   .btn-deny,
   .btn-details {
-    padding: 6px 10px;
+    padding: 5px 8px;
     font-size: 12px;
-  }
-
-  .action-buttons {
-    gap: 5px;
   }
 
   .completed-status {
     font-size: 12px;
   }
 
-  .completed-icon {
+  .completed-status svg {
     font-size: 14px;
   }
 
+  .purpose-content,
   .popup-card {
     padding: 20px;
   }
@@ -389,7 +335,7 @@ body {
     font-size: 18px;
   }
 
-  .close-popup-btn,
+  .close-popup,
   .confirm-dialog-buttons .cancel-btn,
   .confirm-dialog-buttons .confirm-btn {
     padding: 8px 15px;
@@ -413,7 +359,7 @@ body {
   .security-table th {
     text-align: left;
     background-color: transparent;
-    color: var(--text-dark);
+    color: #333;
     font-weight: 600;
     padding-top: 0;
     padding-bottom: 5px;
@@ -426,7 +372,7 @@ body {
   }
   .security-table tr {
     margin-bottom: 15px;
-    border: 1px solid var(--border-light);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 10px;
     display: flex;

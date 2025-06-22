@@ -2,17 +2,12 @@
 
 import { useEffect, useState } from "react";
 import "../styles/SecurityCheckVisitor.css";
-import {
-  FaShieldAlt,
-  FaSearch,
-  FaCheckCircle,
-  FaTimesCircle,
-} from "react-icons/fa"; // Using FaShieldAlt for title icon
+import { FaShieldAlt } from "react-icons/fa"; // Using FaShieldAlt for title icon
 import {
   fetchAllVisitorsForSecurity,
   approveVisitor,
   denyVisitor,
-} from "../api/visitorApis"; // Keeping backend imports as is
+} from "../api/visitorApis";
 import ConfirmDialog from "../components/ConfirmDialog"; // Assuming ConfirmDialog is styled separately or will be provided
 
 const SecurityCheckVisitor = () => {
@@ -45,7 +40,7 @@ const SecurityCheckVisitor = () => {
 
   const handleApprove = async (visitor) => {
     setConfirmData({
-      message: `✅ Are you sure you want to approve ${visitor.visitor_name} (ID: ${visitor.visitorId}) to enter D'summit Residence?`,
+      message: `✅ Are you sure you want to approve ${visitor.visitor_name} with (ID: ${visitor.visitorId}) to enter D'summit Residence?`,
       onConfirm: async () => {
         try {
           await approveVisitor(visitor._id);
@@ -80,161 +75,147 @@ const SecurityCheckVisitor = () => {
     : [];
 
   return (
-    <div className="check-visitor-page-wrapper">
-      <div className="security-container card">
-        <h2 className="security-title">
-          <FaShieldAlt className="security-title-icon" /> Check Visitors
-        </h2>
+    <div className="security-container">
+      <h2 className="security-title">
+        <FaShieldAlt /> Check Visitors
+      </h2>
 
-        <div className="search-input-wrapper">
-          <span className="search-icon">
-            <FaSearch />
-          </span>
-          <input
-            type="text"
-            placeholder="Search by visitor name..."
-            className="search-input"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      <input
+        type="text"
+        placeholder="🔍 Search by visitor name..."
+        className="search-box"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
-        {loading ? (
-          <p className="loading-message">Loading...</p>
-        ) : error ? (
-          <p className="error-message">{error}</p>
-        ) : (
-          <table className="security-table">
-            <thead>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p style={{ color: "red" }}>{error}</p>
+      ) : (
+        <table className="security-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Visitor ID</th>
+              <th>Visitor Name</th>
+              <th>Passport No</th>
+              <th>Purpose</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.length > 0 ? (
+              [...filtered]
+                .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
+                .map((v, i) => (
+                  <tr key={v._id}>
+                    <td>{i + 1}</td>
+                    <td>{v.visitorId}</td>
+                    <td>{v.visitor_name}</td>
+                    <td>{v.passport_number || "-"}</td>
+                    <td>
+                      <button
+                        className="btn-details"
+                        onClick={() => {
+                          setSelectedPurpose(
+                            v.purpose || "No details provided."
+                          );
+                          setShowPurposeBox(true);
+                        }}
+                      >
+                        Details
+                      </button>
+                    </td>
+                    <td>{v.phone_number}</td>
+                    <td>{v.email}</td>
+                    <td>{new Date(v.date).toLocaleDateString()}</td>
+                    <td>
+                      {v.status === "pending" ? (
+                        <>
+                          <button
+                            className="btn-approve"
+                            onClick={() => handleApprove(v)}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="btn-deny"
+                            onClick={() => handleDeny(v)}
+                          >
+                            Deny
+                          </button>
+                        </>
+                      ) : (
+                        <span className="completed-status">✅ Completed</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+            ) : (
               <tr>
-                <th>#</th>
-                <th>Visitor ID</th>
-                <th>Visitor Name</th>
-                <th>Passport No</th>
-                <th>Purpose</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Action</th>
+                <td colSpan="9" style={{ textAlign: "center", color: "gray" }}>
+                  No visitors found.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filtered.length > 0 ? (
-                [...filtered]
-                  .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
-                  .map((v, i) => (
-                    <tr key={v._id}>
-                      <td>{i + 1}</td>
-                      <td>{v.visitorId}</td>
-                      <td>{v.visitor_name}</td>
-                      <td>{v.passport_number || "-"}</td>
-                      <td>
-                        <button
-                          className="btn-details"
-                          onClick={() => {
-                            setSelectedPurpose(
-                              v.purpose || "No details provided."
-                            );
-                            setShowPurposeBox(true);
-                          }}
-                        >
-                          Details
-                        </button>
-                      </td>
-                      <td>{v.phone_number}</td>
-                      <td>{v.email}</td>
-                      <td>{new Date(v.date).toLocaleDateString()}</td>
-                      <td>
-                        {v.status === "pending" ? (
-                          <div className="action-buttons">
-                            <button
-                              className="btn-approve"
-                              onClick={() => handleApprove(v)}
-                            >
-                              Approve
-                            </button>
-                            <button
-                              className="btn-deny"
-                              onClick={() => handleDeny(v)}
-                            >
-                              Deny
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="completed-status">
-                            <FaCheckCircle className="completed-icon" />{" "}
-                            Completed
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-              ) : (
-                <tr>
-                  <td colSpan="9" className="no-visitors">
-                    No visitors found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
+            )}
+          </tbody>
+        </table>
+      )}
 
-        {/* Purpose Pop-up */}
-        {showPurposeBox && (
-          <div className="purpose-popup-overlay">
-            <div className="purpose-content popup-card">
-              <h4>Purpose of Visit</h4>
-              <p>{selectedPurpose}</p>
-              <button
-                className="close-popup-btn"
-                onClick={() => setShowPurposeBox(false)}
-              >
-                Close
+      {/* Purpose Pop-up */}
+      {showPurposeBox && (
+        <div className="purpose-popup">
+          <div className="purpose-content">
+            <h4>Purpose of Visit</h4>
+            <p>{selectedPurpose}</p>
+            <button
+              className="close-popup"
+              onClick={() => setShowPurposeBox(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Approve Dialog */}
+      {confirmData && (
+        <ConfirmDialog
+          message={confirmData.message}
+          onCancel={() => setConfirmData(null)}
+          onConfirm={confirmData.onConfirm}
+        />
+      )}
+
+      {/* Deny Reason Dialog */}
+      {denyData && (
+        <div className="popup-overlay">
+          <div className="popup-card">
+            <p>
+              ❌ Enter reason to deny <b>{denyData.visitor_name}</b> with (ID:{" "}
+              <b>{denyData.visitorId}</b>)
+            </p>
+            <textarea
+              rows="4"
+              value={reasonText}
+              onChange={(e) => setReasonText(e.target.value)}
+              placeholder="Please enter the reason..."
+            ></textarea>
+            <div className="confirm-dialog-buttons">
+              <button className="cancel-btn" onClick={() => setDenyData(null)}>
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={submitDenial}>
+                Confirm
               </button>
             </div>
           </div>
-        )}
-
-        {/* Confirm Approve Dialog (assuming ConfirmDialog component is styled) */}
-        {confirmData && (
-          <ConfirmDialog
-            message={confirmData.message}
-            onCancel={() => setConfirmData(null)}
-            onConfirm={confirmData.onConfirm}
-          />
-        )}
-
-        {/* Deny Reason Dialog */}
-        {denyData && (
-          <div className="popup-overlay">
-            <div className="popup-card">
-              <p className="deny-reason-prompt">
-                <FaTimesCircle className="deny-icon" /> Enter reason to deny{" "}
-                <b>{denyData.visitor_name}</b> (ID: <b>{denyData.visitorId}</b>)
-              </p>
-              <textarea
-                rows="4"
-                value={reasonText}
-                onChange={(e) => setReasonText(e.target.value)}
-                placeholder="Please enter the reason..."
-                className="deny-reason-textarea"
-              ></textarea>
-              <div className="confirm-dialog-buttons">
-                <button
-                  className="cancel-btn"
-                  onClick={() => setDenyData(null)}
-                >
-                  Cancel
-                </button>
-                <button className="confirm-btn" onClick={submitDenial}>
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
