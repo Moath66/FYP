@@ -90,7 +90,6 @@ const AnalyzeMaintenance = () => {
         </div>
         <div className="security-card-content">
           <div className="search-input-wrapper">
-            <Search />
             <input
               type="text"
               className="search-input"

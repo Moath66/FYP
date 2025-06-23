@@ -131,7 +131,6 @@ const TrackingItemApp = () => {
         </header>
         <div className="tracking-content">
           <div className="search-input-container">
-            <FaSearch className="search-icon" />
             <input
               type="text"
               className="search-input"

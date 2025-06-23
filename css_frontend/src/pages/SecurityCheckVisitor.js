@@ -107,7 +107,7 @@ const SecurityCheckVisitor = () => {
         </div>
         <div className="security-card-content">
           <div className="search-input-wrapper">
-            <Search />
+            
             <input
               type="text"
               placeholder="Search by visitor name..."

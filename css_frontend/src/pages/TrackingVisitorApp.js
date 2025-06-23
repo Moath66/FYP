@@ -117,7 +117,6 @@ const TrackingVisitorApp = () => {
         </header>
         <div className="tracking-content">
           <div className="search-input-container">
-            <FaSearch className="search-icon" />
             <input
               type="text"
               placeholder="Search by visitor name..."
