@@ -189,7 +189,6 @@ const AdminManageUsers = () => {
         <div className="actions-toolbar">
           <div className="search-filter-controls">
             <div className="search-input-wrapper">
-              <SearchIcon />
               <input
                 type="text"
                 placeholder="Search by email..."
