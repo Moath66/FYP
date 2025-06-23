@@ -115,6 +115,21 @@ body {
   box-shadow: 0 0 0 2px rgba(20, 138, 125, 0.2); /* focus:ring-[#148A7D] with transparency */
 }
 
+/* Loading and error messages (consistent with Check Visitors) */
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.loading-message {
+  color: #4b5563; /* text-gray-600 */
+}
+
+.error-message {
+  color: #ef4444; /* text-red-500 */
+}
+
 /* Table wrapper for overflow and border (consistent with Check Visitors) */
 .table-wrapper {
   overflow-x: auto;

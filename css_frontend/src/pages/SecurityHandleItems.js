@@ -1,82 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, FolderOpen, ArrowLeft, Trash2, RotateCcw } from "lucide-react"; // Using Lucide React icons
 import "../styles/SecurityHandleItems.css"; // Import the new CSS file
 
-// Lucide React icons (ensure lucide-react is installed)
-import { Search, FolderOpen, ArrowLeft, Trash2, RotateCcw } from "lucide-react";
-
-// Import your existing API functions
-// IMPORTANT: Replace these with your actual imports from your MERN backend integration.
-// For example:
-// import { fetchAllItems, updateItemStatus } from "../api/itemApi";
-
-// Placeholder API functions for demonstration
-import { useNavigate } from "react-router-dom";
-
-const fetchAllItems = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          _id: "item1",
-          itemId: "ITEM001",
-          itemName: "Laptop Charger",
-          date: new Date("2025-06-20").toISOString(),
-          location: "Reception",
-          status: "unclaimed",
-        },
-        {
-          _id: "item2",
-          itemId: "ITEM002",
-          itemName: "Keys",
-          date: new Date("2025-06-22").toISOString(),
-          location: "Security Desk",
-          status: "claimed",
-        },
-        {
-          _id: "item3",
-          itemId: "ITEM003",
-          itemName: "Wallet",
-          date: new Date("2025-06-25").toISOString(),
-          location: "Lobby",
-          status: "returned",
-        },
-        {
-          _id: "item4",
-          itemId: "ITEM004",
-          itemName: "Headphones",
-          date: new Date("2025-06-27").toISOString(),
-          location: "Cafeteria",
-          status: "discarded",
-        },
-        {
-          _id: "item5",
-          itemId: "ITEM005",
-          itemName: "Umbrella",
-          date: new Date("2025-06-28").toISOString(),
-          location: "Main Entrance",
-          status: "unclaimed",
-        },
-      ]);
-    }, 1000);
-  });
-};
-
-const updateItemStatus = async (itemId, newStatus) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log(`Item ${itemId} status updated to ${newStatus}`);
-      resolve({ success: true });
-    }, 500);
-  });
-};
+// IMPORTANT: These imports are from your existing backend integration.
+// I will NOT modify these or provide placeholder functions.
+import { fetchAllItems, updateItemStatus } from "../api/itemApi";
 
 const SecurityHandleItems = () => {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadItems = async () => {
@@ -117,9 +56,9 @@ const SecurityHandleItems = () => {
         return "Returned";
       case "discarded":
         return "Discarded";
-      case "lost": // Added for completeness if your backend has this status
+      case "lost":
         return "Lost";
-      case "found": // Added for completeness if your backend has this status
+      case "found":
         return "Found";
       default:
         return "Pending";
@@ -129,8 +68,6 @@ const SecurityHandleItems = () => {
   const filteredItems = items.filter((item) =>
     item.itemName.toLowerCase().includes(search.toLowerCase())
   );
-
-  const navigate = useNavigate();
 
   return (
     <div className="security-page-container">
@@ -143,7 +80,7 @@ const SecurityHandleItems = () => {
           <button
             type="button"
             className="back-to-dashboard-button"
-            onClick={() => navigate("/security/dashboard")} // Or whatever your dashboard path is
+            onClick={() => navigate("/security/dashboard")}
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
