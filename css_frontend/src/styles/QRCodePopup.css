@@ -10,7 +10,6 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease-in-out;
 }
 
 /* 📋 Card */
@@ -24,102 +23,95 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
   position: relative;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* 📝 Title */
-.qr-popup-title {
-  color: #007d7b; /* Consistent teal/green from other pages */
-  font-size: 2em;
-  margin-bottom: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+.qr-popup-card h2 {
+  color: #002b5c;
+  margin-bottom: 10px;
 }
 
 /* 🧾 Description */
-.qr-popup-description {
-  font-size: 1em;
-  margin-bottom: 25px; /* Increased margin for more separation */
+.qr-popup-card p {
+  font-size: 15px;
+  margin-bottom: 15px;
   color: #555;
-  line-height: 1.5;
 }
 
 /* 🖼️ QR Image */
 .qr-image {
   width: 220px;
   height: auto;
-  margin: 25px auto 30px auto; /* Increased bottom margin for more separation from link */
-  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
   padding: 8px;
   border-radius: 8px;
-  display: block;
 }
 
 /* 🔗 Details */
 .qr-details {
   text-align: left;
-  font-size: 0.95em;
+  font-size: 14px;
   color: #333;
-  margin-bottom: 25px; /* Increased margin for more separation from button */
+  margin-bottom: 20px;
 }
 
-.qr-details-label {
-  margin: 6px 0 8px 0;
-  font-weight: 600;
+.qr-details p {
+  margin: 6px 0;
 }
 
-.qr-scan-link-input {
-  width: 100%;
-  padding: 12px 15px;
-  font-size: 0.95em;
-  border: 1px solid #007d7b; /* Changed border color to teal/green for consistency */
-  border-radius: 8px;
-  margin-top: 8px;
-  font-family: monospace;
-  background-color: #fefefe;
-  color: #333;
-  cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.qr-details hr {
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid #ccc;
 }
 
-.qr-scan-link-input:focus {
-  border-color: #007d7b;
-  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2);
-  outline: none;
+/* 🏷️ Status Badge (if needed) */
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 13px;
+  color: white;
 }
 
-.qr-details-hint {
-  font-size: 0.8em;
-  color: #666;
-  margin-top: 6px;
+.status-badge.lost {
+  background-color: #dc3545;
+}
+
+.status-badge.found {
+  background-color: #28a745;
+}
+
+.status-badge.claimed {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.status-badge.returned {
+  background-color: #007bff;
+}
+
+.status-badge.discarded {
+  background-color: gray;
 }
 
 /* ❌ Close Button */
 .close-btn {
-  background-color: #dc3545; /* Red for close/destructive action */
+  background-color: #002b5c;
   color: #fff;
-  padding: 12px 25px;
+  padding: 10px 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1.05em;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
+  font-weight: bold;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
 }
 
 .close-btn:hover {
-  background-color: #c82333;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #004080;
 }
 
 /* 🎬 Animation */
@@ -134,45 +126,17 @@
   }
 }
 
-/* Accessibility Focus Styles */
-button:focus,
-input:focus {
-  outline: 2px solid #007d7b;
-  outline-offset: 2px;
-}
-
 /* 📱 Mobile Adjustments */
 @media (max-width: 480px) {
   .qr-popup-card {
     padding: 20px;
-    border-radius: 12px;
-  }
-
-  .qr-popup-title {
-    font-size: 1.5em;
-  }
-
-  .qr-popup-description {
-    font-size: 0.9em;
   }
 
   .qr-image {
     width: 180px;
-    padding: 6px;
   }
 
-  .qr-details-label,
-  .qr-scan-link-input,
-  .qr-details-hint {
-    font-size: 0.85em;
-  }
-
-  .qr-scan-link-input {
-    padding: 8px 10px;
-  }
-
-  .close-btn {
-    padding: 8px 15px;
-    font-size: 0.9em;
+  .qr-details p {
+    font-size: 13px;
   }
 }
