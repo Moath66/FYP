@@ -1,47 +1,29 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import "../styles/TrackingVisitorApp.css"; // Ensure this path is correct
-import { getVisitorsByResident } from "../api/visitorApis"; // Use API helper
-import {
-  FaArrowLeft,
-  FaBook,
-  FaSearch,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaHourglassHalf,
-  FaInfoCircle,
-} from "react-icons/fa"; // Using react-icons/fa for icons
-import { toast } from "react-toastify"; // Using react-toastify for notifications
-import { useNavigate } from "react-router-dom"; // For navigation
+import React, { useEffect, useState } from "react";
+import "../styles/TrackingVisitorApp.css";
+import { getVisitorsByResident } from "../api/visitorApis"; // ✅ Use API helper
 
 const TrackingVisitorApp = () => {
   const [visitorList, setVisitorList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const fetchVisitors = async () => {
-    setLoading(true);
-    setError("");
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
       const token = localStorage.getItem("token");
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-      if (!storedUser || !token || !storedUser._id) {
+      if (!storedUser || !token) {
         setError("Missing user session. Please log in again.");
-        toast.error("Missing user session. Please log in again.");
-        navigate("/login");
+        setLoading(false);
         return;
       }
 
-      const data = await getVisitorsByResident(); // Centralized API call
+      const data = await getVisitorsByResident(); // ✅ Centralized API call
       setVisitorList(data || []);
     } catch (err) {
       console.error("❌ Error fetching visitor data:", err);
       setError("Failed to load visitors.");
-      toast.error("❌ Failed to load visitors.");
     } finally {
       setLoading(false);
     }
@@ -57,141 +39,103 @@ const TrackingVisitorApp = () => {
       )
     : [];
 
-  const getStatusBadge = (status, denialReason) => {
-    switch (status) {
-      case "approved":
-        return (
-          <span className="status approved">
-            <FaCheckCircle /> Approved
-          </span>
-        );
-      case "denied":
-        return (
-          <span className="status denied">
-            <FaTimesCircle /> Denied
-            {denialReason && (
-              <button
-                className="reason-btn"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent row click if any
-                  setVisitorList((prev) =>
-                    prev.map((v) =>
-                      v._id === v._id ? { ...v, showReason: !v.showReason } : v
-                    )
-                  );
-                }}
-              >
-                <FaInfoCircle /> View Reason
-              </button>
-            )}
-          </span>
-        );
-      case "pending":
-      default:
-        return (
-          <span className="status pending">
-            <FaHourglassHalf /> Pending
-          </span>
-        );
-    }
-  };
-
   return (
-    <div className="lost-page-wrapper">
-      {" "}
-      {/* Reusing wrapper for centering */}
-      <div className="lost-card">
-        {" "}
-        {/* Reusing card styling */}
-        <header className="profile-header">
-          {" "}
-          {/* Reusing header styling */}
-          <h2 className="lost-card-title">
-            <FaBook className="lost-card-icon" /> Tracking Visitor Application
-          </h2>
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            {" "}
-            {/* Reusing back-btn styling */}
-            <FaArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
-          </button>
-        </header>
-        <div className="tracking-content">
-          <div className="search-input-container">
-            <input
-              type="text"
-              placeholder="Search by visitor name..."
-              className="search-input"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+    <div className="tracking-container">
+      <h2 className="tracking-title">📘 Tracking Visitor Application</h2>
 
-          {loading ? (
-            <p className="loading-message">Loading visitor records...</p>
-          ) : error ? (
-            <p className="error-message">{error}</p>
-          ) : (
-            <table className="tracking-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>ID</th>
-                  <th>Visitor Name</th>
-                  <th>Passport No</th>
-                  <th>QR Code</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredVisitors.length > 0 ? (
-                  filteredVisitors
-                    .sort((a, b) =>
-                      (a.visitorId || "").localeCompare(b.visitorId || "")
-                    )
-                    .map((visitor, index) => (
-                      <tr key={visitor._id}>
-                        <td data-label="#">{index + 1}</td>
-                        <td data-label="ID">{visitor.visitorId}</td>
-                        <td data-label="Visitor Name">
-                          {visitor.visitor_name}
-                        </td>
-                        <td data-label="Passport No">
-                          {visitor.passport_number || "-"}
-                        </td>
-                        <td data-label="QR Code">
-                          {visitor.status === "approved" && visitor.qrCode ? (
-                            <img
-                              src={visitor.qrCode || "/placeholder.svg"}
-                              alt="QR"
-                              className="qr-image"
-                            />
-                          ) : (
-                            <span className="not-available">N/A</span>
-                          )}
-                        </td>
-                        <td data-label="Status">
-                          {getStatusBadge(visitor.status, visitor.denialReason)}
-                          {visitor.showReason && visitor.denialReason && (
-                            <div className="reason-popup">
-                              <FaInfoCircle className="reason-popup-icon" />{" "}
-                              {visitor.denialReason}
+      <input
+        type="text"
+        placeholder="🔍 Search by visitor name..."
+        className="search-box"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p style={{ color: "red" }}>{error}</p>
+      ) : (
+        <table className="tracking-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ID</th>
+              <th>Visitor Name</th>
+              <th>Passport No</th>
+              <th>QR Code</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredVisitors.length > 0 ? (
+              filteredVisitors
+                .sort((a, b) => a.visitorId.localeCompare(b.visitorId))
+                .map((visitor, index) => (
+                  <tr key={visitor._id}>
+                    <td>{index + 1}</td>
+                    <td>{visitor.visitorId}</td>
+                    <td>{visitor.visitor_name}</td>
+                    <td>{visitor.passport_number || "-"}</td>
+                    <td>
+                      {visitor.status === "approved" ? (
+                        <img
+                          src={visitor.qrCode}
+                          alt="QR"
+                          className="qr-image"
+                        />
+                      ) : visitor.status === "denied" ? (
+                        <span className="not-available">Not Available</span>
+                      ) : (
+                        ""
+                      )}
+                    </td>
+                    <td>
+                      {visitor.status === "approved" ? (
+                        <span className="status approved">✔ Approved</span>
+                      ) : visitor.status === "denied" ? (
+                        <span className="status denied">
+                          ✖ Denied
+                          {visitor.denialReason && (
+                            <div className="reason-wrapper">
+                              <button
+                                className="reason-btn"
+                                onClick={() =>
+                                  setVisitorList((prev) =>
+                                    prev.map((v) =>
+                                      v._id === visitor._id
+                                        ? { ...v, showReason: !v.showReason }
+                                        : v
+                                    )
+                                  )
+                                }
+                              >
+                                View Reason
+                              </button>
+                              {visitor.showReason && (
+                                <div className="reason-popup">
+                                  ❗ {visitor.denialReason}
+                                </div>
+                              )}
                             </div>
                           )}
-                        </td>
-                      </tr>
-                    ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-items">
-                      No visitor records found.
+                        </span>
+                      ) : (
+                        <span className="status pending">⌛ Pending</span>
+                      )}
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
+                ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center", color: "gray" }}>
+                  No visitor records found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

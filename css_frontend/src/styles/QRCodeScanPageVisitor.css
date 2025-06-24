@@ -1,291 +1,55 @@
-/* Global body styles should be in a separate global CSS file if needed,
-   not here to avoid conflicts with other pages. */
-
-/* Wrapper for centering the page content (reused from lost-page-wrapper) */
-.lost-page-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f0f2f5; /* Light gray background matching login/landing */
-  padding: 20px; /* Add some padding for smaller screens */
-  box-sizing: border-box; /* Include padding in element's total width and height */
+.scan-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
 }
 
-.lost-card {
-  max-width: 800px; /* Adjusted max-width for this page */
-  width: 100%; /* Ensure it takes full width up to max-width */
-  background-color: #ffffff;
-  padding: 0; /* Remove padding from here, apply to content */
-  border-radius: 12px; /* Consistent border-radius */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-sizing: border-box;
-  overflow: hidden; /* Ensures header border-radius applies */
-}
-
-/* Header Section (reused from ManageProfilePage.css) */
-.profile-header {
-  background-color: #007d7b; /* Teal/Green from landing/login pages */
-  color: white;
-  padding: 20px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1em;
-  border-top-left-radius: 12px; /* Match card border-radius */
-  border-top-right-radius: 12px; /* Match card border-radius */
-}
-
-.profile-header h1 {
-  margin: 0;
-  font-size: 1.6em;
-  font-weight: 600;
-}
-
-.back-btn {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  color: white;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.back-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: white;
-}
-
-.lost-card-title {
-  margin-bottom: 0; /* Remove bottom margin as it's now in a flex container */
-  color: white; /* Title color is white as it's in the header */
+.scan-page h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
   text-align: center;
-  font-size: 1.6em; /* Adjust font size to match header h1 */
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px; /* Space between icon and text */
-}
-
-.lost-card-icon {
-  color: white; /* Icon color is white as it's in the header */
-  width: 30px;
-  height: 30px;
-}
-
-.scan-page-content {
-  padding: 30px 40px; /* Apply padding to the content area */
 }
 
 .item-details p {
-  font-size: 1em;
-  margin: 12px 0; /* Increased vertical margin for better spacing */
+  font-size: 16px;
+  margin: 6px 0;
   color: #333;
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between icon and text */
 }
 
-.detail-icon {
-  color: #007d7b; /* Teal/Green for detail icons */
-  font-size: 1.1em;
-  flex-shrink: 0; /* Prevent icon from shrinking */
-}
-
-.status-text {
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.status-text.approved {
-  color: #28a745; /* Green for approved status text */
-}
-
-.status-text.denied {
-  color: #dc3545; /* Red for denied status text */
-}
-
-.status-approved-icon {
-  color: #28a745; /* Green for approved status icon */
-}
-
-.status-denied-icon {
-  color: #dc3545; /* Red for denied status icon */
-}
-
-.section-divider {
-  border: none;
-  border-top: 1px solid #e0e0e0; /* Lighter divider */
-  margin: 30px 0; /* Increased margin for better separation */
-}
-
-.section-title {
-  font-size: 1.4em;
-  margin-bottom: 15px;
-  color: #007d7b; /* Teal/Green for section titles */
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.item-details h3 {
+  margin-top: 20px;
+  color: #007bff;
 }
 
 .user-info {
   background: #f9f9f9;
-  border: 1px solid #e0e0e0; /* Lighter border */
-  padding: 15px 20px; /* Increased padding */
-  margin-bottom: 25px; /* Increased margin */
-  border-radius: 8px; /* More rounded corners */
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
 }
 
-.user-info p {
-  font-size: 0.95em;
-  margin: 8px 0;
-  color: #555;
-}
-
-.button-group {
-  margin-top: 30px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  gap: 15px; /* Space between buttons */
-}
-
-.back-btn-bottom,
+.back-btn,
 .print-btn {
-  padding: 12px 25px; /* Larger padding */
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  margin: 5px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1em;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  font-weight: 500;
 }
 
-.back-btn-bottom {
-  background-color: #6c757d; /* Gray for back button */
+.back-btn {
+  background-color: #888;
   color: white;
-}
-
-.back-btn-bottom:hover {
-  background-color: #5a6268;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .print-btn {
-  background-color: #007d7b; /* Teal/Green for print button */
+  background-color: #007bff;
   color: white;
-}
-
-.print-btn:hover {
-  background-color: #006666;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 20px;
-  font-size: 1.1em;
-  color: #555;
-}
-
-.error-message {
-  color: #dc3545;
-}
-
-.error-message-detail {
-  text-align: center;
-  color: #777;
-  font-size: 0.95em;
-  margin-top: 10px;
-}
-
-/* Accessibility Focus Styles */
-button:focus,
-input:focus,
-select:focus,
-textarea:focus {
-  outline: 2px solid #007d7b;
-  outline-offset: 2px;
-}
-
-/* 📱 Mobile Responsiveness */
-@media (max-width: 600px) {
-  .lost-card {
-    padding: 0;
-    border-radius: 8px;
-  }
-
-  .profile-header {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-    padding: 15px 20px;
-  }
-
-  .profile-header h1,
-  .lost-card-title {
-    font-size: 1.4em;
-  }
-
-  .back-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .scan-page-content {
-    padding: 20px 25px;
-  }
-
-  .item-details p {
-    font-size: 0.9em;
-    margin: 10px 0;
-    gap: 8px;
-  }
-
-  .section-divider {
-    margin: 20px 0;
-  }
-
-  .section-title {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-
-  .user-info {
-    padding: 12px 15px;
-    margin-bottom: 20px;
-  }
-
-  .user-info p {
-    font-size: 0.85em;
-    margin: 6px 0;
-  }
-
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .back-btn-bottom,
-  .print-btn {
-    width: 100%;
-    padding: 10px 20px;
-    font-size: 0.9em;
-  }
 }
