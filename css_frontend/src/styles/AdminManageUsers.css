@@ -79,7 +79,6 @@
   display: flex;
   align-items: center;
   gap: 1rem; /* Space between search and filter */
-  flex-wrap: wrap; /* Allow search and filter to wrap if needed */
   flex-grow: 1; /* Allow this section to grow and push add button to right */
 }
 
@@ -92,7 +91,6 @@
   padding: 0.25rem 0.75rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-grow: 1; /* Allow search input to grow */
-  max-width: 300px; /* Limit search input width */
 }
 
 .search-input-wrapper svg {
@@ -117,6 +115,7 @@
   border-radius: 8px;
   padding: 0.25rem 0.5rem; /* Adjusted padding */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .filter-select-wrapper svg {
