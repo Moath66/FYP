@@ -7,7 +7,6 @@ import QRCodePopup from "../components/QRCodePopup"; // Assuming this component 
 import {
   FaArrowLeft,
   FaBookOpen,
-  FaSearch,
   FaTimes,
   FaCheck,
   FaBoxOpen,
@@ -106,9 +105,16 @@ const TrackingItemApp = () => {
     }
   };
 
-  const filteredItems = items.filter((item) =>
-    item.itemName.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredAndSortedItems = items
+    .filter((item) =>
+      item.itemName.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      // Extract numeric part from itemId (e.g., "ITEM001" -> 1)
+      const idA = Number.parseInt(a.itemId.replace("ITEM", ""), 10);
+      const idB = Number.parseInt(b.itemId.replace("ITEM", ""), 10);
+      return idA - idB;
+    });
 
   return (
     <div className="lost-page-wrapper">
@@ -152,8 +158,8 @@ const TrackingItemApp = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredItems.length > 0 ? (
-                filteredItems.map((item, index) => (
+              {filteredAndSortedItems.length > 0 ? (
+                filteredAndSortedItems.map((item, index) => (
                   <tr key={item._id || index}>
                     <td data-label="#">{index + 1}</td>
                     <td data-label="Item ID">{item.itemId}</td>
