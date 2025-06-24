@@ -1,6 +1,5 @@
 const Item = require("../models/Item");
 const User = require("../models/User");
-const { v4: uuidv4 } = require("uuid");
 const QRCode = require("qrcode");
 
 const frontendBaseURL =
