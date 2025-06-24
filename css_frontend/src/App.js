@@ -30,7 +30,7 @@ import TrackingVisitorApp from "./pages/TrackingVisitorApp";
 import SecurityHandleItems from "./pages/SecurityHandleItems";
 import SecurityCheckVisitor from "./pages/SecurityCheckVisitor";
 import AnalyzeMaintenance from "./pages/AnalyzeMaintenance";
-import QRCodeScanPage from "./components/QRCodeScanPage"; // ✅ New page import
+import QRCodeScanPage from "./components/QRCodeScanPage";
 import QRCodeScanPageVisitor from "./components/QRCodeScanPageVisitor";
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
         <Route path="/help" element={<Help />} />
         <Route path="/benefits" element={<Benefits />} />
         <Route path="/login" element={<Login />} />
+
         {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
@@ -61,6 +62,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Dashboards */}
         <Route
           path="/resident/dashboard"
@@ -70,7 +72,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/resident/sidebar"
           element={
@@ -79,7 +80,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/security/dashboard"
           element={
@@ -96,6 +96,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Manage Profile */}
         <Route
           path="/resident/profile"
@@ -121,9 +122,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Auth Routes */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+
         {/* Resident Actions */}
         <Route
           path="/report-lost-item"
@@ -157,6 +160,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Tracking Pages */}
         <Route
           path="/track-item"
@@ -182,7 +186,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* Security. */}
+
+        {/* Security */}
         <Route
           path="/handle-items"
           element={
@@ -199,6 +204,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Staff */}
         <Route
           path="/analyze-maintenance"
@@ -208,9 +214,11 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/scan" element={<QRCodeScanPageVisitor />} />
-        {/* ✅ Public Scan QR Code Page */}
-        <Route path="/scan" element={<QRCodeScanPage />} />
+
+        {/* ✅ FIXED: Separate QR Code Scan Routes */}
+        <Route path="/scan-item" element={<QRCodeScanPage />} />
+        <Route path="/scan-visitor" element={<QRCodeScanPageVisitor />} />
+
         {/* 404 Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>
