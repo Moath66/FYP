@@ -79,7 +79,6 @@
   display: flex;
   align-items: center;
   gap: 1rem; /* Space between search and filter */
-  flex-grow: 1; /* Allow this section to grow and push add button to right */
 }
 
 .search-input-wrapper {
