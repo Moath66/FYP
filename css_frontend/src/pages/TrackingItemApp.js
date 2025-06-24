@@ -188,7 +188,7 @@ const TrackingItemApp = () => {
               ) : (
                 <tr>
                   <td colSpan="6" className="no-items">
-                    No matching items .
+                    No matching items.
                   </td>
                 </tr>
               )}
