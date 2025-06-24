@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 /* 📋 Card */
@@ -23,95 +24,102 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
   position: relative;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* 📝 Title */
-.qr-popup-card h2 {
-  color: #002b5c;
-  margin-bottom: 10px;
+.qr-popup-title {
+  color: #007d7b;
+  font-size: 2em; /* Increased font size */
+  margin-bottom: 15px; /* Adjusted margin */
+  font-weight: 700;
+  display: flex; /* For centering icon if added, or just text */
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space for potential icon */
 }
 
 /* 🧾 Description */
-.qr-popup-card p {
-  font-size: 15px;
+.qr-popup-description {
+  font-size: 1em;
   margin-bottom: 15px;
   color: #555;
+  line-height: 1.5;
 }
 
 /* 🖼️ QR Image */
 .qr-image {
   width: 220px;
   height: auto;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
+  margin: 25px auto; /* Increased top/bottom margin */
+  border: 1px solid #e0e0e0;
   padding: 8px;
   border-radius: 8px;
+  display: block;
 }
 
 /* 🔗 Details */
 .qr-details {
   text-align: left;
-  font-size: 14px;
+  font-size: 0.95em;
   color: #333;
   margin-bottom: 20px;
 }
 
-.qr-details p {
-  margin: 6px 0;
+.qr-details-label {
+  margin: 6px 0 8px 0;
+  font-weight: 600;
 }
 
-.qr-details hr {
-  margin: 12px 0;
-  border: none;
-  border-top: 1px solid #ccc;
+.qr-scan-link-input {
+  width: 100%;
+  padding: 12px 15px; /* Consistent padding */
+  font-size: 0.95em; /* Slightly larger font */
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-family: monospace;
+  background-color: #fefefe;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 🏷️ Status Badge (if needed) */
-.status-badge {
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-transform: capitalize;
-  font-size: 13px;
-  color: white;
+.qr-scan-link-input:focus {
+  border-color: #007d7b;
+  box-shadow: 0 0 0 3px rgba(0, 125, 123, 0.2);
+  outline: none;
 }
 
-.status-badge.lost {
-  background-color: #dc3545;
-}
-
-.status-badge.found {
-  background-color: #28a745;
-}
-
-.status-badge.claimed {
-  background-color: #ffc107;
-  color: #000;
-}
-
-.status-badge.returned {
-  background-color: #007bff;
-}
-
-.status-badge.discarded {
-  background-color: gray;
+.qr-details-hint {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 6px;
 }
 
 /* ❌ Close Button */
 .close-btn {
-  background-color: #002b5c;
+  background-color: #dc3545; /* Changed to a more prominent red for close/destructive action */
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 25px; /* Larger padding */
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 15px;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  font-size: 1.05em; /* Slightly larger font */
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px; /* Added margin top */
 }
 
 .close-btn:hover {
-  background-color: #004080;
+  background-color: #c82333; /* Darker red on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 🎬 Animation */
@@ -126,17 +134,45 @@
   }
 }
 
+/* Accessibility Focus Styles */
+button:focus,
+input:focus {
+  outline: 2px solid #007d7b;
+  outline-offset: 2px;
+}
+
 /* 📱 Mobile Adjustments */
 @media (max-width: 480px) {
   .qr-popup-card {
     padding: 20px;
+    border-radius: 12px;
+  }
+
+  .qr-popup-title {
+    font-size: 1.5em;
+  }
+
+  .qr-popup-description {
+    font-size: 0.9em;
   }
 
   .qr-image {
     width: 180px;
+    padding: 6px;
   }
 
-  .qr-details p {
-    font-size: 13px;
+  .qr-details-label,
+  .qr-scan-link-input,
+  .qr-details-hint {
+    font-size: 0.85em;
+  }
+
+  .qr-scan-link-input {
+    padding: 8px 10px;
+  }
+
+  .close-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
   }
 }
