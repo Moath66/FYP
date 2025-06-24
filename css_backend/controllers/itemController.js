@@ -1,5 +1,4 @@
 const Item = require("../models/Item");
-const Claim = require("../models/claim");
 const User = require("../models/User");
 const { v4: uuidv4 } = require("uuid");
 const QRCode = require("qrcode");
