@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import "../styles/TrackingMaintenanceApp.css"; // Ensure this path is correct
-import { getMaintenanceByResident } from "../api/maintenanceApis"; // Keep your existing API import
+import "../styles/TrackingMaintenanceApp.css";
+import { getMaintenanceByResident } from "../api/maintenanceApis";
 import {
   FaArrowLeft,
   FaBriefcase,
   FaCheck,
   FaExclamationTriangle,
   FaClock,
-} from "react-icons/fa"; // Using react-icons/fa for icons
-import { toast } from "react-toastify"; // Using react-toastify for notifications
-import { useNavigate } from "react-router-dom"; // For navigation
+} from "react-icons/fa";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const TrackingMaintenanceApp = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
@@ -20,12 +20,13 @@ const TrackingMaintenanceApp = () => {
   const fetchData = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-      if (!user || !user._id) {
+      // ✅ FIXED: Use numeric userId instead of MongoDB _id
+      if (!user || !user.userId) {
         toast.error("Missing user ID. Please log in.");
         navigate("/login");
         return;
       }
-      const data = await getMaintenanceByResident(user._id);
+      const data = await getMaintenanceByResident(user.userId);
 
       // Sort by equipment ID (e.g., EQ0001, EQ0002)
       const sorted = [...data].sort((a, b) =>
@@ -80,21 +81,13 @@ const TrackingMaintenanceApp = () => {
 
   return (
     <div className="lost-page-wrapper">
-      {" "}
-      {/* Reusing wrapper for centering */}
       <div className="lost-card">
-        {" "}
-        {/* Reusing card styling */}
         <header className="profile-header">
-          {" "}
-          {/* Reusing header styling */}
           <h2 className="lost-card-title">
             <FaBriefcase className="lost-card-icon" /> Tracking Maintenance
             Application
           </h2>
           <button className="back-btn" onClick={() => navigate(-1)}>
-            {" "}
-            {/* Reusing back-btn styling */}
             <FaArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
           </button>
         </header>
