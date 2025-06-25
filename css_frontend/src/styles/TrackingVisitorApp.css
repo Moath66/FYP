@@ -133,6 +133,7 @@
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #f0f0f0; /* Lighter border */
+  position: relative;
 }
 
 .tracking-table th {
@@ -228,7 +229,7 @@
   white-space: normal; /* Allow text to wrap */
   min-width: 200px;
   max-width: 300px;
-  z-index: 10;
+  z-index: 1000; /* ✅ FIXED: Higher z-index */
   text-align: left;
   margin-top: 8px; /* Space between button and popup */
   display: flex;
