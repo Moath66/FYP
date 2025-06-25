@@ -13,8 +13,8 @@ exports.submitMaintenance = async (req, res) => {
       last_maintenance_date,
     } = req.body;
 
-    // ✅ CORRECTED: Get the User's ObjectId from numeric userId
-    const user = await User.findOne({ userId: req.user.userId });
+    // ✅ FIXED: Use the ObjectId directly to find user, then get numeric userId
+    const user = await User.findById(req.user.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -33,7 +33,7 @@ exports.submitMaintenance = async (req, res) => {
       environment_condition,
       description,
       last_maintenance_date: new Date(last_maintenance_date),
-      resident_id: user._id, // ✅ Use ObjectId from found user
+      resident_id: user._id, // Use the ObjectId
       staffAction: null,
       status: "Pending",
     });
@@ -53,7 +53,7 @@ exports.submitMaintenance = async (req, res) => {
 // 🔹 Get Maintenance by Resident
 exports.getByResident = async (req, res) => {
   try {
-    // ✅ CORRECTED: Use numeric userId to find user, then use ObjectId for query
+    // ✅ FIXED: Convert string parameter to Number for userId search
     const user = await User.findOne({ userId: Number(req.params.id) });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -72,7 +72,7 @@ exports.getByResident = async (req, res) => {
   }
 };
 
-// Keep the other functions unchanged
+// Keep other functions unchanged
 exports.getAllMaintenance = async (req, res) => {
   try {
     const all = await Maintenance.find()
