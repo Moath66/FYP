@@ -67,14 +67,8 @@ const ResidentDashboard = () => {
 
         // Fetch Lost & Found Items
         const lostFoundItems = await fetchItemsByUser(userId);
-        // Corrected: Use "unclaimed" as per your Item model enum, not "unresolved"
-        // IMPORTANT: Ensure your backend Item controller returns the 'status' field.
-        const activeLostFound = lostFoundItems.filter(
-          (item) =>
-            item.status &&
-            (item.status.toLowerCase() === "lost" ||
-              item.status.toLowerCase() === "unclaimed")
-        ).length;
+        // ✅ FIXED: Count ALL Lost & Found applications made by user (regardless of status)
+        const activeLostFound = lostFoundItems.length;
         console.log("Lost & Found Items:", lostFoundItems);
 
         setActivityCounts({
@@ -151,8 +145,8 @@ const ResidentDashboard = () => {
                 </p>
                 <span className="activity-status">
                   {activityCounts.activeLostFound > 0
-                    ? "Active Reports"
-                    : "No Active Reports"}
+                    ? "Total Reports"
+                    : "No Reports"}
                 </span>
               </div>
             </div>
