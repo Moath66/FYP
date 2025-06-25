@@ -20,13 +20,24 @@ const TrackingMaintenanceApp = () => {
   const fetchData = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-      // ✅ FIXED: Use numeric userId instead of MongoDB _id
-      if (!user || !user.userId) {
-        toast.error("Missing user ID. Please log in.");
+
+      // ✅ DEBUG LOGS - Remove these after fixing
+      console.log("🔍 Full user object:", user);
+      console.log("🔍 user._id:", user._id);
+      console.log("🔍 user.userId:", user.userId);
+      console.log("🔍 typeof user.userId:", typeof user.userId);
+
+      // ✅ Check for numeric userId
+      if (!user || !user.userId || typeof user.userId !== "number") {
+        console.error("❌ Invalid user data:", { user, userId: user?.userId });
+        toast.error("Missing or invalid user ID. Please log in again.");
         navigate("/login");
         return;
       }
+
+      console.log("🔍 Calling API with userId:", user.userId);
       const data = await getMaintenanceByResident(user.userId);
+      console.log("✅ API Response:", data);
 
       // Sort by equipment ID (e.g., EQ0001, EQ0002)
       const sorted = [...data].sort((a, b) =>
@@ -34,7 +45,7 @@ const TrackingMaintenanceApp = () => {
       );
       setMaintenanceList(sorted);
     } catch (error) {
-      console.error("Error fetching maintenance data:", error);
+      console.error("❌ Error fetching maintenance data:", error);
       toast.error("❌ Error fetching maintenance data.");
     }
   };
