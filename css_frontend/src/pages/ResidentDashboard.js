@@ -14,7 +14,8 @@ const ResidentDashboard = () => {
 
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const userName = storedUser?.userName || "Resident";
-  const userId = storedUser?._id || storedUser?.userId; // Get userId for API calls
+  // ✅ FIXED: Use numeric userId, not MongoDB _id
+  const userId = storedUser?.userId; // Remove the fallback to _id
 
   const [activityCounts, setActivityCounts] = useState({
     pendingMaintenance: 0,
@@ -36,8 +37,6 @@ const ResidentDashboard = () => {
 
         // Fetch Maintenance Requests
         const maintenanceRequests = await getMaintenanceByResident(userId);
-        // Assuming 'pending' or 'in progress' are statuses for active requests
-        // IMPORTANT: Check your backend Maintenance model and controller to ensure 'status' field is returned.
         const pendingMaintenance = maintenanceRequests.filter(
           (req) =>
             req.status &&
@@ -48,13 +47,11 @@ const ResidentDashboard = () => {
 
         // Fetch Visitor Registrations
         const visitorRegistrations = await getVisitorsByResident();
-        // Assuming 'pending' or 'approved' and future date for upcoming visitors
-        // IMPORTANT: Check your backend Visitor model and controller to ensure 'status' and 'visitDate' fields are returned.
         const now = new Date();
         const upcomingVisitors = visitorRegistrations.filter((visitor) => {
           const visitDate = visitor.visitDate
             ? new Date(visitor.visitDate)
-            : null; // Check if visitDate exists
+            : null;
           return (
             visitor.status &&
             (visitor.status.toLowerCase() === "pending" ||
@@ -67,7 +64,7 @@ const ResidentDashboard = () => {
 
         // Fetch Lost & Found Items
         const lostFoundItems = await fetchItemsByUser(userId);
-        // ✅ FIXED: Count ALL Lost & Found applications made by user (regardless of status)
+        // ✅ Count ALL Lost & Found applications made by user
         const activeLostFound = lostFoundItems.length;
         console.log("Lost & Found Items:", lostFoundItems);
 
@@ -78,18 +75,17 @@ const ResidentDashboard = () => {
         });
       } catch (error) {
         console.error("Failed to fetch resident dashboard stats:", error);
-        // You might want to show a toast notification here for the user
       } finally {
         setLoadingStats(false);
       }
     };
 
     loadStats();
-  }, [userId]); // Re-run when userId changes
+  }, [userId]);
 
   return (
     <div className="dashboard-layout">
-      <ResidentSidebar /> {/* Render the new sidebar */}
+      <ResidentSidebar />
       <main className="dashboard-main-content">
         <header className="main-content-header">
           <h2>Resident Dashboard</h2>
