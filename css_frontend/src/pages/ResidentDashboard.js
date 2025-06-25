@@ -123,7 +123,7 @@ const ResidentDashboard = () => {
           ) : (
             <div className="activity-cards-grid">
               <div className="activity-card">
-                <h4>Pending Maintenance Requests</h4>
+                <h4>Maintenance Applications</h4>
                 <p className="activity-count">
                   {activityCounts.pendingMaintenance}
                 </p>
@@ -134,7 +134,7 @@ const ResidentDashboard = () => {
                 </span>
               </div>
               <div className="activity-card">
-                <h4>Upcoming Visitors</h4>
+                <h4>Visitor Applications</h4>
                 <p className="activity-count">
                   {activityCounts.upcomingVisitors}
                 </p>
@@ -145,7 +145,7 @@ const ResidentDashboard = () => {
                 </span>
               </div>
               <div className="activity-card">
-                <h4>Active Lost & Found Reports</h4>
+                <h4>Lost & Found Reports</h4>
                 <p className="activity-count">
                   {activityCounts.activeLostFound}
                 </p>
