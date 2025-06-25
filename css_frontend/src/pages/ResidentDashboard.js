@@ -37,24 +37,14 @@ const ResidentDashboard = () => {
 
         // Fetch Maintenance Requests
         const maintenanceRequests = await getMaintenanceByResident(userId);
+        // ✅ FIXED: Count ALL maintenance applications made by user
         const pendingMaintenance = maintenanceRequests.length;
         console.log("Maintenance Requests:", maintenanceRequests);
 
         // Fetch Visitor Registrations
         const visitorRegistrations = await getVisitorsByResident();
-        const now = new Date();
-        const upcomingVisitors = visitorRegistrations.filter((visitor) => {
-          const visitDate = visitor.visitDate
-            ? new Date(visitor.visitDate)
-            : null;
-          return (
-            visitor.status &&
-            (visitor.status.toLowerCase() === "pending" ||
-              visitor.status.toLowerCase() === "approved") &&
-            visitDate &&
-            visitDate >= now
-          );
-        }).length;
+        // ✅ FIXED: Count ALL visitor applications made by user
+        const upcomingVisitors = visitorRegistrations.length;
         console.log("Visitor Registrations:", visitorRegistrations);
 
         // Fetch Lost & Found Items
@@ -114,8 +104,8 @@ const ResidentDashboard = () => {
                 </p>
                 <span className="activity-status">
                   {activityCounts.pendingMaintenance > 0
-                    ? "Action Required"
-                    : "No Pending"}
+                    ? "Total Applications"
+                    : "No Applications"}
                 </span>
               </div>
               <div className="activity-card">
@@ -125,8 +115,8 @@ const ResidentDashboard = () => {
                 </p>
                 <span className="activity-status">
                   {activityCounts.upcomingVisitors > 0
-                    ? "Scheduled"
-                    : "No Upcoming"}
+                    ? "Total Applications"
+                    : "No Applications"}
                 </span>
               </div>
               <div className="activity-card">
