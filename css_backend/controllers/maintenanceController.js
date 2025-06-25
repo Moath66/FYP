@@ -2,7 +2,6 @@ const Maintenance = require("../models/Maintenance");
 const User = require("../models/User");
 
 // 🔹 Submit New Maintenance Request (Resident)
-// 🔹 Submit New Maintenance Request (Resident)
 exports.submitMaintenance = async (req, res) => {
   try {
     const {
@@ -14,11 +13,10 @@ exports.submitMaintenance = async (req, res) => {
       last_maintenance_date,
     } = req.body;
 
-    const residentId = req.user.userId || req.user._id;
-    if (!residentId) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: No user ID found" });
+    // ✅ FIXED: Get the User's ObjectId from numeric userId
+    const user = await User.findOne({ userId: req.user.userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Generate unique equipment_id
@@ -35,7 +33,7 @@ exports.submitMaintenance = async (req, res) => {
       environment_condition,
       description,
       last_maintenance_date: new Date(last_maintenance_date),
-      resident_id: residentId,
+      resident_id: user._id, // ✅ FIXED: Use ObjectId instead of numeric userId
       staffAction: null,
       status: "Pending",
     });
@@ -55,8 +53,13 @@ exports.submitMaintenance = async (req, res) => {
 // 🔹 Get Maintenance by Resident
 exports.getByResident = async (req, res) => {
   try {
-    const userId = req.user.userId || req.user._id;
-    const data = await Maintenance.find({ resident_id: userId }).sort({
+    // ✅ FIXED: Convert numeric userId to ObjectId
+    const user = await User.findOne({ userId: Number(req.params.id) });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const data = await Maintenance.find({ resident_id: user._id }).sort({
       createdAt: -1,
     });
     res.json(data);
@@ -69,7 +72,7 @@ exports.getByResident = async (req, res) => {
   }
 };
 
-// 🔹 Get All Maintenance Requests (Staff)
+// Keep getAllMaintenance and updateMaintenanceStatus unchanged
 exports.getAllMaintenance = async (req, res) => {
   try {
     const all = await Maintenance.find()
@@ -86,7 +89,6 @@ exports.getAllMaintenance = async (req, res) => {
   }
 };
 
-// 🔹 Update Maintenance Status (Staff Action)
 exports.updateMaintenanceStatus = async (req, res) => {
   try {
     const { id } = req.params;

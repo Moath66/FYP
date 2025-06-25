@@ -37,12 +37,7 @@ const ResidentDashboard = () => {
 
         // Fetch Maintenance Requests
         const maintenanceRequests = await getMaintenanceByResident(userId);
-        const pendingMaintenance = maintenanceRequests.filter(
-          (req) =>
-            req.status &&
-            (req.status.toLowerCase() === "pending" ||
-              req.status.toLowerCase() === "in progress")
-        ).length;
+        const pendingMaintenance = maintenanceRequests.length;
         console.log("Maintenance Requests:", maintenanceRequests);
 
         // Fetch Visitor Registrations
