@@ -57,7 +57,7 @@ const TrackingVisitorApp = () => {
       )
     : [];
 
-  const getStatusBadge = (status, denialReason) => {
+  const getStatusBadge = (status, denialReason, visitorId) => {
     switch (status) {
       case "approved":
         return (
@@ -74,9 +74,12 @@ const TrackingVisitorApp = () => {
                 className="reason-btn"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent row click if any
+                  // ✅ FIXED: Use the correct visitor ID for comparison
                   setVisitorList((prev) =>
                     prev.map((v) =>
-                      v._id === v._id ? { ...v, showReason: !v.showReason } : v
+                      v._id === visitorId
+                        ? { ...v, showReason: !v.showReason }
+                        : v
                     )
                   );
                 }}
@@ -98,20 +101,12 @@ const TrackingVisitorApp = () => {
 
   return (
     <div className="lost-page-wrapper">
-      {" "}
-      {/* Reusing wrapper for centering */}
       <div className="lost-card">
-        {" "}
-        {/* Reusing card styling */}
         <header className="profile-header">
-          {" "}
-          {/* Reusing header styling */}
           <h2 className="lost-card-title">
             <FaBook className="lost-card-icon" /> Tracking Visitor Application
           </h2>
           <button className="back-btn" onClick={() => navigate(-1)}>
-            {" "}
-            {/* Reusing back-btn styling */}
             <FaArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
           </button>
         </header>
@@ -170,10 +165,15 @@ const TrackingVisitorApp = () => {
                           )}
                         </td>
                         <td data-label="Status">
-                          {getStatusBadge(visitor.status, visitor.denialReason)}
+                          {/* ✅ FIXED: Pass visitor._id as third parameter */}
+                          {getStatusBadge(
+                            visitor.status,
+                            visitor.denialReason,
+                            visitor._id
+                          )}
                           {visitor.showReason && visitor.denialReason && (
                             <div className="reason-popup">
-                              <FaInfoCircle className="reason-popup-icon" />{" "}
+                              <FaInfoCircle className="reason-popup-icon" />
                               {visitor.denialReason}
                             </div>
                           )}
