@@ -138,7 +138,7 @@ exports.approveVisitor = async (req, res) => {
 
     const baseUrl = req.headers.origin || process.env.REACT_APP_PUBLIC_URL;
     const encoded = encodeURIComponent(JSON.stringify(qrPayload));
-    const scanURL = `${baseUrl}/scan?data=${encoded}`;
+    const scanURL = `${baseUrl}/scan-visitor?data=${encoded}`;
 
     const qrCodeData = await QRCode.toDataURL(scanURL);
     visitor.status = "approved";
