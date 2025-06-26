@@ -24,7 +24,7 @@ const SecurityDashboard = () => {
   // ✅ State for activity counts
   const [activityCounts, setActivityCounts] = useState({
     pendingItems: 0,
-    activeVisitorEntries: 0,
+    pendingVisitors: 0, // ✅ Changed from activeVisitorEntries
   });
   const [loadingStats, setLoadingStats] = useState(true);
 
@@ -39,34 +39,36 @@ const SecurityDashboard = () => {
     loadDashboardStats();
   }, []);
 
-  // ✅ Function to load real data from APIs
+  // ✅ Updated function with correct logic based on action availability
   const loadDashboardStats = async () => {
     try {
       setLoadingStats(true);
 
-      // Fetch all items and count pending ones
+      // ✅ TASK 1: Count items that have ACTION AVAILABLE in Handle Items page
+      // Items show action buttons when status is "Claimed" (Returned/Discard buttons available)
       const allItems = await fetchAllItems();
       const pendingItems = allItems.filter(
-        (item) => item.status === "unclaimed" || item.status === "found"
+        (item) => item.status === "Claimed" // Only items with action buttons available
       ).length;
 
-      // Fetch all visitors and count active entries (approved status)
+      // ✅ TASK 2: Count visitors that have ACTION AVAILABLE in Check Visitors page
+      // Visitors show action buttons when status is NOT "Completed" (Approve/Deny buttons available)
       const allVisitors = await fetchAllVisitorsForSecurity();
-      const activeVisitorEntries = allVisitors.filter(
-        (visitor) => visitor.status === "approved"
+      const pendingVisitors = allVisitors.filter(
+        (visitor) => visitor.status !== "Completed" // Only visitors with action buttons available
       ).length;
 
       setActivityCounts({
         pendingItems,
-        activeVisitorEntries,
+        pendingVisitors,
       });
 
-      console.log("✅ Dashboard stats loaded:", {
+      console.log("✅ Security dashboard stats loaded:", {
         pendingItems,
-        activeVisitorEntries,
+        pendingVisitors,
       });
     } catch (error) {
-      console.error("❌ Failed to load dashboard stats:", error);
+      console.error("❌ Failed to load security dashboard stats:", error);
     } finally {
       setLoadingStats(false);
     }
@@ -191,7 +193,7 @@ const SecurityDashboard = () => {
             </div>
           ) : (
             <div className="activity-cards-container">
-              {/* ✅ TASK 1.1: Changed "Unresolved Found Items" to "Pending Items" */}
+              {/* ✅ TASK 1: Pending Items - appear when action available, disappear when security takes action */}
               <div className="activity-card">
                 <h4>Pending Items</h4>
                 <p className="activity-value">{activityCounts.pendingItems}</p>
@@ -199,7 +201,7 @@ const SecurityDashboard = () => {
                   className={`activity-status ${
                     activityCounts.pendingItems > 0
                       ? "action-required"
-                      : "no-active-reports"
+                      : "no-pending"
                   }`}
                 >
                   {activityCounts.pendingItems > 0
@@ -208,26 +210,24 @@ const SecurityDashboard = () => {
                 </span>
               </div>
 
-              {/* ✅ TASK 1.2: Keep "Active Visitor Entries" */}
+              {/* ✅ TASK 2: Changed "Active Visitor Entries" to "Pending Visitor" */}
               <div className="activity-card">
-                <h4>Active Visitor Entries</h4>
+                <h4>Pending Visitor</h4>
                 <p className="activity-value">
-                  {activityCounts.activeVisitorEntries}
+                  {activityCounts.pendingVisitors}
                 </p>
                 <span
                   className={`activity-status ${
-                    activityCounts.activeVisitorEntries > 0
+                    activityCounts.pendingVisitors > 0
                       ? "action-required"
-                      : "no-upcoming"
+                      : "no-pending"
                   }`}
                 >
-                  {activityCounts.activeVisitorEntries > 0
-                    ? "ACTIVE ENTRIES"
-                    : "NO ACTIVE ENTRIES"}
+                  {activityCounts.pendingVisitors > 0
+                    ? "ACTION REQUIRED"
+                    : "NO PENDING"}
                 </span>
               </div>
-
-              {/* ✅ TASK 1.3: Deleted "Pending Incident Reports" card */}
             </div>
           )}
         </div>
