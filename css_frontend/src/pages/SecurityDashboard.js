@@ -9,36 +9,80 @@ import {
   FaEye,
   FaHome,
   FaSignOutAlt,
-} from "react-icons/fa"; // Using Fa icons as per original code
+} from "react-icons/fa";
 
-import "../styles/SecurityDashboard.css"; // Import the dedicated CSS file
+import "../styles/SecurityDashboard.css";
+// ✅ Import API functions
+import { fetchAllItems } from "../api/itemApi";
+import { fetchAllVisitorsForSecurity } from "../api/visitorApis";
 
 const SecurityDashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Security");
-  const [activePath, setActivePath] = useState("/security/dashboard"); // State to manage active link
+  const [activePath, setActivePath] = useState("/security/dashboard");
+
+  // ✅ State for activity counts
+  const [activityCounts, setActivityCounts] = useState({
+    pendingItems: 0,
+    activeVisitorEntries: 0,
+  });
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     if (storedUser?.userName) {
       setUserName(storedUser.userName);
     }
-    // Set active path based on current URL
     setActivePath(window.location.pathname);
+
+    // ✅ Load dashboard stats
+    loadDashboardStats();
   }, []);
+
+  // ✅ Function to load real data from APIs
+  const loadDashboardStats = async () => {
+    try {
+      setLoadingStats(true);
+
+      // Fetch all items and count pending ones
+      const allItems = await fetchAllItems();
+      const pendingItems = allItems.filter(
+        (item) => item.status === "unclaimed" || item.status === "found"
+      ).length;
+
+      // Fetch all visitors and count active entries (approved status)
+      const allVisitors = await fetchAllVisitorsForSecurity();
+      const activeVisitorEntries = allVisitors.filter(
+        (visitor) => visitor.status === "approved"
+      ).length;
+
+      setActivityCounts({
+        pendingItems,
+        activeVisitorEntries,
+      });
+
+      console.log("✅ Dashboard stats loaded:", {
+        pendingItems,
+        activeVisitorEntries,
+      });
+    } catch (error) {
+      console.error("❌ Failed to load dashboard stats:", error);
+    } finally {
+      setLoadingStats(false);
+    }
+  };
 
   const handleNavigation = (path) => {
     setActivePath(path);
     navigate(path);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("user");
-    localStorage.removeItem("userId"); // Clear userId if stored
-    navigate("/login"); // Redirect to the login page
+    localStorage.removeItem("userId");
+    navigate("/login");
   };
 
   const mainItems = [
@@ -115,10 +159,7 @@ const SecurityDashboard = () => {
           </ul>
         </nav>
         <div className="sidebar-footer">
-          <button
-            className="sidebar-menu-button"
-            onClick={handleLogout} // Changed to call the new handleLogout function
-          >
+          <button className="sidebar-menu-button" onClick={handleLogout}>
             <FaSignOutAlt className="sidebar-menu-icon" />
             <span>Logout</span>
           </button>
@@ -141,35 +182,57 @@ const SecurityDashboard = () => {
           </p>
         </div>
 
-        {/* Activity Overview Section */}
+        {/* ✅ UPDATED: Activity Overview Section */}
         <div className="activity-overview-section">
           <h3 className="section-title">Your Activity Overview</h3>
-          <div className="activity-cards-container">
-            <div className="activity-card">
-              <h4>Pending Incident Reports</h4>
-              <p className="activity-value">1</p>
-              <span className="activity-status action-required">
-                ACTION REQUIRED
-              </span>
+          {loadingStats ? (
+            <div className="loading-indicator">
+              <p>Loading activity data...</p>
             </div>
-            <div className="activity-card">
-              <h4>Active Visitor Entries</h4>
-              <p className="activity-value">0</p>
-              <span className="activity-status no-upcoming">
-                NO ACTIVE ENTRIES
-              </span>
+          ) : (
+            <div className="activity-cards-container">
+              {/* ✅ TASK 1.1: Changed "Unresolved Found Items" to "Pending Items" */}
+              <div className="activity-card">
+                <h4>Pending Items</h4>
+                <p className="activity-value">{activityCounts.pendingItems}</p>
+                <span
+                  className={`activity-status ${
+                    activityCounts.pendingItems > 0
+                      ? "action-required"
+                      : "no-active-reports"
+                  }`}
+                >
+                  {activityCounts.pendingItems > 0
+                    ? "ACTION REQUIRED"
+                    : "NO PENDING"}
+                </span>
+              </div>
+
+              {/* ✅ TASK 1.2: Keep "Active Visitor Entries" */}
+              <div className="activity-card">
+                <h4>Active Visitor Entries</h4>
+                <p className="activity-value">
+                  {activityCounts.activeVisitorEntries}
+                </p>
+                <span
+                  className={`activity-status ${
+                    activityCounts.activeVisitorEntries > 0
+                      ? "action-required"
+                      : "no-upcoming"
+                  }`}
+                >
+                  {activityCounts.activeVisitorEntries > 0
+                    ? "ACTIVE ENTRIES"
+                    : "NO ACTIVE ENTRIES"}
+                </span>
+              </div>
+
+              {/* ✅ TASK 1.3: Deleted "Pending Incident Reports" card */}
             </div>
-            <div className="activity-card">
-              <h4>Unresolved Found Items</h4>
-              <p className="activity-value">0</p>
-              <span className="activity-status no-active-reports">
-                NO UNRESOLVED
-              </span>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Community Updates / Recent Logs Section (Placeholder) */}
+        {/* Community Updates / Recent Logs Section */}
         <div className="community-updates-section">
           <h3 className="section-title">Recent Security Logs</h3>
           <div className="update-card">
@@ -182,13 +245,6 @@ const SecurityDashboard = () => {
               Read More
             </a>
           </div>
-          {/* Example of another log entry if needed */}
-          {/* <div className="update-card">
-            <h4>Visitor Entry Logged</h4>
-            <p className="update-date">June 20, 2025</p>
-            <p className="update-description">John Doe entered at 10:30 AM.</p>
-            <a href="#" className="read-more">Read More</a>
-          </div> */}
         </div>
       </main>
     </div>
