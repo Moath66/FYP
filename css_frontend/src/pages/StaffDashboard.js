@@ -8,26 +8,59 @@ import {
   FaChartBar,
   FaHome,
   FaSignOutAlt,
-  FaExclamationTriangle, // For pending maintenance
-  FaCalendarCheck, // For upcoming events/visitors
-  FaBoxOpen, // For lost & found items
-} from "react-icons/fa"; // Using Fa icons
+  FaExclamationTriangle,
+} from "react-icons/fa";
 
-import "../styles/StaffDashboard.css"; // Import the dedicated CSS file
+import "../styles/StaffDashboard.css";
+// ✅ Import maintenance API
+import { getAllMaintenance } from "../api/maintenanceApis";
 
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("Staff");
-  const [activePath, setActivePath] = useState("/staff/dashboard"); // State to manage active link
+  const [activePath, setActivePath] = useState("/staff/dashboard");
+
+  // ✅ State for activity counts
+  const [activityCounts, setActivityCounts] = useState({
+    pendingMaintenanceRequests: 0,
+  });
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     if (storedUser?.userName) {
       setUserName(storedUser.userName);
     }
-    // Set active path based on current URL
     setActivePath(window.location.pathname);
+
+    // ✅ Load dashboard stats
+    loadDashboardStats();
   }, []);
+
+  // ✅ Function to load real data from maintenance API
+  const loadDashboardStats = async () => {
+    try {
+      setLoadingStats(true);
+
+      // Fetch all maintenance requests and count pending ones
+      const allMaintenanceRequests = await getAllMaintenance();
+      const pendingMaintenanceRequests = allMaintenanceRequests.filter(
+        (request) => request.status === "Pending"
+      ).length;
+
+      setActivityCounts({
+        pendingMaintenanceRequests,
+      });
+
+      console.log("✅ Staff dashboard stats loaded:", {
+        pendingMaintenanceRequests,
+      });
+    } catch (error) {
+      console.error("❌ Failed to load staff dashboard stats:", error);
+    } finally {
+      setLoadingStats(false);
+    }
+  };
 
   const handleNavigation = (path) => {
     setActivePath(path);
@@ -66,12 +99,6 @@ const StaffDashboard = () => {
       url: "/analyze-maintenance",
       icon: FaChartBar,
     },
-    // Add other staff-specific quick actions if needed, e.g.,
-    // {
-    //   title: "View Schedules",
-    //   url: "/staff/schedules",
-    //   icon: FaCalendarAlt,
-    // },
   ];
 
   return (
@@ -140,36 +167,41 @@ const StaffDashboard = () => {
           </p>
         </div>
 
-        {/* Activity Overview Section */}
+        {/* ✅ UPDATED: Activity Overview Section */}
         <div className="activity-overview-section">
           <h3 className="section-title">Your Activity Overview</h3>
-          <div className="activity-cards-container">
-            <div className="activity-card">
-              <h4>Pending Maintenance Requests</h4>
-              <p className="activity-value">3</p>
-              <span className="activity-status action-required">
-                <FaExclamationTriangle className="status-icon" /> ACTION
-                REQUIRED
-              </span>
+          {loadingStats ? (
+            <div className="loading-indicator">
+              <p>Loading activity data...</p>
             </div>
-            <div className="activity-card">
-              <h4>Upcoming Scheduled Tasks</h4>
-              <p className="activity-value">2</p>
-              <span className="activity-status upcoming">
-                <FaCalendarCheck className="status-icon" /> UPCOMING
-              </span>
+          ) : (
+            <div className="activity-cards-container">
+              {/* ✅ TASK 1: Keep only "Pending Maintenance Requests" */}
+              <div className="activity-card">
+                <h4>Pending Maintenance Requests</h4>
+                <p className="activity-value">
+                  {activityCounts.pendingMaintenanceRequests}
+                </p>
+                <span
+                  className={`activity-status ${
+                    activityCounts.pendingMaintenanceRequests > 0
+                      ? "action-required"
+                      : "no-pending"
+                  }`}
+                >
+                  <FaExclamationTriangle className="status-icon" />
+                  {activityCounts.pendingMaintenanceRequests > 0
+                    ? "ACTION REQUIRED"
+                    : "NO PENDING REQUESTS"}
+                </span>
+              </div>
+
+              {/* ✅ TASK 1: Removed "Upcoming Scheduled Tasks" and "Unresolved Found Items" */}
             </div>
-            <div className="activity-card">
-              <h4>Unresolved Found Items</h4>
-              <p className="activity-value">0</p>
-              <span className="activity-status no-active-reports">
-                <FaBoxOpen className="status-icon" /> NO UNRESOLVED
-              </span>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Community Updates / Recent Logs Section (Placeholder) */}
+        {/* Recent Staff Logs & Updates Section */}
         <div className="community-updates-section">
           <h3 className="section-title">Recent Staff Logs & Updates</h3>
           <div className="update-card">
