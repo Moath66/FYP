@@ -1,31 +1,26 @@
-const BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api"; // ✅ Use deployed URL if available
+// src/api/api.js
+import apiClient from "./apiClient";
 
-export const fetchData = async (endpoint) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No authentication token found.");
+// GET
+export const fetchData = async (endpoint, params = {}) => {
+  const res = await apiClient.get(endpoint, { params });
+  return res.data;
+};
 
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Attach token
-      },
-    });
+// POST
+export const postData = async (endpoint, payload = {}) => {
+  const res = await apiClient.post(endpoint, payload);
+  return res.data;
+};
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        `Error ${response.status}: ${errorData.message || "Failed to fetch"}`
-      );
-    }
+// PUT
+export const putData = async (endpoint, payload = {}) => {
+  const res = await apiClient.put(endpoint, payload);
+  return res.data;
+};
 
-    const data = await response.json();
-    console.log("✅ Data from backend:", data);
-    return data;
-  } catch (error) {
-    console.error("❌ Error fetching data:", error.message);
-    throw error;
-  }
+// DELETE
+export const deleteData = async (endpoint) => {
+  const res = await apiClient.delete(endpoint);
+  return res.data;
 };
