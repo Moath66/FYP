@@ -5,7 +5,6 @@ const auth = require("../middlewares/authMiddleware");
 
 // Authentication Routes
 router.post("/register", userController.createUser);  // Register a user
-router.post("/login", userController.loginUser);  // Login route
 
 // User Management Routes
 router.get("/", userController.getAllUsers);
