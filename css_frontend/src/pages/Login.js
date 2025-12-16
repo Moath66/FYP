@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css"; // Corrected path
+import { loginUser } from "../api/userApi"; 
 
 // Inline SVG icons for use in the component
 const MailIcon = () => (
@@ -64,53 +65,46 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
-        {
-          identifier,
-          password,
-        },
-        { withCredentials: true }
-      );
+  try {
+    const data = await loginUser(identifier, password);
 
-      const user = res.data.user;
-      console.log("✅ Login response user:", user);
+    const user = data.user;
+    console.log("✅ Login response user:", user);
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("userId", user._id);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("userId", user._id);
 
-      alert("✅ Login successful!");
+    alert("✅ Login successful!");
 
-      switch (user.role) {
-        case "admin":
-          navigate("/admin/dashboard");
-          break;
-        case "resident":
-          navigate("/resident/dashboard");
-          break;
-        case "security":
-          navigate("/security/dashboard");
-          break;
-        case "staff":
-          navigate("/staff/dashboard");
-          break;
-        default:
-          navigate("/user/profile");
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || "Invalid credentials");
-    } finally {
-      setLoading(false);
+    switch (user.role) {
+      case "admin":
+        navigate("/admin/dashboard");
+        break;
+      case "resident":
+        navigate("/resident/dashboard");
+        break;
+      case "security":
+        navigate("/security/dashboard");
+        break;
+      case "staff":
+        navigate("/staff/dashboard");
+        break;
+      default:
+        navigate("/user/profile");
     }
-  };
+  } catch (err) {
+    setError(err?.message || "Invalid credentials");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="login-page-container">
