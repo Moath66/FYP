@@ -1,96 +1,32 @@
-import axios from "axios";
+// src/api/userApi.js
+import { fetchData, postData, putData, deleteData } from "./api";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
-const API_URL = `${API_BASE_URL}/users`;
-
-// ✅ Get all users (for admin use)
+// ✅ Get all users (admin)
 export const fetchUsers = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(API_URL, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Error fetching users:",
-      error.response?.data || error.message
-    );
-    return [];
-  }
+  return fetchData("/users");
 };
 
-// ✅ Register a new user (admin use)
+// ✅ Register a new user (admin)
 export const createUser = async (userData) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(`${API_URL}/register`, userData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Error adding user:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+  return postData("/users/register", userData);
 };
 
-// ✅ Delete a user by ID and username
+// ✅ Delete user
 export const deleteUser = async (userId, userName) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.delete(`${API_URL}/${userId}/${userName}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Error deleting user:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+  return deleteData(`/users/${userId}/${userName}`);
 };
 
-// ✅ Update a user's info (except password)
+// ✅ Update user info
 export const updateUser = async (userId, updatedData) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.put(`${API_URL}/${userId}`, updatedData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Error updating user:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+  return putData(`/users/${userId}`, updatedData);
 };
 
-// ✅ Get a single user by ID
+// ✅ Get user by ID
 export const getUserById = async (userId) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${API_URL}/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Error fetching user by ID:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+  return fetchData(`/users/${userId}`);
+};
+
+// ✅ Login (مفيد لو تحب توحيده هنا بدل Login.js)
+export const loginUser = async (identifier, password) => {
+  return postData("/auth/login", { identifier, password });
 };
