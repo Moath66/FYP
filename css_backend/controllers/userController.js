@@ -54,6 +54,9 @@ if (!userName || !email || !password || !phoneNo || !role) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
+
+      const existingUserName = await User.findOne({ userName });
+if (existingUserName) return res.status(400).json({ message: "Username already in use" });
     }
 
     const newUserId = await getNextUserId();
