@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 
+
+router.post("/login", userController.loginUser);  // Login route
+
 // 📌 Login (supports email or username via identifier)
 router.post("/login", userController.loginUser);
 
