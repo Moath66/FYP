@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css"; // Corrected path
 import { loginUser } from "../api/userApi"; 
