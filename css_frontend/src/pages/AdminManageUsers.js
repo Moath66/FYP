@@ -80,7 +80,7 @@ const AdminManageUsers = () => {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setAdminName(parsedUser.name || parsedUser.username || "Admin");
+setAdminName(parsedUser.userName || "Admin");
       } catch (e) {
         console.error("Failed to parse user from localStorage", e);
       }
