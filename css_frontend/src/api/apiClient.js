@@ -1,7 +1,9 @@
+// src/api/apiClient.js
 import axios from "axios";
 
+// ✅ لازم يكون شامل /api
 const BASE_URL = (
-  process.env.REACT_APP_API_BASE_URL || "https://fyp-x3m9.onrender.com/"
+  process.env.REACT_APP_API_BASE_URL || "https://fyp-x3m9.onrender.com/api"
 ).replace(/\/$/, "");
 
 const apiClient = axios.create({
@@ -35,7 +37,7 @@ apiClient.interceptors.response.use(
       (String(error?.message || "").includes("Network Error") ||
         String(error?.message || "").includes("ERR_NETWORK"));
 
-    // ✅ retry مرة وحدة فقط (مفيد جداً مع Render sleep)
+    // ✅ retry مرة وحدة فقط (Render sleep)
     if ((isTimeout || isNetworkError) && !config.__isRetryRequest) {
       config.__isRetryRequest = true;
       await new Promise((r) => setTimeout(r, 1200));
