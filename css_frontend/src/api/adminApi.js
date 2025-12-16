@@ -1,9 +1,9 @@
-import apiClient from "./apiClient";
+import { fetchData } from "./api";
 
 export const getAdminDashboard = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch("/admin/dashboard", {
+    const response = await fetch("/api/admin/dashboard", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
