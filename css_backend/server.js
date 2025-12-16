@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const connectDB = require("./config/db");
 
+
 dotenv.config(); // Load .env variables
 
 const app = express();
@@ -68,6 +69,9 @@ const userRoutes = require("./api_routes/userRoutes");
 const itemRoutes = require("./api_routes/itemRoutes");
 const visitorRoutes = require("./api_routes/visitorRoutes");
 const maintenanceRoutes = require("./api_routes/maintenanceRoutes");
+const healthRoutes = require("./api_routes/healthRoutes");
+
+
 
 // ✅ Use Routes
 app.use("/api/admin", adminRoutes);
@@ -76,6 +80,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/visitors", visitorRoutes);
 app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api", healthRoutes);
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
