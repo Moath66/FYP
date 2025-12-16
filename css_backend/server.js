@@ -6,8 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const connectDB = require("./config/db");
 
-
-dotenv.config(); // Load .env variables
+dotenv.config();
 
 const app = express();
 
@@ -18,39 +17,34 @@ if (!fs.existsSync(uploadDir)) {
   console.log("📁 'uploads' folder created.");
 }
 
-// ✅ Setup allowed origins (localhost + static domain + dynamic fallback)
+// ✅ Clean CORS setup (no noisy logs)
+// Allow: localhost + your main Vercel URL + any *.vercel.app
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.REACT_APP_PUBLIC_URL,
-];
+  process.env.REACT_APP_PUBLIC_URL, // e.g. https://fyp-3v962gant-moaths-projects-b83013fe.vercel.app
+].filter(Boolean);
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // ✅ allow requests without Origin (UptimeRobot / server-to-server / bots)
+      if (!origin) return callback(null, true);
 
-  const isAllowed =
-    origin &&
-    (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin));
+      const isAllowed =
+        allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin);
 
-  if (isAllowed) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    console.log("✅ Allowed CORS Origin:", origin);
-  } else {
-    console.warn("⛔ Blocked CORS Origin:", origin || "Unknown");
-  }
+      return isAllowed
+        ? callback(null, true)
+        : callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
+// ✅ Preflight
+app.options("*", cors());
 
 // ✅ Body Parsers
 app.use(express.json());
@@ -71,7 +65,10 @@ const visitorRoutes = require("./api_routes/visitorRoutes");
 const maintenanceRoutes = require("./api_routes/maintenanceRoutes");
 const healthRoutes = require("./api_routes/healthRoutes");
 
-
+// ✅ Optional: root check (helps if someone hits /)
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
 
 // ✅ Use Routes
 app.use("/api/admin", adminRoutes);
@@ -86,7 +83,5 @@ app.use("/api", healthRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(
-    `✅ Allowed Origins: localhost, ${process.env.REACT_APP_PUBLIC_URL}, and *.vercel.app`
-  );
+  console.log("✅ Allowed Origins:", allowedOrigins, "and *.vercel.app");
 });
